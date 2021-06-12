@@ -19,7 +19,8 @@ class ViewModel: ObservableObject{
     @Published var strupTestResult = ""
     
     //Запомниние слов
-    @Published var wordsTest = ""
+    @Published var wordsTestResult = ""
+    @Published var words: [String] = []
     let firstWeekWords = ["темница", "сервер", "кнут", "колье","белье","алебастр","копыто","косточка","задник","вертеп","перрон","чайка","ароматизатор","залог","журавль","мокасин","звено","миндаль","капсула","ягода"]
     
 }

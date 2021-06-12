@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,7 @@
 		6BBAF084267395C9009B69AE /* CounterTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBAF083267395C9009B69AE /* CounterTestView.swift */; };
 		6BBAF0872673A3A4009B69AE /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBAF0862673A3A4009B69AE /* Store.swift */; };
 		6BBAF08A2674111B009B69AE /* WordsRememberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBAF0892674111B009B69AE /* WordsRememberTest.swift */; };
+		6BBAF08D26752401009B69AE /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 6BBAF08C26752401009B69AE /* Introspect */; };
 		8E9F1F51253EE0AD0029E5F3 /* BrainTrainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F1F50253EE0AD0029E5F3 /* BrainTrainApp.swift */; };
 		8E9F1F53253EE0AD0029E5F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F1F52253EE0AD0029E5F3 /* ContentView.swift */; };
 		8E9F1F55253EE0AF0029E5F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E9F1F54253EE0AF0029E5F3 /* Assets.xcassets */; };
@@ -45,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BBAF08D26752401009B69AE /* Introspect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,9 +74,9 @@
 		6BBAF088267410F5009B69AE /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				6B494C3A2572E02F0001864A /* StrupTest.swift */,
 				6BBAF083267395C9009B69AE /* CounterTestView.swift */,
 				6BBAF0892674111B009B69AE /* WordsRememberTest.swift */,
+				6B494C3A2572E02F0001864A /* StrupTest.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -136,6 +138,9 @@
 			dependencies = (
 			);
 			name = BrainTrain;
+			packageProductDependencies = (
+				6BBAF08C26752401009B69AE /* Introspect */,
+			);
 			productName = BrainTrain;
 			productReference = 8E9F1F4D253EE0AD0029E5F3 /* BrainTrain.app */;
 			productType = "com.apple.product-type.application";
@@ -163,6 +168,9 @@
 				Base,
 			);
 			mainGroup = 8E9F1F44253EE0AD0029E5F3;
+			packageReferences = (
+				6BBAF08B26752400009B69AE /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+			);
 			productRefGroup = 8E9F1F4E253EE0AD0029E5F3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -388,6 +396,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6BBAF08B26752400009B69AE /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6BBAF08C26752401009B69AE /* Introspect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BBAF08B26752400009B69AE /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = Introspect;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		8E9F1F5B253EE0AF0029E5F3 /* BrainTrain.xcdatamodeld */ = {

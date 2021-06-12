@@ -24,10 +24,16 @@ struct timerView: View {
             })
             .onReceive(timer){ _ in
                 if startTimer {
+                    if minus && timeRemaining == 0 {
+                        timer.upstream.connect().cancel()
+                        startTimer = false
+                    }
                     if !minus{
                     timeRemaining += 1
                     } else {
+                        if timeRemaining != 0 {
                         timeRemaining -= 1
+                        }
                     }
                 } else {
                     timer.upstream.connect().cancel()

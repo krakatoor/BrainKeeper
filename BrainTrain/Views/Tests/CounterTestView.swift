@@ -17,6 +17,8 @@ struct CounterTestView: View {
             Image("timer")
                 .resizable()
                 .scaledToFit()
+                .frame(height: 300)
+         
             
             timerView(result: $viewModel.countTestResult, startTimer: $startCountTest, fontSize: 25).environmentObject(viewModel)
                 .padding()
@@ -25,7 +27,6 @@ struct CounterTestView: View {
             Text("Максимально быстро сосчитайте вслух от 1 до 120.")
                 .mainFont(size: 20)
             
-           
             Button(action: {
                 startCountTest.toggle()
             },
@@ -35,11 +36,7 @@ struct CounterTestView: View {
                 })
             .padding()
             .padding(.top, 40)
-            
-        
             }
-            
-          
             Spacer()
         }
         .navigationBarTitle("Тест на счет")

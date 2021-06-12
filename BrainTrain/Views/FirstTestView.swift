@@ -57,7 +57,7 @@ struct FirstTestView: View {
                     
                     HStack {
                         
-                            Text("Я запомнил" + " ____ " + "слов")
+                        Text(viewModel.words.isEmpty ? "Запомнил слов: 0" : "Запомнил слов: \(viewModel.words.count)")
                         
                         Spacer()
                     }
