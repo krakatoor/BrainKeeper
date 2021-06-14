@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var viewModel = ViewModel()
     var body: some View {
-        FirstTestView()
+        mathTest()
+            .environmentObject(viewModel)
+            .preferredColorScheme(.light)
     }
 }
 

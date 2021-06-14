@@ -8,7 +8,7 @@
 import SwiftUI
 
 let screenSize = UIScreen.main.bounds
-let colors = [Color(#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)),Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)),Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)),Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)),Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1))]
+
 var date: String {
     let date = Date()
     let dateFormatter = DateFormatter()
@@ -69,6 +69,14 @@ extension View{
             .frame(width: screenSize.width - 20, height: 250)
             .background(BlurView(style: .regular).cornerRadius(15))
             .overlay(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: 0.2))
+    }
+}
+
+struct CustomCorner: Shape {
+    var corners: UIRectCorner
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width:  18, height: 18))
+        return Path(path.cgPath)
     }
 }
 

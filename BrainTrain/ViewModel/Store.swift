@@ -8,19 +8,39 @@
 import SwiftUI
 
 class ViewModel: ObservableObject{
+   
     //Тест на счет
     @Published var countTestResult = ""
+    @Published var isCountTestFinish = false
     
     //Тест Струпа
-    @Published var selectedStrupTag = 0
-    @Published var prepareStrupTesting = true
-    @Published var startStrupTest = false
-    @Published var isStrupTestFinish = false
-    @Published var strupTestResult = ""
+    @Published var selectedStroopTag = 0
+    @Published var prepareStroopTesting = true
+    @Published var startStroopTest = false
+    @Published var isStroopTestFinish = false
+    @Published var stroopTestResult = ""
     
     //Запомниние слов
+    @Published var isWordsTestFinish = false
     @Published var wordsTestResult = ""
     @Published var words: [String] = []
-    let firstWeekWords = ["темница", "сервер", "кнут", "колье","белье","алебастр","копыто","косточка","задник","вертеп","перрон","чайка","ароматизатор","залог","журавль","мокасин","звено","миндаль","капсула","ягода"]
     
+    //Проверка функциональности олобных долей
+    let firstWeekWords = ["темница", "сервер", "кнут", "колье","белье","алебастр","копыто","косточка","задник","шашлык","дерево","чайка","аромат","залог","журавль","мокасин","звено","миндаль","капсула","ягода"]
+    
+    
+    //Ежедневные примеры
+    @Published var mathTestResult = ""
+    @Published var examplesCount = 0
+    @Published var correctAnswers = 0
+    @Published var isMathTestFinish = false
+}
+
+struct Results: Hashable {
+    let date: String
+    let week: Int
+    let countTest: String
+    let wordsTest: String
+    let stroopTest: String
+
 }

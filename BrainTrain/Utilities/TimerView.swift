@@ -11,7 +11,7 @@ struct timerView: View {
     @EnvironmentObject var viewModel: ViewModel
     @Binding var result: String
     @Binding var startTimer: Bool
-    @State var timeRemaining = 0
+    @Binding var timeRemaining: Int
     var fontSize: CGFloat = 20
     var minus = false
     let timer = Timer.publish(every: 0.017, on: .main, in: .common).autoconnect()
@@ -52,6 +52,6 @@ struct timerView: View {
 
 struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
-        timerView(result: .constant("2"), startTimer: .constant(true))
+        timerView(result: .constant("2"), startTimer: .constant(true), timeRemaining: .constant(0))
     }
 }

@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct FirstTestView: View {
-    @StateObject var viewModel = ViewModel()
-   
-    
+ 
+    @EnvironmentObject var viewModel: ViewModel
     var body: some View {
         NavigationView {
             VStack (spacing: 0){
@@ -18,9 +17,13 @@ struct FirstTestView: View {
                 VStack (spacing: 20) {
                     Text("Неделя №1")
                         .bold()
+                        .padding(.top)
+                    
                     Text("Прежде чем начать тренировку, определите с помощью следующих тестов, как сейчас работает ваш мозг.")
                         .mainFont(size: 18)
-                        .padding(.bottom)
+                        .padding([.horizontal, .bottom])
+                    
+                    Spacer()
                     
                     VStack (spacing: 10) {
                     Text("Тест на счёт")
@@ -47,8 +50,6 @@ struct FirstTestView: View {
                     .background(Color(#colorLiteral(red: 0.9411536983, green: 0.9728569642, blue: 0.9764705896, alpha: 0.5650093129)).cornerRadius(20).shadow(radius: 10))
                     .frame(width: screenSize.width - 40)
                 
-                   
-                    
                     VStack (spacing: 10) {
                     Text("Тест на запоминание слов")
                         .font(.title2)
@@ -81,14 +82,14 @@ struct FirstTestView: View {
                         .padding(.top, 10)
                     
                     HStack {
-                        Text(viewModel.strupTestResult == "" ? "Время теста: ___" : viewModel.strupTestResult)
+                        Text(viewModel.stroopTestResult == "" ? "Время теста: ___" : viewModel.stroopTestResult)
                         
                         Spacer()
                     }
                     .padding([.leading, .bottom])
                  
                     NavigationLink(
-                        destination: StrupTest().environmentObject(viewModel),
+                        destination: StroopTest().environmentObject(viewModel),
                         label: {
                             Text("Начать")
                                 .mainButton()
@@ -97,11 +98,12 @@ struct FirstTestView: View {
                     .padding()
                     .background(Color(#colorLiteral(red: 0.9411536983, green: 0.9728569642, blue: 0.9764705896, alpha: 0.5650093129)).cornerRadius(20).shadow(radius: 10))
                     .frame(width: screenSize.width - 40)
-                   
-                   
+                    
+                    Spacer()
                 }
                 
-                Spacer()
+                
+          
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle("")
@@ -115,5 +117,6 @@ struct FirstTestView: View {
 struct FirstTestView_Previews: PreviewProvider {
     static var previews: some View {
         FirstTestView()
+            .environmentObject(ViewModel())
     }
 }

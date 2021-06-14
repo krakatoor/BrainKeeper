@@ -8,36 +8,37 @@
 import SwiftUI
 
 
-struct StrupTest: View {
+struct StroopTest: View {
     private var colums = Array(repeating: GridItem(.flexible(minimum: 100, maximum: 250),spacing: 0), count: 3)
     @State private var timeRemaining = 0
     @EnvironmentObject var viewModel: ViewModel
     @Environment(\.presentationMode) var presentation
+    @State private var disableButton = false
+   
+    
     var body: some View {
         ZStack (alignment: .bottom){
-            if !viewModel.startStrupTest {
-                if viewModel.prepareStrupTesting{
+            if !viewModel.startStroopTest {
+                if viewModel.prepareStroopTesting{
                     VStack (spacing: 10){
                         
-                        Image("thinkingBrain")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
+                        LottieView(name: "stroop", loopMode: .autoReverse, animationSpeed: 0.6)
+                                   .frame(width: 250, height: 250)
                        
                         
                         VStack (alignment: .leading, spacing: 0){
-                            if viewModel.isStrupTestFinish{
+                            if viewModel.isStroopTestFinish{
                             Text("Тест завершён")
                                 .font(.title)
                                 .bold()
                             }
-                            Text(viewModel.isStrupTestFinish ? viewModel.strupTestResult :  "Перед началом тестирования пройдите подготовку к нему.\n\nНазывайте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись назовите цвет еще раз.")
+                            Text(viewModel.isStroopTestFinish ? viewModel.stroopTestResult :  "Перед началом тестирования пройдите подготовку к нему.\n\nНазывайте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись назовите цвет еще раз.")
                                 .foregroundColor(.black)
                                 .mainFont(size: 20)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding(.top)
                             
-                            if !viewModel.isStrupTestFinish {
+                            if !viewModel.isStroopTestFinish {
                             HStack {
                                 Text("(Пример: если написано")
                                     .mainFont(size: 20)
@@ -58,20 +59,20 @@ struct StrupTest: View {
                       
                         Button(action: {
                             timeRemaining = 0
-                            viewModel.selectedStrupTag = 0
-                            if viewModel.isStrupTestFinish {
+                            viewModel.selectedStroopTag = 0
+                            if viewModel.isStroopTestFinish {
                                 presentation.wrappedValue.dismiss()
                             }
                             
-                            viewModel.isStrupTestFinish = false
-                                viewModel.startStrupTest = true
+                            viewModel.isStroopTestFinish = false
+                                viewModel.startStroopTest = true
                            
                             
                         }, label: {
-                            Text(viewModel.isStrupTestFinish  ? "Назад" : "Старт")
+                            Text(viewModel.isStroopTestFinish  ? "Назад" : "Старт")
                                 .mainFont(size: 20)
                                 .foregroundColor(.white)
-                                .frame(width:  viewModel.isStrupTestFinish  ? CGFloat(250) : 150)
+                                .frame(width:  viewModel.isStroopTestFinish  ? CGFloat(250) : 150)
                                 .padding(10)
                                 .background(Color.blue.cornerRadius(15))
                             
@@ -90,9 +91,10 @@ struct StrupTest: View {
                  
                         
                         VStack (spacing: 0){
-                        Text("Вы дали правильные ответы: синий, чёрный, красный, зелёный, жёлтый?\n\nТеперь приступайте к упражнению.")
+                        Text("Вы дали правильные ответы: синий, фиолетовый, красный, зелёный, жёлтый?\n\nТеперь приступайте к упражнению.")
                             .mainFont(size: 18)
                             .foregroundColor(.black)
+                            .padding(.horizontal)
                             Spacer()
                             colorsView()
                             
@@ -100,9 +102,12 @@ struct StrupTest: View {
                         
                         Button(action: {
                             timeRemaining = 0
-                            viewModel.selectedStrupTag = 0
-                                viewModel.startStrupTest = true
-                            
+                            viewModel.selectedStroopTag = 0
+                            viewModel.startStroopTest = true
+                            disableButton = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                disableButton = false
+                            }
                             
                         }, label: {
                             Text("Старт")
@@ -123,21 +128,21 @@ struct StrupTest: View {
                 
                 colorsView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .opacity(viewModel.startStrupTest ? 1 : 0)
+                    .opacity(viewModel.startStroopTest ? 1 : 0)
                 
                 
-                if viewModel.startStrupTest && !viewModel.prepareStrupTesting{
-                    timerView(result: $viewModel.strupTestResult, startTimer: $viewModel.startStrupTest)
+                if viewModel.startStroopTest && !viewModel.prepareStroopTesting{
+                    timerView(result: $viewModel.stroopTestResult, startTimer: $viewModel.startStroopTest, timeRemaining: $timeRemaining)
                         .padding(.top, 10)
                 }
                 
                 VStack {
                     HStack {
                         Button(action: {
-                            viewModel.prepareStrupTesting = true
+                            viewModel.prepareStroopTesting = true
                                 timeRemaining = 0
-                                viewModel.selectedStrupTag = 0
-                                viewModel.startStrupTest = false
+                                viewModel.selectedStroopTag = 0
+                                viewModel.startStroopTest = false
                            
                             
                         }, label: {
@@ -151,36 +156,46 @@ struct StrupTest: View {
                         
                         Button(action: {
                             
-                            if viewModel.prepareStrupTesting {
-                                viewModel.prepareStrupTesting = false
-                                viewModel.startStrupTest = false
+                            if viewModel.prepareStroopTesting {
+                                viewModel.prepareStroopTesting = false
+                                viewModel.startStroopTest = false
+                      
                             } else {
-                                if viewModel.selectedStrupTag ==  4 {
-                                    viewModel.isStrupTestFinish = true
-                                    viewModel.startStrupTest = false
-                                    viewModel.prepareStrupTesting = true
+                                if viewModel.selectedStroopTag ==  4 {
+                                    viewModel.isStroopTestFinish = true
+                                    viewModel.startStroopTest = false
+                                    viewModel.prepareStroopTesting = true
                                 }
-                                viewModel.selectedStrupTag += 1
+                                viewModel.selectedStroopTag += 1
+                                disableButton = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    disableButton = false
+                                }
                             }
                             
                             
                         }, label: {
                             Text("Дальше")
                                 .mainFont(size: 20)
-                                .mainButton()
+                                .mainFont(size: 20)
+                                .foregroundColor(.white)
+                                .frame(width: 150)
+                                .padding(10)
+                                .background(viewModel.selectedStroopTag < 5 && disableButton ? Color.gray.cornerRadius(15) : Color.blue.cornerRadius(15))
                                 .padding(.leading, -20)
                         })
+                        .disabled(disableButton)
                        
                         Spacer()
                     }
                     .padding(.horizontal, 30)
                 }
-                .opacity(viewModel.startStrupTest ? 1 : 0)
+                .opacity(viewModel.startStroopTest ? 1 : 0)
                 
             }
             
         }
-        .navigationTitle(viewModel.startStrupTest ? "" : "Тест Струпа")
+        .navigationTitle(viewModel.startStroopTest ? "" : "Тест Струпа")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .environmentObject(viewModel)
         .background()
@@ -190,20 +205,19 @@ struct StrupTest: View {
 
 struct StrupTest_Previews: PreviewProvider {
     static var previews: some View {
-        StrupTest()
+        StroopTest()
             .environmentObject(ViewModel())
     }
 }
 
 struct colorsView: View {
     @EnvironmentObject var viewModel: ViewModel
-    @State private var newColors = [Color(#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)),Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)),Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)),Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)),Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1))]
-    let colorsName = ["Синий","Красный","Зелёный","Жёлтый", "Чёрный"]
+    let colors = [Color(#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)),Color(#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)),Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)),Color(#colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)),Color(#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)),Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)),Color(#colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1))]
+    let colorsName = ["Синий","Красный","Зелёный","Жёлтый", "Фиолетовый"]
     @State private var selectedTag = 1
     
     var body: some View{
-        
-        if !viewModel.prepareStrupTesting && !viewModel.startStrupTest {
+        if !viewModel.prepareStroopTesting && !viewModel.startStroopTest {
             
             VStack (spacing: 15){
                 ForEach(0..<colorsName.count, id: \.self) { index in
@@ -215,26 +229,23 @@ struct colorsView: View {
             
         } else {
             VStack (alignment: .leading, spacing: 10){
-                if viewModel.prepareStrupTesting && !viewModel.isStrupTestFinish {
+                if viewModel.prepareStroopTesting && !viewModel.isStroopTestFinish {
                     ForEach(0..<colorsName.count, id: \.self) { index in
                         Text(colorsName.reversed()[index])
                             .mainFont(size: 25)
                             .foregroundColor(colors[index])
                     }
                     
-                } else if !viewModel.prepareStrupTesting && viewModel.startStrupTest {
+                } else if !viewModel.prepareStroopTesting && viewModel.startStroopTest {
                     
-                    TabView(selection: $viewModel.selectedStrupTag) {
+                    TabView(selection: $viewModel.selectedStroopTag) {
                         
                         ForEach(0..<5) { index in
                             VStack (spacing: 10){
                             ForEach(0...9, id: \.self) {
                                 Text(colorsName.randomElement()!)
                                     .mainFont(size: 25)
-                                    .foregroundColor(newColors[$0])
-                                    .onAppear{
-                                        newColors = colors.shuffled()
-                                    }
+                                    .foregroundColor(colors[$0])
                             }
                         }
                         .tag(index)
