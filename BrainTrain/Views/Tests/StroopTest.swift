@@ -26,19 +26,19 @@ struct StroopTest: View {
                                    .frame(width: 250, height: 250)
                        
                         
-                        VStack (alignment: .leading, spacing: 0){
-                            if viewModel.isStroopTestFinish{
+                        VStack (alignment: .center, spacing: 0){
+                            if !viewModel.stroopTestResult.isEmpty {
                             Text("Тест завершён")
                                 .font(.title)
                                 .bold()
                             }
-                            Text(viewModel.isStroopTestFinish ? viewModel.stroopTestResult :  "Перед началом тестирования пройдите подготовку к нему.\n\nНазывайте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись назовите цвет еще раз.")
+                            Text(!viewModel.stroopTestResult.isEmpty ? "\(viewModel.stroopTestResult)\n\n Тест Струпа оценивает совместную работу передних частей лобных долей левого и правого полушарий. Скорость его выполнения завист от индивидуальных особенностей, поэтому никакие верменые рамки не устанавливаются. Возьмите за основу свой результат, полученый на предыдущей неделе." :  "Перед началом тестирования пройдите подготовку к нему.\n\nНазывайте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись назовите цвет еще раз.")
                                 .foregroundColor(.black)
                                 .mainFont(size: 20)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding(.top)
                             
-                            if !viewModel.isStroopTestFinish {
+                            if viewModel.stroopTestResult.isEmpty {
                             HStack {
                                 Text("(Пример: если написано")
                                     .mainFont(size: 20)
@@ -60,7 +60,8 @@ struct StroopTest: View {
                         Button(action: {
                             timeRemaining = 0
                             viewModel.selectedStroopTag = 0
-                            if viewModel.isStroopTestFinish {
+                            if !viewModel.stroopTestResult.isEmpty {
+                                viewModel.isStroopTestFinish = true
                                 presentation.wrappedValue.dismiss()
                             }
                             
@@ -69,7 +70,7 @@ struct StroopTest: View {
                            
                             
                         }, label: {
-                            Text(viewModel.isStroopTestFinish  ? "Назад" : "Старт")
+                            Text(!viewModel.stroopTestResult.isEmpty  ? "Назад" : "Старт")
                                 .mainFont(size: 20)
                                 .foregroundColor(.white)
                                 .frame(width:  viewModel.isStroopTestFinish  ? CGFloat(250) : 150)
@@ -162,7 +163,6 @@ struct StroopTest: View {
                       
                             } else {
                                 if viewModel.selectedStroopTag ==  4 {
-                                    viewModel.isStroopTestFinish = true
                                     viewModel.startStroopTest = false
                                     viewModel.prepareStroopTesting = true
                                 }
@@ -195,6 +195,11 @@ struct StroopTest: View {
             }
             
         }
+        .onDisappear{
+            if !viewModel.stroopTestResult.isEmpty{
+            viewModel.isStroopTestFinish = true
+            }
+        }
         .navigationTitle(viewModel.startStroopTest ? "" : "Тест Струпа")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .environmentObject(viewModel)
@@ -212,7 +217,7 @@ struct StrupTest_Previews: PreviewProvider {
 
 struct colorsView: View {
     @EnvironmentObject var viewModel: ViewModel
-    let colors = [Color(#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)),Color(#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)),Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)),Color(#colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)),Color(#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)),Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)),Color(#colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1))]
+    let colors = [Color(#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)),Color(#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)),Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)),Color(#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)),Color(#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)),Color(#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)),Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)),Color(#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1))]
     let colorsName = ["Синий","Красный","Зелёный","Жёлтый", "Фиолетовый"]
     @State private var selectedTag = 1
     

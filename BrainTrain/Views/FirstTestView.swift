@@ -8,20 +8,20 @@
 import SwiftUI
 
 struct FirstTestView: View {
- 
     @EnvironmentObject var viewModel: ViewModel
     var body: some View {
-        NavigationView {
+      
             VStack (spacing: 0){
                   
                 VStack (spacing: 20) {
-                    Text("Неделя №1")
+                    Text("Неделя №\(viewModel.week)")
                         .bold()
                         .padding(.top)
                     
                     Text("Прежде чем начать тренировку, определите с помощью следующих тестов, как сейчас работает ваш мозг.")
                         .mainFont(size: 18)
                         .padding([.horizontal, .bottom])
+                        .fixedSize(horizontal: false, vertical: true)
                     
                     Spacer()
                     
@@ -33,14 +33,15 @@ struct FirstTestView: View {
                     
                     HStack {
                       
-                            Text(viewModel.countTestResult == "" ? "Время теста: ___" : viewModel.countTestResult)
+                            Text(viewModel.countTestResult == "" ? "Время теста: __" : viewModel.countTestResult)
                         
                         Spacer()
                     }
                     .padding([.leading, .bottom])
                  
                     NavigationLink(
-                        destination: CounterTestView().environmentObject(viewModel),
+                        destination: CounterTestView()
+                            .environmentObject(viewModel),
                         label: {
                             Text("Начать")
                                 .mainButton()
@@ -58,7 +59,7 @@ struct FirstTestView: View {
                     
                     HStack {
                         
-                        Text(viewModel.words.isEmpty ? "Запомнил слов: 0" : "Запомнил слов: \(viewModel.words.count)")
+                        Text(!viewModel.isWordsTestFinish ? "Слов запомнено: __" : "Слов запомнено: \(viewModel.words.count)")
                         
                         Spacer()
                     }
@@ -82,7 +83,7 @@ struct FirstTestView: View {
                         .padding(.top, 10)
                     
                     HStack {
-                        Text(viewModel.stroopTestResult == "" ? "Время теста: ___" : viewModel.stroopTestResult)
+                        Text(viewModel.stroopTestResult == "" ? "Время теста: __" : viewModel.stroopTestResult)
                         
                         Spacer()
                     }
@@ -102,15 +103,13 @@ struct FirstTestView: View {
                     Spacer()
                 }
                 
-                
-          
             }
+            .padding(.bottom, 50)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle("")
             .navigationBarHidden(true)
             .mainFont(size: 20)
-            .background()
-        }
+        
     }
 }
 

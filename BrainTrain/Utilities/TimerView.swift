@@ -20,7 +20,9 @@ struct timerView: View {
         Text(minus ? "Осталось: \(timeString(time: timeRemaining))" : "Время теста: \(timeString(time: timeRemaining))")
             .font(.system(size: fontSize))
             .onChange(of: startTimer, perform: { value in
+                if !value{
                 result = "Время теста: \(timeString(time: timeRemaining))"
+                }
             })
             .onReceive(timer){ _ in
                 if startTimer {

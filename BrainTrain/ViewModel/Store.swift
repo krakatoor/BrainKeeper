@@ -6,8 +6,27 @@
 //
 
 import SwiftUI
+import Combine
 
 class ViewModel: ObservableObject{
+    
+    @AppStorage ("date") var day = 1
+    @AppStorage ("week") var week = 1
+    
+    @Published var isBrainTestIsFinish = false
+    
+    private var isTestsFinish: AnyPublisher < Bool, Never> {
+        Publishers.CombineLatest3($isCountTestFinish, $isWordsTestFinish, $isStroopTestFinish)
+            .map{isCountTestFinish, isWordsTestFinish, isStroopTestFinish in
+                return isCountTestFinish == true && isWordsTestFinish == true && isStroopTestFinish == true
+            }
+            .eraseToAnyPublisher()
+    }
+    
+
+    @Published var progress = 0
+    //Результаты тестов
+    @Published var testsResults: [Result] = []
    
     //Тест на счет
     @Published var countTestResult = ""
@@ -25,7 +44,7 @@ class ViewModel: ObservableObject{
     @Published var wordsTestResult = ""
     @Published var words: [String] = []
     
-    //Проверка функциональности олобных долей
+    //Проверка функциональности лобных долей
     let firstWeekWords = ["темница", "сервер", "кнут", "колье","белье","алебастр","копыто","косточка","задник","шашлык","дерево","чайка","аромат","залог","журавль","мокасин","звено","миндаль","капсула","ягода"]
     
     
@@ -33,14 +52,19 @@ class ViewModel: ObservableObject{
     @Published var mathTestResult = ""
     @Published var examplesCount = 0
     @Published var correctAnswers = 0
+    @Published var isMathTStarted = false
     @Published var isMathTestFinish = false
+    
+    
+    private var cancellable: AnyCancellable?
+    
+    init(){
+        isTestsFinish
+            .receive(on: RunLoop.main)
+            .assign(to: &$isBrainTestIsFinish)   
+    }
+    
+ 
 }
 
-struct Results: Hashable {
-    let date: String
-    let week: Int
-    let countTest: String
-    let wordsTest: String
-    let stroopTest: String
 
-}

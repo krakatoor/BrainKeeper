@@ -15,7 +15,7 @@ struct mathTest: View {
     @State private var operator1 = ""
     @State private var totalSum = 0
     @State private var totalSumText = ""
-    @State private var startCountTest = false
+    @State private var startTest = false
     @State private var timeRemaining = 0
     @State private var prevAnswer = ""
     @State private var prevAnswerColor = Color.black
@@ -25,73 +25,100 @@ struct mathTest: View {
     var body: some View {
         VStack {
             
-            Text("День 1")
-                .bold()
-                .mainFont(size: 25)
             
+            if !viewModel.isMathTestFinish {
             Text("Максмимально быстро решите математические задачи")
                 .mainFont(size: 18)
                 .padding()
             
             VStack (alignment: .leading, spacing: 50){
                 HStack {
+                    Spacer()
                     Text("\(number1) \(operator1) \(number2) =")
-                        .redacted(reason: startCountTest ? [] : .placeholder)
+                        .redacted(reason: startTest ? [] : .placeholder)
                     
                     TextField("", text: $totalSumText)
                         .keyboardType(.numberPad)
                         .padding(.leading, 7)
                         .frame(width: 44, height: 30)
                         .overlay(Rectangle().stroke())
-                        .disabled(!startCountTest)
+                        .disabled(!startTest)
                         .onChange(of: totalSumText, perform: { value in
                             if totalSumText.count > 2{
                                 totalSumText.removeLast()
                             }
                         })
                         .introspectTextField { textField in
-                            if startCountTest{
+                            if startTest{
                             textField.becomeFirstResponder()
                             }
                         }
-                    
+                    Spacer()
                 }
                 
-                if startCountTest && prevAnswer != "" {
-                Text(prevAnswer)
-                    .foregroundColor(prevAnswerColor)
+                if !startTest{
+                LottieView(name: "math", loopMode: .playOnce, animationSpeed: 1)
+                           .frame(height: 250)
+                }
+                if startTest && prevAnswer != "" {
+                   
+                    HStack {
+                        Spacer()
+                        Text(prevAnswer)
+                            .foregroundColor(prevAnswerColor)
+                        Spacer()
+                    }
                 }
             }
             .contentShape(Rectangle())
             .onTapGesture {
-                startCountTest = true
+                startTest = true
+            }
+            } else {
+                Text("Тест завершён")
+                    .font(.title)
+                    .bold()
+                    .padding(.top)
+                
+                Text("Начальная цель - 2 минуты 30 секунд.\nКаждый раз старайтесь улучшать предыдуший результат. Когда вам удатся решать все примеры за 2 минуты, можно будет сказать, что у вас получилось. Если же вы стправитесь за минуту, считайте, что получилили золотую медаль.")
+                    .mainFont(size: 18)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding()
+                
+                LottieView(name: "math", loopMode: .playOnce, animationSpeed: 1)
+                           .frame(height: 250)
             }
             Spacer()
             
-            
+      
             VStack {
+                if !viewModel.isMathTestFinish {
                 Text("Осталось: \(totalExample - viewModel.examplesCount )")
                     .mainFont(size: 20)
                     .onChange(of: viewModel.examplesCount, perform: { value in
                         if viewModel.examplesCount == totalExample {
-                            startCountTest.toggle()
+                            startTest.toggle()
                             viewModel.isMathTestFinish = true
                         }
                     })
-                
+            }
                 Text("Правильных ответов: \(viewModel.correctAnswers)")
               
             }
             .mainFont(size: 20)
-            timerView(result: $viewModel.mathTestResult, startTimer: $startCountTest, timeRemaining: $timeRemaining, fontSize: 25)
+            timerView(result: $viewModel.mathTestResult, startTimer: $startTest, timeRemaining: $timeRemaining, fontSize: 25)
                 .padding(.top)
             
             Button(action:{
-                if  viewModel.isMathTestFinish {
+                if  !viewModel.mathTestResult.isEmpty {
+                    viewModel.isMathTestFinish = true
+                    viewModel.day = 2
                     presentation.wrappedValue.dismiss()
                 } else {
-                    if !startCountTest {
-                    startCountTest.toggle()
+                    if !startTest {
+                    startTest.toggle()
+                        viewModel.isMathTStarted = true
+                        
                     } else if viewModel.examplesCount < totalExample && totalSumText != ""{
                   
                         prevAnswer = "\(number1) \(operator1) \(number2) = \(totalSum)"
@@ -105,11 +132,9 @@ struct mathTest: View {
                         math()
                     }
                 }
-                
-                
             }, label:{
                 if viewModel.examplesCount < totalExample {
-                Text(!startCountTest ? "Старт" : "Дальше")
+                Text(!startTest ? "Старт" : "Дальше")
                     .mainButton()
                 } else {
                     Text("Назад")

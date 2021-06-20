@@ -9,8 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var viewModel = ViewModel()
+//    private var testResult: FetchedResults<TestResult>
     var body: some View {
-        mathTest()
+      Home()
             .environmentObject(viewModel)
             .preferredColorScheme(.light)
     }

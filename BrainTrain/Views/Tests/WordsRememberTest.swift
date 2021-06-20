@@ -15,8 +15,9 @@ struct WordsRememberTest: View {
     @State private var word = ""
     @State private var error = false
     @State private var wordsAlreadyExist = false
-    @State var timeRemaining = 7200
+    @State var timeRemaining = 200
     @Environment(\.presentationMode) var presentation
+    @State private var rememberWordsTimer = ""
     
     var body: some View {
         VStack {
@@ -43,14 +44,14 @@ struct WordsRememberTest: View {
                     }
                 }
                 
-                timerView(result: $viewModel.wordsTestResult, startTimer: $startCountTest, timeRemaining: $timeRemaining, fontSize: 25, minus: true)
+                timerView(result: $rememberWordsTimer, startTimer: $startCountTest, timeRemaining: $timeRemaining, fontSize: 25, minus: true)
                     .padding(.top)
                 
                 
                 
                 Button(action: {
                     startCountTest.toggle()
-                    timeRemaining = 7200
+                    timeRemaining = 200
                 },
                 label: {
                     Text( startCountTest ? "Дальше" :  "Старт")
@@ -59,7 +60,7 @@ struct WordsRememberTest: View {
                 .padding()
                 
             } else {
-                if !startCountTest && !viewModel.isWordsTestFinish{
+                if !startCountTest && viewModel.wordsTestResult.isEmpty{
                     Text("Постарайтесь вписать как можно больше запомненных слов.")
                         .fixedSize(horizontal: false, vertical: true)
                         .padding()
@@ -78,20 +79,30 @@ struct WordsRememberTest: View {
                     }
                     
                     
-                    TextField("Введите слово", text: $word)
-                        .introspectTextField{ textfield in
-                            textfield.becomeFirstResponder()
+                    ZStack (alignment: .trailing){
+                        TextField("Введите слово", text: $word)
+                            .introspectTextField{ textfield in
+                                textfield.becomeFirstResponder()
+                            }
+                            .keyboardType(.twitter)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .autocapitalization(.none)
+                            .padding()
+                            
+                            .disabled(!startCountTest)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                startCountTest = true
                         }
-                        .keyboardType(.twitter)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .autocapitalization(.none)
-                        .padding()
                         
-                        .disabled(!startCountTest)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            startCountTest = true
-                        }
+                        Button(action: {word = ""}, label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.primary)
+                                .padding(.trailing, 25)
+                                .opacity(word.isEmpty ? 0 : 1)
+                        })
+
+                    }
                     
                     
                     
@@ -109,14 +120,9 @@ struct WordsRememberTest: View {
                 
                 Spacer()
                 
-                if !viewModel.isWordsTestFinish {
+                if viewModel.wordsTestResult.isEmpty {
                 timerView(result: $viewModel.wordsTestResult, startTimer: $startCountTest, timeRemaining: $timeRemaining, fontSize: 25, minus: true)
-                    .onChange(of: startCountTest, perform: { value in
-                        if !value{
-                            viewModel.isWordsTestFinish = true
-                        }
-                        
-                    })
+                   
                 } else {
                     Text("Тест завершён")
                         .font(.title)
@@ -124,7 +130,9 @@ struct WordsRememberTest: View {
                 }
                 
                 Button(action: {
-                    if   viewModel.isWordsTestFinish {
+                    if   !viewModel.wordsTestResult.isEmpty {
+                        viewModel.isWordsTestFinish = true
+                       
                         presentation.wrappedValue.dismiss()
                     } else {
                     if startCountTest {
@@ -148,7 +156,7 @@ struct WordsRememberTest: View {
                     }
                 },
                 label: {
-                    if   viewModel.isWordsTestFinish {
+                    if   !viewModel.wordsTestResult.isEmpty {
                         Text("Назад" )
                             .mainButton()
                     } else {
@@ -159,6 +167,11 @@ struct WordsRememberTest: View {
                 .padding()
             }
             
+        }
+        .onDisappear{
+            if !viewModel.wordsTestResult.isEmpty{
+            viewModel.isWordsTestFinish = true
+            }
         }
         .navigationTitle("Тест на память")
         .mainFont(size: 18)

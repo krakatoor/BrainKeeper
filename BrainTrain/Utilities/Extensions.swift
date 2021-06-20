@@ -6,14 +6,20 @@
 //
 
 import SwiftUI
-
+import CoreData
 let screenSize = UIScreen.main.bounds
+
+//
+//@objc(TestResult)
+//public class TestResult: NSManagedObject {
+//
+//}
+
 
 var date: String {
     let date = Date()
     let dateFormatter = DateFormatter()
-    dateFormatter.dateStyle = .medium
-    dateFormatter.locale = Locale(identifier: "ru")
+    dateFormatter.dateFormat = "EEEE, d MMM"
     
     return "\(dateFormatter.string(from: date))"
 }
@@ -59,7 +65,7 @@ extension View {
 extension View {
     func background () -> some View {
     self
-    .background(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1)).opacity(0.05), Color(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1))]), startPoint: .top, endPoint: .bottom).ignoresSafeArea())
+        .background(Color("back").ignoresSafeArea())
     }
 }
 
