@@ -13,7 +13,6 @@ struct ContentView: View {
     var body: some View {
       Home()
             .environmentObject(viewModel)
-            .preferredColorScheme(.light)
     }
 }
 

@@ -13,14 +13,28 @@ struct TestResultsView: View {
     private var testResults: FetchedResults<TestResult>
     
     var body: some View {
-        VStack {
-     
-                ForEach(testResults, id: \.self) { result in
-          
-                    resultCard(result: result)
+        VStack{
+            Text("Результаты тестов")
+                .bold()
+                .mainFont(size: 25)
+                .padding(.top, 30)
+            ScrollView(showsIndicators: false) {
+                ForEach(1...4, id: \.self) { week in
+                    VStack {
+                        Text("Неделя №\(week)")
+                            .bold()
+                            
+                            .mainFont(size: 22)
+                        ForEach(testResults.sorted{$0.isMathTest != $1.isMathTest}.filter{$0.week == String(week)}, id: \.self) { result in
+                            resultCard(result: result)
+                        }
+                    }
                 }
             }
-        
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background()
     }
 }
 
@@ -33,17 +47,26 @@ struct TestResultsView_Previews: PreviewProvider {
 struct resultCard: View {
     @Environment(\.managedObjectContext) private var  viewContext
     var result: TestResult
+    @State private var showDetail = false
+    
     var body: some View {
+        
         HStack {
             VStack (alignment: .leading){
-                Text(result.testName ?? "")
-                    .bold()
                 
-                
-                Text("Дата прохождения теста: " + (result.date ?? ""))
+                if result.isMathTest{
+                    Text( "День " + (result.day ?? ""))
+                        .bold()
+                    Text("Дата прохождения теста: " + (result.date ?? ""))
+                } else {
+                    Text(result.testName ?? "")
+                        .bold()
+                }
                 Text(result.testResult ?? "")
             }
             .padding()
+            
+            Spacer()
             
             Image(systemName: "trash.circle.fill")
                 .renderingMode(.original)
@@ -55,7 +78,8 @@ struct resultCard: View {
                     } catch {return}
                 }
         }
+        .mainFont(size: 18)
+        .padding(.horizontal)
         
-     
     }
 }

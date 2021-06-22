@@ -2,10 +2,13 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="TestResult" representedClassName="TestResult" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="String"/>
+        <attribute name="day" optional="YES" attributeType="String"/>
+        <attribute name="isMathTest" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="testName" optional="YES" attributeType="String"/>
         <attribute name="testResult" optional="YES" attributeType="String"/>
+        <attribute name="week" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="TestResult" positionX="-63" positionY="-18" width="128" height="88"/>
+        <element name="TestResult" positionX="-63" positionY="-18" width="128" height="119"/>
     </elements>
 </model>

@@ -17,7 +17,8 @@ struct WordsRememberTest: View {
     @State private var wordsAlreadyExist = false
     @State var timeRemaining = 200
     @Environment(\.presentationMode) var presentation
-    @State private var rememberWordsTimer = ""
+    @Environment(\.managedObjectContext) private var viewContext
+    @State private var rememberWordsTimer = "" //для заглушки на таймер для запоминания слов
     
     var body: some View {
         VStack {
@@ -43,7 +44,7 @@ struct WordsRememberTest: View {
                             })
                     }
                 }
-                
+                Spacer()
                 timerView(result: $rememberWordsTimer, startTimer: $startCountTest, timeRemaining: $timeRemaining, fontSize: 25, minus: true)
                     .padding(.top)
                 
@@ -97,14 +98,11 @@ struct WordsRememberTest: View {
                         
                         Button(action: {word = ""}, label: {
                             Image(systemName: "xmark.circle.fill")
-                                .foregroundColor(.primary)
                                 .padding(.trailing, 25)
                                 .opacity(word.isEmpty ? 0 : 1)
                         })
 
                     }
-                    
-                    
                     
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 3) {
@@ -132,7 +130,21 @@ struct WordsRememberTest: View {
                 Button(action: {
                     if   !viewModel.wordsTestResult.isEmpty {
                         viewModel.isWordsTestFinish = true
-                       
+                        let testResult = TestResult(context: viewContext)
+                        testResult.date = date
+                          testResult.week = String(viewModel.week)
+                          testResult.day = String(viewModel.day)
+                        testResult.testName = "Тест на запоминание слов"
+                        testResult.testResult = "Слов запомнено: \(viewModel.words.count)"
+                        testResult.isMathTest = false
+                              do {
+                                  try viewContext.save()
+                              } catch {return}
+                        if viewModel.isCountTestFinish  && viewModel.isWordsTestFinish {
+                            withAnimation(.linear){
+                                viewModel.currentView = .MathTest
+                            }
+                        }
                         presentation.wrappedValue.dismiss()
                     } else {
                     if startCountTest {
@@ -175,8 +187,8 @@ struct WordsRememberTest: View {
         }
         .navigationTitle("Тест на память")
         .mainFont(size: 18)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

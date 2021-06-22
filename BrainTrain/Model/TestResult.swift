@@ -11,14 +11,10 @@ struct Result {
     let testName: String
     let testResult: String
     let date: String
+    let week: String
+    let day: String
+    let isMathTest: Bool
 }
 
 
-struct WeekResult: Hashable {
-    let date: String
-    let week: Int
-    let countTest: String
-    let wordsTest: String
-    let stroopTest: String
 
-}

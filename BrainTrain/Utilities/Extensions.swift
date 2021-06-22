@@ -19,7 +19,7 @@ let screenSize = UIScreen.main.bounds
 var date: String {
     let date = Date()
     let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "EEEE, d MMM"
+    dateFormatter.dateFormat = "d MMM"
     
     return "\(dateFormatter.string(from: date))"
 }

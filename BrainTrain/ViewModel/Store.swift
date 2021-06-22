@@ -10,21 +10,31 @@ import Combine
 
 class ViewModel: ObservableObject{
     
+  
+    @Published  var currentView = CurrentView.DateCard
+    
+    
     @AppStorage ("date") var day = 1
-    @AppStorage ("week") var week = 1
-    
-    @Published var isBrainTestIsFinish = false
-    
-    private var isTestsFinish: AnyPublisher < Bool, Never> {
-        Publishers.CombineLatest3($isCountTestFinish, $isWordsTestFinish, $isStroopTestFinish)
-            .map{isCountTestFinish, isWordsTestFinish, isStroopTestFinish in
-                return isCountTestFinish == true && isWordsTestFinish == true && isStroopTestFinish == true
-            }
-            .eraseToAnyPublisher()
+    let brainTestsDay = [1, 6, 11, 16]
+    var week: Int{
+     var currentWeek = 1
+        
+        if day > 5 {
+            currentWeek = 2
+        }
+        if day > 10 {
+            currentWeek = 3
+        }
+        
+        if day > 15 {
+            currentWeek = 4
+        }
+        
+        return currentWeek
     }
+    @AppStorage ("skipBrainTest") var skipBrainTest = false
+    @AppStorage ("currentDate") var currentDate = date
     
-
-    @Published var progress = 0
     //Результаты тестов
     @Published var testsResults: [Result] = []
    
@@ -52,19 +62,33 @@ class ViewModel: ObservableObject{
     @Published var mathTestResult = ""
     @Published var examplesCount = 0
     @Published var correctAnswers = 0
-    @Published var isMathTStarted = false
     @Published var isMathTestFinish = false
+    @Published var showResults = false
     
     
-    private var cancellable: AnyCancellable?
+
+    @Published var notificationTime: Double = 10 //86400
     
-    init(){
-        isTestsFinish
-            .receive(on: RunLoop.main)
-            .assign(to: &$isBrainTestIsFinish)   
+    func sendNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Пришло время размять мозги"
+        content.subtitle = "Вы не тренировались уже 24 часа"
+        content.sound = UNNotificationSound.default
+
+        // show this notification five seconds from now
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: notificationTime, repeats: false)
+
+        // choose a random identifier
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+        // add our notification request
+        UNUserNotificationCenter.current().add(request)
     }
-    
  
 }
 
 
+
+enum CurrentView{
+    case DateCard, BrainTests, MathTest, Result
+}

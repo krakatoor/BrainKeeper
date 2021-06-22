@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct Home: View {
     @EnvironmentObject var viewModel: ViewModel
@@ -14,65 +15,73 @@ struct Home: View {
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
     //
-    @State private var showDateCard = true
-    @State private var showTests = false
- 
+
     var body: some View {
         
         NavigationView {
             ZStack {
-            
-                if showDateCard{
-                ProgressCard()
-                    .zIndex(1)
-                    .transition(.move(edge: .bottom))
-                    .onAppear{
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            withAnimation(.linear){
-                            showDateCard.toggle()
+                
+//                    ProgressCard()
+//                        .zIndex(1)
+//                        .opacity(viewModel.currentView == .DateCard ? 1 : 0)
+//
+                
+                    
+                TabView {
+                    ZStack{
+                    FirstTestView()
+                        .padding(.top)
+                        .zIndex(viewModel.currentView == .MathTest && viewModel.brainTestsDay.contains(viewModel.day) ? 0 : 1)
+                    mathTest()
+                        .zIndex(viewModel.currentView == .MathTest ? 1 : 0)
+                    }
+                                            
+                       
+                    
+                    TestResultsView()
+                        
+                    
+                }
+                .padding(.bottom, -30)
+                .tabViewStyle(PageTabViewStyle())
+                .indexViewStyle(PageIndexViewStyle())
+//                .opacity(viewModel.currentView != .DateCard ? 1 : 0)
+               
+
+                
+                
+            }
+            .navigationBarHidden(true)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background()
+            .environmentObject(viewModel)
+            .onAppear{
+
+                        //push notofication permission
+                        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+                            if success {
+                                print("All set!")
+                            } else if let error = error {
+                                print(error.localizedDescription)
+                            }
+                        }
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        withAnimation(.linear){
+                            if viewModel.currentView == .DateCard {
+                            viewModel.currentView = .BrainTests
                             }
                         }
                     }
-                }
+
                 
-                if showTests && !viewModel.isBrainTestIsFinish && viewModel.day == 1{
-                    FirstTestView()
-                        .transition(.move(edge: .top))
-                        .zIndex(1)
-                        .animation(.spring())
-                        .padding(.top, 70)
-                       
-                }
-                
-                if viewModel.isBrainTestIsFinish || viewModel.day != 1 && !showDateCard {
-                    mathTest()
-                        .zIndex(viewModel.isBrainTestIsFinish || viewModel.day != 1 ? 1 : 0)
-                        .animation(viewModel.isMathTStarted ? nil : .spring())
-                        .transition(.move(edge: .top))
-                }
-                
-               
-               
-               
-                LottieView(name: "mech1", loopMode: .loop, animationSpeed: 1)
-                    .zIndex(0)
-                    .onAppear{
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                            if !showTests {
-                                showTests = true
-                            }
-                        }
-                    }//onAppear
-                    
-            }
-            .environmentObject(viewModel)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .onAppear{
                 if testResults.isEmpty && !viewModel.testsResults.isEmpty{
                     for i in 0..<viewModel.testsResults.count{
                         let testResult = TestResult(context: viewContext)
                         testResult.testName = viewModel.testsResults[i].testName
                         testResult.date = viewModel.testsResults[i].date
+                        testResult.week = viewModel.testsResults[i].week
+                        testResult.day = viewModel.testsResults[i].day
                         testResult.testResult = viewModel.testsResults[i].testResult
                         do {
                             try viewContext.save()
@@ -83,11 +92,10 @@ struct Home: View {
                     }
                 }
             }
-            .navigationBarHidden(true)
         }
-        
-        
+        .navigationViewStyle(StackNavigationViewStyle())
     }
+    
 }
 
 struct Home_Previews: PreviewProvider {
@@ -109,10 +117,10 @@ struct ProgressCard: View {
                 Spacer()
                 
                 Text("День \(viewModel.day)")
-                        .font(.system(size: 40, weight: .black, design: .serif))
-                        .foregroundColor(.primary)
-                        .transition(.scale)
-              
+                    .font(.system(size: 40, weight: .black, design: .serif))
+                    .foregroundColor(.primary)
+                    .transition(.scale)
+                
                 
                 Spacer()
                 Image("puzzle")
@@ -121,8 +129,11 @@ struct ProgressCard: View {
             }
             .background(BlurView(style: .regular).cornerRadius(20).shadow(radius: 10))
             .frame(width: screenSize.width - 50, height: screenSize.height * 0.5)
+            .overlay(RoundedRectangle(cornerRadius: 20).stroke(lineWidth: 0.3))
         }
-     
+        
         
     }
 }
+
+

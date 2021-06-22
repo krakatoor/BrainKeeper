@@ -14,14 +14,19 @@ struct timerView: View {
     @Binding var timeRemaining: Int
     var fontSize: CGFloat = 20
     var minus = false
-    let timer = Timer.publish(every: 0.017, on: .main, in: .common).autoconnect()
+    var isMathTest = false
+    let timer = Timer.publish(every: 0.0168, on: .main, in: .common).autoconnect()
  
     var body: some View {
         Text(minus ? "Осталось: \(timeString(time: timeRemaining))" : "Время теста: \(timeString(time: timeRemaining))")
             .font(.system(size: fontSize))
             .onChange(of: startTimer, perform: { value in
                 if !value{
-                result = "Время теста: \(timeString(time: timeRemaining))"
+                    if isMathTest{
+                        result = "Время теста: \(timeString(time: timeRemaining)).\nПравильных ответов: \(viewModel.correctAnswers)"
+                    } else {
+                        result = "Время теста: \(timeString(time: timeRemaining))"
+                    }
                 }
             })
             .onReceive(timer){ _ in

@@ -13,13 +13,14 @@ struct StroopTest: View {
     @State private var timeRemaining = 0
     @EnvironmentObject var viewModel: ViewModel
     @Environment(\.presentationMode) var presentation
+    @Environment(\.managedObjectContext) private var viewContext
     @State private var disableButton = false
    
     
     var body: some View {
         ZStack (alignment: .bottom){
             if !viewModel.startStroopTest {
-                if viewModel.prepareStroopTesting{
+                if viewModel.prepareStroopTesting && viewModel.week == 1{
                     VStack (spacing: 10){
                         
                         LottieView(name: "stroop", loopMode: .autoReverse, animationSpeed: 0.6)
@@ -33,7 +34,6 @@ struct StroopTest: View {
                                 .bold()
                             }
                             Text(!viewModel.stroopTestResult.isEmpty ? "\(viewModel.stroopTestResult)\n\n Тест Струпа оценивает совместную работу передних частей лобных долей левого и правого полушарий. Скорость его выполнения завист от индивидуальных особенностей, поэтому никакие верменые рамки не устанавливаются. Возьмите за основу свой результат, полученый на предыдущей неделе." :  "Перед началом тестирования пройдите подготовку к нему.\n\nНазывайте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись назовите цвет еще раз.")
-                                .foregroundColor(.black)
                                 .mainFont(size: 20)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding(.top)
@@ -48,8 +48,12 @@ struct StroopTest: View {
                             }
                             .padding(.top)
                             
-                            Text("говорите Синий.")
-                                .mainFont(size: 20)
+                                HStack {
+                                    Text("говорите Синий.)")
+                                        .mainFont(size: 20)
+                                        .padding(.leading)
+                                    Spacer()
+                                }
                             }
                         }
                         .padding(.horizontal)
@@ -62,6 +66,16 @@ struct StroopTest: View {
                             viewModel.selectedStroopTag = 0
                             if !viewModel.stroopTestResult.isEmpty {
                                 viewModel.isStroopTestFinish = true
+                                let testResult = TestResult(context: viewContext)
+                                testResult.date = date
+                                  testResult.week = String(viewModel.week)
+                                  testResult.day = String(viewModel.day)
+                                testResult.testName = "Тест Струпа"
+                                testResult.testResult = viewModel.countTestResult
+                                testResult.isMathTest = false
+                                do {
+                                    try viewContext.save()
+                                } catch {return}
                                 presentation.wrappedValue.dismiss()
                             }
                             
@@ -94,7 +108,6 @@ struct StroopTest: View {
                         VStack (spacing: 0){
                         Text("Вы дали правильные ответы: синий, фиолетовый, красный, зелёный, жёлтый?\n\nТеперь приступайте к упражнению.")
                             .mainFont(size: 18)
-                            .foregroundColor(.black)
                             .padding(.horizontal)
                             Spacer()
                             colorsView()
@@ -149,7 +162,6 @@ struct StroopTest: View {
                         }, label: {
                             Image(systemName: "xmark.circle")
                                 .font(.title)
-                                .foregroundColor(.black)
                         })
                         
                         
@@ -201,9 +213,9 @@ struct StroopTest: View {
             }
         }
         .navigationTitle(viewModel.startStroopTest ? "" : "Тест Струпа")
+        .background()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .environmentObject(viewModel)
-        .background()
     }
     
 }

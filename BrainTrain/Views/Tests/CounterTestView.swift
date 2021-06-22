@@ -60,15 +60,24 @@ struct CounterTestView: View {
                         Button(action: {
                             if !viewModel.countTestResult.isEmpty  {
                                 viewModel.isCountTestFinish = true
-                                presentation.wrappedValue.dismiss()
-                                
                               let testResult = TestResult(context: viewContext)
                               testResult.date = date
+                                testResult.week = String(viewModel.week)
+                                testResult.day = String(viewModel.day)
                               testResult.testName = "Тест на счет"
                               testResult.testResult = viewModel.countTestResult
+                                testResult.isMathTest = false
 //                              do {
 //                                  try viewContext.save()
 //                              } catch {return}
+//                                
+                             
+                                    withAnimation(.linear){
+                                        viewModel.currentView = .MathTest
+                                       
+                                    }
+                              
+                                presentation.wrappedValue.dismiss()
                         } else {
                             startCountTest.toggle()
                         
@@ -95,6 +104,9 @@ struct CounterTestView: View {
             .onDisappear{
                 if !viewModel.countTestResult.isEmpty{
                 viewModel.isCountTestFinish = true
+                    withAnimation(.linear){
+                        viewModel.currentView = .MathTest
+                    }
                 }
             }
             .navigationBarTitle("Тест на счет")

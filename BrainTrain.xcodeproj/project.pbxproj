@@ -21,7 +21,6 @@
 		6BD2545E2675F68500D061E3 /* memory.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD2545D2675F68500D061E3 /* memory.json */; };
 		6BD254622675F7AB00D061E3 /* stroop.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD254612675F7AB00D061E3 /* stroop.json */; };
 		6BD254672676507600D061E3 /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6BD254652676507600D061E3 /* CoreData.xcdatamodeld */; };
-		6BD25469267694DC00D061E3 /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD25468267694DC00D061E3 /* Preview.swift */; };
 		6BD2546D267758B400D061E3 /* tutorial1.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD2546C267758B400D061E3 /* tutorial1.json */; };
 		6BD2546F26775B7900D061E3 /* tutorial2.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD2546E26775B7900D061E3 /* tutorial2.json */; };
 		6BD2547126776B4200D061E3 /* mathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD2547026776B4100D061E3 /* mathTest.swift */; };
@@ -52,7 +51,6 @@
 		6BD2545D2675F68500D061E3 /* memory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = memory.json; sourceTree = "<group>"; };
 		6BD254612675F7AB00D061E3 /* stroop.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stroop.json; sourceTree = "<group>"; };
 		6BD254662676507600D061E3 /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
-		6BD25468267694DC00D061E3 /* Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
 		6BD2546C267758B400D061E3 /* tutorial1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tutorial1.json; sourceTree = "<group>"; };
 		6BD2546E26775B7900D061E3 /* tutorial2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tutorial2.json; sourceTree = "<group>"; };
 		6BD2547026776B4100D061E3 /* mathTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mathTest.swift; sourceTree = "<group>"; };
@@ -89,7 +87,6 @@
 			isa = PBXGroup;
 			children = (
 				6BD254742677FBA300D061E3 /* Home.swift */,
-				6BD25468267694DC00D061E3 /* Preview.swift */,
 				6BBAF08126739098009B69AE /* FirstTestView.swift */,
 				6BD25486267CAED900D061E3 /* RingView.swift */,
 				6BBAF088267410F5009B69AE /* Tests */,
@@ -288,7 +285,6 @@
 				6BBAF0872673A3A4009B69AE /* Store.swift in Sources */,
 				6BD254752677FBA300D061E3 /* Home.swift in Sources */,
 				6BBAF08A2674111B009B69AE /* WordsRememberTest.swift in Sources */,
-				6BD25469267694DC00D061E3 /* Preview.swift in Sources */,
 				6BD25483267B926200D061E3 /* TestResult.swift in Sources */,
 				6BD254592675F56100D061E3 /* Lottie.swift in Sources */,
 				6BD25487267CAED900D061E3 /* RingView.swift in Sources */,
