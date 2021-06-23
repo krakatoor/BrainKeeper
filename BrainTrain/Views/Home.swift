@@ -15,6 +15,7 @@ struct Home: View {
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
     //
+    @State private var offset: CGFloat = .zero
 
     var body: some View {
         
@@ -35,29 +36,36 @@ struct Home: View {
                     mathTest()
                         .zIndex(viewModel.currentView == .MathTest ? 1 : 0)
                     }
-                                            
-                       
-                    
+                    .rotation3DEffect(
+                        .degrees(Double(getProgress()) * 90),
+                        axis: (x: 0.0, y: 1.0, z: 0.0),
+                        anchor: offset > 0 ? .leading : .trailing,
+                        anchorZ: 0.0,
+                        perspective: 0.6
+                    )
+                    .modifier(offsetModificator(anchorPoint: .leading, offset: $offset))
                     TestResultsView()
-                        
-                    
                 }
+               
                 .padding(.bottom, -30)
-                .tabViewStyle(PageTabViewStyle())
-                .indexViewStyle(PageIndexViewStyle())
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
 //                .opacity(viewModel.currentView != .DateCard ? 1 : 0)
                
-
-                
-                
             }
+            
             .navigationBarHidden(true)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background()
             .environmentObject(viewModel)
             .onAppear{
-
+                viewModel.day = 1
                         //push notofication permission
+                let center = UNUserNotificationCenter.current()
+                center.getNotificationSettings { (settings) in
+
+                    if(settings.authorizationStatus == .authorized) {
+                        print("Push notification is enabled")
+                    } else {
                         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
                             if success {
                                 print("All set!")
@@ -65,11 +73,16 @@ struct Home: View {
                                 print(error.localizedDescription)
                             }
                         }
+                    }
+                }
+                       
 
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         withAnimation(.linear){
-                            if viewModel.currentView == .DateCard {
+                            if viewModel.currentView == .DateCard && viewModel.brainTestsDay.contains(viewModel.day) || viewModel.day == 1{
                             viewModel.currentView = .BrainTests
+                            } else {
+                                viewModel.currentView = .MathTest
                             }
                         }
                     }
@@ -94,6 +107,10 @@ struct Home: View {
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+    }
+    func getProgress() -> CGFloat {
+        let progress = offset / UIScreen.main.bounds.width
+        return progress
     }
     
 }

@@ -10,28 +10,22 @@ import Combine
 
 class ViewModel: ObservableObject{
     
-  
     @Published  var currentView = CurrentView.DateCard
     
-    
     @AppStorage ("date") var day = 1
-    let brainTestsDay = [1, 6, 11, 16]
-    var week: Int{
+    let brainTestsDay = Array(1...60).filter {$0.isMultiple(of:5)}
+    
+    var week: Int {
      var currentWeek = 1
-        
-        if day > 5 {
-            currentWeek = 2
-        }
-        if day > 10 {
-            currentWeek = 3
-        }
-        
-        if day > 15 {
-            currentWeek = 4
+        for i in brainTestsDay {
+            if i == day {
+            currentWeek += 1
+            }
         }
         
         return currentWeek
     }
+    
     @AppStorage ("skipBrainTest") var skipBrainTest = false
     @AppStorage ("currentDate") var currentDate = date
     

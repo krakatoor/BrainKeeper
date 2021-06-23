@@ -31,8 +31,10 @@ struct FirstTestView: View {
                             .padding(.top, 10)
                         
                         HStack {
-                          
-                                Text(viewModel.countTestResult == "" ? "Время теста: __" : viewModel.countTestResult)
+                            Spacer()
+                                Text("Оценка работы лобных долей")
+                                    .mainFont(size: 14)
+                                    .fixedSize()
                             
                             Spacer()
                         }
@@ -58,9 +60,10 @@ struct FirstTestView: View {
                             .padding(.top, 10)
                         
                         HStack {
-                            
-                            Text(!viewModel.isWordsTestFinish ? "Слов запомнено: __" : "Слов запомнено: \(viewModel.words.count)")
-                            
+                            Spacer()
+                            Text("Проверим краткосрочную память")
+                                .mainFont(size: 14)
+                                .fixedSize()
                             Spacer()
                         }
                         .padding([.leading, .bottom])
@@ -84,8 +87,10 @@ struct FirstTestView: View {
                             .padding(.top, 10)
                         
                         HStack {
-                            Text(viewModel.stroopTestResult == "" ? "Время теста: __" : viewModel.stroopTestResult)
-                            
+                            Spacer()
+                            Text("Оценка совместной работы полушарий")
+                                .mainFont(size: 14)
+                                .fixedSize()
                             Spacer()
                         }
                         .padding([.leading, .bottom])

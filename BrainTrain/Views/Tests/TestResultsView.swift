@@ -11,6 +11,7 @@ struct TestResultsView: View {
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
+    @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         VStack{
@@ -19,7 +20,7 @@ struct TestResultsView: View {
                 .mainFont(size: 25)
                 .padding(.top, 30)
             ScrollView(showsIndicators: false) {
-                ForEach(1...4, id: \.self) { week in
+                ForEach(1...viewModel.brainTestsDay.count , id: \.self) { week in
                     VStack {
                         Text("Неделя №\(week)")
                             .bold()
@@ -41,6 +42,7 @@ struct TestResultsView: View {
 struct TestResultsView_Previews: PreviewProvider {
     static var previews: some View {
         TestResultsView()
+            .environmentObject(ViewModel())
     }
 }
 
