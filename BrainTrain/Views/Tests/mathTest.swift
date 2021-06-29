@@ -37,8 +37,9 @@ struct mathTest: View {
                 
                 VStack (alignment: .center, spacing: 10){
         
+                
                         LottieView(name: "math", loopMode: .loop, animationSpeed: 0.8)
-                               .frame(height: 250)
+                            .frame(height: startTest ? 150 : 250)
                     
                     
                     VStack {
@@ -99,8 +100,7 @@ struct mathTest: View {
                       
                     buttons
                         .padding(.top)
-                        .transition(.move(edge: .trailing))
-                        .animation(.linear)
+                        .transition(.move(edge: .bottom))
                    
                     }
                    
@@ -127,6 +127,7 @@ struct mathTest: View {
                 Spacer()
                 
                 
+                if !startTest{
                 HStack {
                     if startTest {
                     Button(action: {
@@ -142,8 +143,9 @@ struct mathTest: View {
                     
                     Button(action:{
                         if !startTest {
-                            
+                            withAnimation{
                                 startTest.toggle()
+                            }
                               
                             } else if viewModel.examplesCount < totalExample && totalSumText != ""{
                           
@@ -176,23 +178,12 @@ struct mathTest: View {
                     })
                     .padding(.leading)
                     
-                    if startTest{
-                    Button(action: {
-                        if !totalSumText.isEmpty{
-                        totalSumText.removeLast()
-                        }
-                    }, label: {
-                       Image(systemName: "delete.left")
-                        .mainFont(size: 18)
-                        .foregroundColor(.white)
-                        .frame(width: 40)
-                        .padding(11)
-                        .background(Color.blue.cornerRadius(13))
-                    })
-                    }
+                  
                 }
                 .padding()
                 .padding(.bottom, 40)
+                    
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background()
@@ -256,64 +247,111 @@ struct mathTest: View {
     }
     
     private var buttons: some View {
-        VStack {
-            HStack (spacing: 8){
-            Spacer()
-            ForEach(1...5, id: \.self) { number in
-                Button(action: {
-                    totalSumText.append("\(number)")
-                }, label: {
-                    Text("\(number)")
-                        .mainFont(size: 19)
-                        .foregroundColor(.white)
-                        .frame(width: 30, height: 30)
-                        .padding(10)
-                        .background(Color.blue.cornerRadius(15))
-                })
+        VStack (spacing: 3){
+           
+            HStack(spacing: 3){
+                ForEach(1...3, id: \.self) { text in
+             
+                    Button(action: {
+                        totalSumText.append(text.description)
+                    }, label: {
+                        Text(text.description)
+                            .padding()
+                            .frame(width: 100, height: 70)
+                            .background(Color("back").shadow(radius: 3).ignoresSafeArea())
+                    })
 
+                    }
+                }
+           
+            HStack(spacing: 3){
+                ForEach(4...6, id: \.self) { text in
+             
+                    Button(action: {
+                        totalSumText.append(text.description)
+                    }, label: {
+                        Text(text.description)
+                            .padding()
+                            .frame(width: 100, height: 70)
+                            .background(Color("back").shadow(radius: 3).ignoresSafeArea())
+                    })
+
+                    }
+                }
+            
+            HStack(spacing: 3){
+                ForEach(7...9, id: \.self) { text in
+             
+                    Button(action: {
+                        totalSumText.append(text.description)
+                    }, label: {
+                        Text(text.description)
+                            .padding()
+                            .frame(width: 100, height: 70)
+                            .background(Color("back").shadow(radius: 3).ignoresSafeArea())
+                    })
+
+                    }
+                }
+          
+            HStack(spacing: 3){
+                
+                Button(action: {
+                    if viewModel.examplesCount < totalExample && totalSumText != ""{
+                  
+                        prevAnswer = "\(totalSum)"
+                        showAnswer.toggle()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            showAnswer.toggle()
+                        }
+                        
+                        prevAnswerColor = totalSumText == String(totalSum) ? .green : .red
+                   
+                        if totalSumText == String(totalSum) {
+                            viewModel.correctAnswers += 1
+                        }
+                        totalSumText = ""
+                        viewModel.examplesCount += 1
+                        math()
+                    
+                }
+                }, label: {
+                Text("OK")
+                    .padding()
+                    .frame(width: 100, height: 70)
+                    .background(Color("back").shadow(radius: 3).ignoresSafeArea())
+            })
+                Button(action: {
+                    totalSumText.append("0")
+                }, label: {
+                Text("0")
+                    .padding()
+                    .frame(width: 100, height: 70)
+                    .background(Color("back").shadow(radius: 3).ignoresSafeArea())
+            })
+                Button(action: {
+                    if !totalSumText.isEmpty{
+                    totalSumText.removeLast()
+                    }
+                }, label: {
+                Image(systemName: "delete.left")
+                    .padding()
+                    .frame(width: 100, height: 70)
+                    .background(Color("back").shadow(radius: 3).ignoresSafeArea())
+                  
+            })
             }
-         
-            Spacer()
+           
+            
         }
+        .accentColor(.primary)
+        .padding(.horizontal, 40)
         .onChange(of: totalSumText, perform: { value in
             if totalSumText.count > 2{
                 totalSumText.removeLast()
             }
     })
-            
-            
-            HStack (spacing: 8){
-            Spacer()
-            ForEach(6...9, id: \.self) { number in
-                Button(action: {
-                    totalSumText.append("\(number)")
-                }, label: {
-                    Text("\(number)")
-                        .mainFont(size: 19)
-                        .foregroundColor(.white)
-                        .frame(width: 30, height: 30)
-                        .padding(10)
-                        .background(Color.blue.cornerRadius(15))
-                })
-
-            }
-         
-                Button(action: {
-                    totalSumText.append("\(0)")
-                }, label: {
-                    Text("\(0)")
-                        .mainFont(size: 19)
-                        .foregroundColor(.white)
-                        .frame(width: 30, height: 30)
-                        .padding(10)
-                        .background(Color.blue.cornerRadius(15))
-            })
-
-                
-            Spacer()
-        }
-              
-        }
+        
     }
 }
 
