@@ -11,113 +11,127 @@ struct FirstTestView: View {
     @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
-      
-            VStack  {
-                        Text("Неделя №\(viewModel.week)")
-                            .bold()
-                        
-                        Text("Прежде чем начать тренировку, определите с помощью следующих тестов, как сейчас работает ваш мозг.")
-                            .mainFont(size: 18)
-                            .padding([.horizontal, .bottom])
-                            .fixedSize(horizontal: false, vertical: true)
-                        
-                        Spacer()
-                        
-                        VStack (spacing: 20) {
-                        VStack (spacing: 10) {
-                        Text("Тест на счёт")
-                            .font(.title2)
-                            .bold()
-                            .padding(.top, 10)
-                        
-                        HStack {
-                            Spacer()
+        
+        VStack  {
+            Text("Неделя №\(viewModel.week)")
+                .bold()
+            
+            Text("Прежде чем начать тренировку, определите с помощью следующих тестов, как сейчас работает ваш мозг.")
+                .mainFont(size: 18)
+                .padding()
+                .fixedSize(horizontal: false, vertical: true)
+            
+            
+            Spacer()
+            
+            VStack (spacing: 40) {
+                
+                
+                NavigationLink(
+                    destination: CounterTestView()
+                        .environmentObject(viewModel),
+                    label: {
+                        VStack (spacing: 5) {
+                            Text("Тест на счёт")
+                                .font(.title2)
+                                .bold()
+                                .padding(.top, 10)
+                            
+                            HStack {
+                                Spacer()
                                 Text("Оценка работы лобных долей")
+                                    .foregroundColor(.secondary)
                                     .mainFont(size: 14)
                                     .fixedSize()
+                                
+                                Spacer()
+                            }
+                            .padding([.leading, .bottom])
+                        }
+                        .frame(width: 300)
+                        .foregroundColor(.primary)
+                        .padding()
+                        .padding(.vertical)
+                        .background().cornerRadius(20).shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 0)
+                        
+                    })
+                    .buttonStyle(PlainButtonStyle())
+                
+                
+                
+                
+                NavigationLink(
+                    destination: WordsRememberTest().environmentObject(viewModel),
+                    label: {
+                        VStack (spacing: 5) {
+                            Text("Тест на запоминание слов")
+                                .font(.title2)
+                                .bold()
+                                .padding(.top, 10)
                             
-                            Spacer()
+                            HStack {
+                                Spacer()
+                                Text("Проверим краткосрочную память")
+                                    .foregroundColor(.secondary)
+                                    .mainFont(size: 14)
+                                    .fixedSize()
+                                Spacer()
+                            }
+                            .padding([.leading, .bottom])
                         }
-                        .padding([.leading, .bottom])
-                     
-                        NavigationLink(
-                            destination: CounterTestView()
-                                .environmentObject(viewModel),
-                            label: {
-                                Text("Начать")
-                                    .mainButton()
-                            })
-                        }
+                        .frame(width: 300)
+                        .foregroundColor(.primary)
                         .padding()
-                        .background(BlurView(style: .regular).cornerRadius(20))
-                        .frame(width: screenSize.width - 40)
-                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(lineWidth: 0.3))
-                    
-                        VStack (spacing: 10) {
-                        Text("Тест на запоминание слов")
-                            .font(.title2)
-                            .bold()
-                            .padding(.top, 10)
+                        .padding(.vertical)
+                        .background().cornerRadius(20).shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 0)
                         
-                        HStack {
-                            Spacer()
-                            Text("Проверим краткосрочную память")
-                                .mainFont(size: 14)
-                                .fixedSize()
-                            Spacer()
+                    })
+                    .buttonStyle(PlainButtonStyle())
+                
+                
+                
+                
+                NavigationLink(
+                    destination: StroopTest().environmentObject(viewModel),
+                    label: {
+                        
+                        VStack (spacing: 5) {
+                            Text("Тест Струпа")
+                                .font(.title2)
+                                .bold()
+                                .padding(.top, 10)
+                            
+                            HStack {
+                                Spacer()
+                                Text("Оценка совместной работы полушарий")
+                                    .foregroundColor(.secondary)
+                                    .mainFont(size: 14)
+                                    .fixedSize()
+                                Spacer()
+                            }
+                            .padding([.leading, .bottom])
                         }
-                        .padding([.leading, .bottom])
-                     
-                        NavigationLink(
-                            destination: WordsRememberTest().environmentObject(viewModel),
-                            label: {
-                                Text("Начать")
-                                    .mainButton()
-                            })
-                        }
+                        .frame(width: 300)
+                        .foregroundColor(.primary)
                         .padding()
-                        .background(BlurView(style: .regular).cornerRadius(20))
-                        .frame(width: screenSize.width - 40)
-                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(lineWidth: 0.3))
+                        .padding(.vertical)
+                        .background().cornerRadius(20).shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 0)
                         
-                        VStack (spacing: 10) {
-                        Text("Тест Струпа")
-                            .font(.title2)
-                            .bold()
-                            .padding(.top, 10)
-                        
-                        HStack {
-                            Spacer()
-                            Text("Оценка совместной работы полушарий")
-                                .mainFont(size: 14)
-                                .fixedSize()
-                            Spacer()
-                        }
-                        .padding([.leading, .bottom])
-                     
-                        NavigationLink(
-                            destination: StroopTest().environmentObject(viewModel),
-                            label: {
-                                Text("Начать")
-                                    .mainButton()
-                            })
-                        }
-                        .padding()
-                        .background(BlurView(style: .regular).cornerRadius(20))
-                        .frame(width: screenSize.width - 40)
-                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(lineWidth: 0.3))
-                        }
-                        .padding(.bottom)
-                        
-                        
-                        Spacer()
-                    
-                }
-            .navigationBarHidden(true)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background()
-            .mainFont(size: 20)
-      
+                    })
+                    .buttonStyle(PlainButtonStyle())
+                Spacer()
+            }
+            .padding(.top, 40)
+            
+            
+            Spacer()
+            
+        }
+        .navigationBarHidden(true)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background()
+        .mainFont(size: 20)
+        
     }
 }
 

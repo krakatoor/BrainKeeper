@@ -16,14 +16,15 @@ class ViewModel: ObservableObject{
     let brainTestsDay = Array(1...60).filter {$0.isMultiple(of:5)}
     
     var week: Int {
-     var currentWeek = 1
-        for i in brainTestsDay {
-            if i == day {
-            currentWeek += 1
+     var current = 1
+        for i in 1...day {
+        for testDay in brainTestsDay {
+            if testDay == i - 1 {
+                current += 1
             }
         }
-        
-        return currentWeek
+        }
+        return current
     }
     
     @AppStorage ("skipBrainTest") var skipBrainTest = false
@@ -37,11 +38,23 @@ class ViewModel: ObservableObject{
     @Published var isCountTestFinish = false
     
     //Тест Струпа
-    @Published var selectedStroopTag = 0
-    @Published var prepareStroopTesting = true
-    @Published var startStroopTest = false
     @Published var isStroopTestFinish = false
     @Published var stroopTestResult = ""
+    @Published var stage: StroopTestStages = .prepare
+    @Published var startStroopTestTimer = false
+    @Published var colorsViewTag = -1
+    
+    @ViewBuilder func stroopTestViews() -> some View {
+ 
+        switch stage {
+        case .prepare:
+           StroopTestPreparing()
+        case .test:
+            StroopTesting()
+        case .finish:
+            StroopFinish()
+        }
+    }
     
     //Запомниние слов
     @Published var isWordsTestFinish = false

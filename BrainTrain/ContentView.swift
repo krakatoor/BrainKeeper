@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var viewModel = ViewModel()
+    @StateObject private var viewModel = ViewModel()
 //    private var testResult: FetchedResults<TestResult>
     var body: some View {
       Home()

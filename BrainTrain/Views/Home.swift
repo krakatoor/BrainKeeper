@@ -21,20 +21,18 @@ struct Home: View {
         
         NavigationView {
             ZStack {
-                
-//                    ProgressCard()
-//                        .zIndex(1)
-//                        .opacity(viewModel.currentView == .DateCard ? 1 : 0)
-//
-                
-                    
+                    ProgressCard()
+                        .zIndex(1)
+                        .opacity(viewModel.currentView == .DateCard ? 1 : 0)
+  
                 TabView {
                     ZStack{
                     FirstTestView()
-                        .padding(.top)
-                        .zIndex(viewModel.currentView == .MathTest && viewModel.brainTestsDay.contains(viewModel.day) ? 0 : 1)
+                        .padding(.top, 30)
+                        .zIndex(viewModel.currentView == .MathTest && viewModel.brainTestsDay.contains(viewModel.day - 1) ? 0 : 1)
                     mathTest()
                         .zIndex(viewModel.currentView == .MathTest ? 1 : 0)
+                        .padding(.top, 30)
                     }
                     .rotation3DEffect(
                         .degrees(Double(getProgress()) * 90),
@@ -49,7 +47,7 @@ struct Home: View {
                
                 .padding(.bottom, -30)
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-//                .opacity(viewModel.currentView != .DateCard ? 1 : 0)
+                .opacity(viewModel.currentView != .DateCard ? 1 : 0)
                
             }
             
@@ -58,59 +56,49 @@ struct Home: View {
             .background()
             .environmentObject(viewModel)
             .onAppear{
-                viewModel.day = 1
-                        //push notofication permission
-                let center = UNUserNotificationCenter.current()
-                center.getNotificationSettings { (settings) in
-
-                    if(settings.authorizationStatus == .authorized) {
-                        print("Push notification is enabled")
-                    } else {
-                        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-                            if success {
-                                print("All set!")
-                            } else if let error = error {
-                                print(error.localizedDescription)
-                            }
-                        }
-                    }
-                }
-                       
-
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//                viewModel.day = 1
+                getPermession()
+//                for i in testResults{
+//                    viewContext.delete(i)
+//                    do {
+//                        try viewContext.save()
+//                    } catch {return}
+//                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         withAnimation(.linear){
-                            if viewModel.currentView == .DateCard && viewModel.brainTestsDay.contains(viewModel.day) || viewModel.day == 1{
+                            if viewModel.currentView == .DateCard && viewModel.brainTestsDay.contains(viewModel.day - 1) || viewModel.day == 1{
                             viewModel.currentView = .BrainTests
                             } else {
                                 viewModel.currentView = .MathTest
                             }
                         }
                     }
-
-                
-                if testResults.isEmpty && !viewModel.testsResults.isEmpty{
-                    for i in 0..<viewModel.testsResults.count{
-                        let testResult = TestResult(context: viewContext)
-                        testResult.testName = viewModel.testsResults[i].testName
-                        testResult.date = viewModel.testsResults[i].date
-                        testResult.week = viewModel.testsResults[i].week
-                        testResult.day = viewModel.testsResults[i].day
-                        testResult.testResult = viewModel.testsResults[i].testResult
-                        do {
-                            try viewContext.save()
-                        } catch {
-                            let nsError = error as NSError
-                            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-                        }
-                    }
-                }
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
-    func getProgress() -> CGFloat {
+    
+    private func getProgress() -> CGFloat {
         let progress = offset / UIScreen.main.bounds.width
         return progress
+    }
+    
+    private func getPermession() {
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { (settings) in
+
+            if(settings.authorizationStatus == .authorized) {
+                print("Push notification is enabled")
+            } else {
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+                    if success {
+                        print("All set!")
+                    } else if let error = error {
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        }
     }
     
 }

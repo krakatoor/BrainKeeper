@@ -15,7 +15,7 @@ struct WordsRememberTest: View {
     @State private var word = ""
     @State private var error = false
     @State private var wordsAlreadyExist = false
-    @State var timeRemaining = 200
+    @State var timeRemaining = 7200
     @Environment(\.presentationMode) var presentation
     @Environment(\.managedObjectContext) private var viewContext
     @State private var rememberWordsTimer = "" //для заглушки на таймер для запоминания слов
@@ -45,7 +45,7 @@ struct WordsRememberTest: View {
                     }
                 }
                 Spacer()
-                timerView(result: $rememberWordsTimer, startTimer: $startCountTest, timeRemaining: $timeRemaining, fontSize: 25, minus: true)
+                timerView(result: $rememberWordsTimer, startTimer: $startCountTest, fontSize: 25, minus: true)
                     .padding(.top)
                 
                 
@@ -119,7 +119,7 @@ struct WordsRememberTest: View {
                 Spacer()
                 
                 if viewModel.wordsTestResult.isEmpty {
-                timerView(result: $viewModel.wordsTestResult, startTimer: $startCountTest, timeRemaining: $timeRemaining, fontSize: 25, minus: true)
+                timerView(result: $viewModel.wordsTestResult, startTimer: $startCountTest, fontSize: 25, minus: true)
                    
                 } else {
                     Text("Тест завершён")
@@ -140,7 +140,7 @@ struct WordsRememberTest: View {
                               do {
                                   try viewContext.save()
                               } catch {return}
-                        if viewModel.isCountTestFinish  && viewModel.isWordsTestFinish {
+                        if viewModel.isCountTestFinish && viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                             withAnimation(.linear){
                                 viewModel.currentView = .MathTest
                             }
@@ -183,6 +183,11 @@ struct WordsRememberTest: View {
         .onDisappear{
             if !viewModel.wordsTestResult.isEmpty{
             viewModel.isWordsTestFinish = true
+            }
+            if viewModel.isCountTestFinish && viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
+                withAnimation(.linear){
+                    viewModel.currentView = .MathTest
+                }
             }
         }
         .navigationTitle("Тест на память")

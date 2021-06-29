@@ -26,20 +26,7 @@ struct mathTest: View {
     private var testResults: FetchedResults<TestResult>
     
     var body: some View {
-        ZStack  (alignment: .center){
-            
-            if startTest && prevAnswer != ""  && showAnswer{
-               
-                    Text(prevAnswer)
-                    .foregroundColor(prevAnswerColor)
-                        .mainFont(size: 20)
-                    .zIndex(1)
-                    .padding()
-                        .background()
-                        .padding(.top, 150)
-                        .padding(.leading, 220)
-                
-            }
+     
             VStack {
                 
                 if !viewModel.isMathTestFinish {
@@ -61,7 +48,14 @@ struct mathTest: View {
                             .onChange(of: viewModel.examplesCount, perform: { value in
                                 if viewModel.examplesCount == totalExample {
                                     startTest.toggle()
-                                    viewModel.isMathTestFinish = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        
+                                        viewModel.isMathTestFinish = true
+                                        
+                                    }
+                                    saveResult()
+                                    
+                                    
                                 }
                             })
                     }
@@ -73,25 +67,32 @@ struct mathTest: View {
                       
                     }
                     .mainFont(size: 20)
-                    timerView(result: $viewModel.mathTestResult, startTimer: $startTest, timeRemaining: $timeRemaining, fontSize: 25, isMathTest: true)
+                    timerView(result: $viewModel.mathTestResult, startTimer: $startTest, fontSize: 25, isMathTest: true)
                        
                   
-                    HStack {
-                        Spacer()
-                        
-                        if startTest {
-                        Text("\(number1) \(operator1) \(number2) =")
-                        } else {
-                            Text("3 x 3 =")
-                                .redacted(reason: startTest ? [] : .placeholder)
+                        HStack {
+                            Spacer()
+                            
+                            if startTest {
+                            Text("\(number1) \(operator1) \(number2) =")
+                            } else {
+                                Text("3 x 3 =")
+                                    .redacted(reason: startTest ? [] : .placeholder)
+                            }
+                            
+                            Text(totalSumText)
+                                .frame(width: 44, height: 30)
+                                .overlay(Rectangle().stroke())
+                           
+                           
+                            
+                            Text(prevAnswer)
+                            .foregroundColor(prevAnswerColor)
+                                .offset(x: 40)
+                                .opacity(showAnswer ? 1 : 0)
+                            Spacer()
                         }
                         
-                        Text(totalSumText)
-                            .frame(width: 44, height: 30)
-                            .overlay(Rectangle().stroke())
-                       
-                        Spacer()
-                    }
                     
                    
                     if startTest{
@@ -140,33 +141,7 @@ struct mathTest: View {
                     }
                     
                     Button(action:{
-                        if viewModel.isMathTestFinish {
-                            
-                            let testResult = TestResult(context: viewContext)
-                            testResult.date = date
-                              testResult.week = String(viewModel.week)
-                              testResult.day = String(viewModel.day)
-                            testResult.testName = "Ежедневный тест"
-                            testResult.testResult = viewModel.mathTestResult
-                            testResult.isMathTest = true
-                            
-                                withAnimation(.linear){
-                                viewModel.showResults = true
-                                }
-                            
-                       
-                            viewModel.day += 1
-                            
-                            if testResults.contains(testResult) {
-                                viewContext.delete(testResult)
-                            } else {
-                            
-                              do {
-                                  try viewContext.save()
-                              } catch {return}
-                            }
-                            viewModel.sendNotification()
-                        } else  if !startTest {
+                        if !startTest {
                             
                                 startTest.toggle()
                               
@@ -225,8 +200,7 @@ struct mathTest: View {
             .mainFont(size: 30)
             .onAppear{
                 math()
-        }
-        }
+            }
     }
     
     
@@ -255,6 +229,30 @@ struct mathTest: View {
             totalSum = Int(random1 * random2)
         }
         
+    }
+    
+    private func saveResult() {
+        
+        let testResult = TestResult(context: viewContext)
+        testResult.date = date
+        testResult.week = String(viewModel.week)
+        testResult.day = String(viewModel.day)
+        testResult.testName = "Ежедневный тест"
+        testResult.testResult = viewModel.mathTestResult
+        testResult.isMathTest = true
+        
+        if testResults.contains(testResult) {
+            viewContext.delete(testResult)
+        } else {
+        
+          do {
+              try viewContext.save()
+          } catch {return}
+        }
+   
+        viewModel.day += 1
+        
+        viewModel.sendNotification()
     }
     
     private var buttons: some View {

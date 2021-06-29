@@ -9,7 +9,10 @@
 /* Begin PBXBuildFile section */
 		6B0F19812639FAC400480B91 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0F19802639FAC400480B91 /* Extensions.swift */; };
 		6B21B3F6268313BE00354990 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 6B21B3F5268313BE00354990 /* Introspect */; };
+		6B25C3E8268B4B2C0066F118 /* StroopTestPreparing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B25C3E7268B4B2C0066F118 /* StroopTestPreparing.swift */; };
+		6B25C3EA268B673B0066F118 /* StroopTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B25C3E9268B673B0066F118 /* StroopTesting.swift */; };
 		6B494C3B2572E02F0001864A /* StroopTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B494C3A2572E02F0001864A /* StroopTest.swift */; };
+		6B68B60A26835F0000E45556 /* results.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B68B60926835F0000E45556 /* results.json */; };
 		6B93670026829F66000BB506 /* offsetModificator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9366FF26829F66000BB506 /* offsetModificator.swift */; };
 		6BBAF0802673903E009B69AE /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBAF07F2673903E009B69AE /* TimerView.swift */; };
 		6BBAF08226739098009B69AE /* FirstTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBAF08126739098009B69AE /* FirstTestView.swift */; };
@@ -22,12 +25,9 @@
 		6BD2545E2675F68500D061E3 /* memory.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD2545D2675F68500D061E3 /* memory.json */; };
 		6BD254622675F7AB00D061E3 /* stroop.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD254612675F7AB00D061E3 /* stroop.json */; };
 		6BD254672676507600D061E3 /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6BD254652676507600D061E3 /* CoreData.xcdatamodeld */; };
-		6BD2546D267758B400D061E3 /* tutorial1.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD2546C267758B400D061E3 /* tutorial1.json */; };
-		6BD2546F26775B7900D061E3 /* tutorial2.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD2546E26775B7900D061E3 /* tutorial2.json */; };
 		6BD2547126776B4200D061E3 /* mathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD2547026776B4100D061E3 /* mathTest.swift */; };
 		6BD254732677F85100D061E3 /* math.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD254722677F85100D061E3 /* math.json */; };
 		6BD254752677FBA300D061E3 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD254742677FBA300D061E3 /* Home.swift */; };
-		6BD2547D2678006F00D061E3 /* mech1.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD2547C2678006F00D061E3 /* mech1.json */; };
 		6BD25483267B926200D061E3 /* TestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD25482267B926200D061E3 /* TestResult.swift */; };
 		6BD25485267B951400D061E3 /* TestResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD25484267B951400D061E3 /* TestResultsView.swift */; };
 		6BD25487267CAED900D061E3 /* RingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD25486267CAED900D061E3 /* RingView.swift */; };
@@ -41,7 +41,10 @@
 
 /* Begin PBXFileReference section */
 		6B0F19802639FAC400480B91 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		6B25C3E7268B4B2C0066F118 /* StroopTestPreparing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StroopTestPreparing.swift; sourceTree = "<group>"; };
+		6B25C3E9268B673B0066F118 /* StroopTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StroopTesting.swift; sourceTree = "<group>"; };
 		6B494C3A2572E02F0001864A /* StroopTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StroopTest.swift; sourceTree = "<group>"; };
+		6B68B60926835F0000E45556 /* results.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = results.json; sourceTree = "<group>"; };
 		6B9366FF26829F66000BB506 /* offsetModificator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = offsetModificator.swift; sourceTree = "<group>"; };
 		6BBAF07F2673903E009B69AE /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		6BBAF08126739098009B69AE /* FirstTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTestView.swift; sourceTree = "<group>"; };
@@ -53,12 +56,9 @@
 		6BD2545D2675F68500D061E3 /* memory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = memory.json; sourceTree = "<group>"; };
 		6BD254612675F7AB00D061E3 /* stroop.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stroop.json; sourceTree = "<group>"; };
 		6BD254662676507600D061E3 /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
-		6BD2546C267758B400D061E3 /* tutorial1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tutorial1.json; sourceTree = "<group>"; };
-		6BD2546E26775B7900D061E3 /* tutorial2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tutorial2.json; sourceTree = "<group>"; };
 		6BD2547026776B4100D061E3 /* mathTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mathTest.swift; sourceTree = "<group>"; };
 		6BD254722677F85100D061E3 /* math.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = math.json; sourceTree = "<group>"; };
 		6BD254742677FBA300D061E3 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
-		6BD2547C2678006F00D061E3 /* mech1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mech1.json; sourceTree = "<group>"; };
 		6BD25482267B926200D061E3 /* TestResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestResult.swift; sourceTree = "<group>"; };
 		6BD25484267B951400D061E3 /* TestResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestResultsView.swift; sourceTree = "<group>"; };
 		6BD25486267CAED900D061E3 /* RingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RingView.swift; sourceTree = "<group>"; };
@@ -110,6 +110,8 @@
 				6BBAF083267395C9009B69AE /* CounterTestView.swift */,
 				6BBAF0892674111B009B69AE /* WordsRememberTest.swift */,
 				6B494C3A2572E02F0001864A /* StroopTest.swift */,
+				6B25C3E7268B4B2C0066F118 /* StroopTestPreparing.swift */,
+				6B25C3E9268B673B0066F118 /* StroopTesting.swift */,
 				6BD2547026776B4100D061E3 /* mathTest.swift */,
 				6BD25484267B951400D061E3 /* TestResultsView.swift */,
 			);
@@ -132,9 +134,7 @@
 		6BD2545A2675F60700D061E3 /* LottieJSON */ = {
 			isa = PBXGroup;
 			children = (
-				6BD2547C2678006F00D061E3 /* mech1.json */,
-				6BD2546E26775B7900D061E3 /* tutorial2.json */,
-				6BD2546C267758B400D061E3 /* tutorial1.json */,
+				6B68B60926835F0000E45556 /* results.json */,
 				6BD254612675F7AB00D061E3 /* stroop.json */,
 				6BD2545D2675F68500D061E3 /* memory.json */,
 				6BD254552675F51A00D061E3 /* timer.json */,
@@ -172,13 +172,13 @@
 			children = (
 				8E9F1F52253EE0AD0029E5F3 /* ContentView.swift */,
 				6BD25481267B924C00D061E3 /* Model */,
-				6BBAF0852673A393009B69AE /* ViewModel */,
 				6B494C3D2572E0650001864A /* Views */,
+				6BBAF0852673A393009B69AE /* ViewModel */,
 				8E9F1F54253EE0AF0029E5F3 /* Assets.xcassets */,
-				8E9F1F59253EE0AF0029E5F3 /* Persistence.swift */,
 				8E9F1F5E253EE0AF0029E5F3 /* Info.plist */,
-				8E9F1F50253EE0AD0029E5F3 /* BrainTrainApp.swift */,
+				8E9F1F59253EE0AF0029E5F3 /* Persistence.swift */,
 				6BD254652676507600D061E3 /* CoreData.xcdatamodeld */,
+				8E9F1F50253EE0AD0029E5F3 /* BrainTrainApp.swift */,
 				6BD254572675F53D00D061E3 /* Utilities */,
 				8E9F1F56253EE0AF0029E5F3 /* Preview Content */,
 			);
@@ -262,13 +262,11 @@
 				6BD254732677F85100D061E3 /* math.json in Resources */,
 				6BD254622675F7AB00D061E3 /* stroop.json in Resources */,
 				6BD25488267CD15C00D061E3 /* Localizable.strings in Resources */,
-				6BD2547D2678006F00D061E3 /* mech1.json in Resources */,
 				6BD2545E2675F68500D061E3 /* memory.json in Resources */,
-				6BD2546D267758B400D061E3 /* tutorial1.json in Resources */,
-				6BD2546F26775B7900D061E3 /* tutorial2.json in Resources */,
 				8E9F1F58253EE0AF0029E5F3 /* Preview Assets.xcassets in Resources */,
 				8E9F1F55253EE0AF0029E5F3 /* Assets.xcassets in Resources */,
 				6BD254562675F51A00D061E3 /* timer.json in Resources */,
+				6B68B60A26835F0000E45556 /* results.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,8 +289,10 @@
 				6BD25483267B926200D061E3 /* TestResult.swift in Sources */,
 				6B93670026829F66000BB506 /* offsetModificator.swift in Sources */,
 				6BD254592675F56100D061E3 /* Lottie.swift in Sources */,
+				6B25C3E8268B4B2C0066F118 /* StroopTestPreparing.swift in Sources */,
 				6BD25487267CAED900D061E3 /* RingView.swift in Sources */,
 				6BD25485267B951400D061E3 /* TestResultsView.swift in Sources */,
+				6B25C3EA268B673B0066F118 /* StroopTesting.swift in Sources */,
 				6BD254672676507600D061E3 /* CoreData.xcdatamodeld in Sources */,
 				6B494C3B2572E02F0001864A /* StroopTest.swift in Sources */,
 				8E9F1F53253EE0AD0029E5F3 /* ContentView.swift in Sources */,

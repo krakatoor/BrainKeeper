@@ -23,7 +23,7 @@ struct CounterTestView: View {
                 LottieView(name: "timer", loopMode: .loop, animationSpeed: 0.3)
                            .frame(height: 200)
                 
-                timerView(result: $viewModel.countTestResult, startTimer: $startCountTest, timeRemaining: $timeRemaining, fontSize: 25).environmentObject(viewModel)
+                timerView(result: $viewModel.countTestResult, startTimer: $startCountTest, fontSize: 25).environmentObject(viewModel)
                     .padding()
                 
                 VStack {
@@ -67,15 +67,15 @@ struct CounterTestView: View {
                               testResult.testName = "Тест на счет"
                               testResult.testResult = viewModel.countTestResult
                                 testResult.isMathTest = false
-//                              do {
-//                                  try viewContext.save()
-//                              } catch {return}
-//                                
-                             
+                              do {
+                                  try viewContext.save()
+                              } catch {return}
+                                
+                                if viewModel.isCountTestFinish && viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                                     withAnimation(.linear){
                                         viewModel.currentView = .MathTest
-                                       
                                     }
+                                }
                               
                                 presentation.wrappedValue.dismiss()
                         } else {
@@ -103,7 +103,10 @@ struct CounterTestView: View {
             }
             .onDisappear{
                 if !viewModel.countTestResult.isEmpty{
-                viewModel.isCountTestFinish = true
+                viewModel.isCountTestFinish = true 
+                }
+                
+                if viewModel.isCountTestFinish && viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                     withAnimation(.linear){
                         viewModel.currentView = .MathTest
                     }

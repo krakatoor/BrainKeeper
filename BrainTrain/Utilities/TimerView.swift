@@ -11,15 +11,20 @@ struct timerView: View {
     @EnvironmentObject var viewModel: ViewModel
     @Binding var result: String
     @Binding var startTimer: Bool
-    @Binding var timeRemaining: Int
+    @State private var timeRemaining = 0
     var fontSize: CGFloat = 20
     var minus = false
     var isMathTest = false
-    let timer = Timer.publish(every: 0.0168, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
  
     var body: some View {
         Text(minus ? "Осталось: \(timeString(time: timeRemaining))" : "Время теста: \(timeString(time: timeRemaining))")
             .font(.system(size: fontSize))
+            .onAppear{
+                if minus{
+                    timeRemaining = 10
+                }
+            }
             .onChange(of: startTimer, perform: { value in
                 if !value{
                     if isMathTest{
@@ -50,7 +55,7 @@ struct timerView: View {
     }
     func timeString(time: Int) -> String {
         let minutes   = Int(time) / 3600
-        let seconds = Int(time) / 60 % 60
+        let seconds = time - Int(minutes) * 60
         
         return String(format:"%02i:%02i", minutes, seconds)
     }
@@ -59,6 +64,6 @@ struct timerView: View {
 
 struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
-        timerView(result: .constant("2"), startTimer: .constant(true), timeRemaining: .constant(0))
+        timerView(result: .constant("2"), startTimer: .constant(true))
     }
 }
