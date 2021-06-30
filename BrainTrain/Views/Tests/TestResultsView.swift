@@ -70,6 +70,9 @@ struct TestResultsView: View {
         .onAppear{
             currentWeek = viewModel.week
         }
+        .onDisappear{
+            viewModel.mainScreen = 1
+        }
     }
 }
 

@@ -19,9 +19,9 @@ struct StroopTest: View {
   
     var body: some View {
         VStack {
-            VStack {
+            
                 viewModel.stroopTestViews()
-            }
+                    .transition(.slide)
                     .environmentObject(viewModel)
                     .padding(.top, 10)
                     .onChange(of: viewModel.colorsViewTag, perform: { value in
@@ -30,7 +30,9 @@ struct StroopTest: View {
                             viewModel.colorsViewTag = -1
                             viewModel.startStroopTestTimer = false
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                withAnimation{
                                 viewModel.stage = .finish
+                                }
                               let testResult = TestResult(context: viewContext)
                               testResult.date = date
                                 testResult.week = String(viewModel.week)
@@ -59,6 +61,7 @@ struct StroopTest: View {
             .padding(.bottom)
         }
         .navigationTitle("Тест Струпа")
+        .navigationBarTitleDisplayMode(small ? .inline : .large)
         .background()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear{
@@ -89,15 +92,21 @@ struct StroopTest: View {
         
         case .prepare:
             buttonTitile = "Начать"
+            withAnimation{
             viewModel.stage = .test
+            }
         case .test:
             if viewModel.colorsViewTag == -1 {
+           
             viewModel.startStroopTestTimer = true
+                withAnimation {
                 viewModel.colorsViewTag = 0
+                }
             buttonTitile = "Дальше"
             } else if viewModel.colorsViewTag < 5 {
+                withAnimation{
                 viewModel.colorsViewTag += 1
-                print(viewModel.colorsViewTag)
+                }
                 buttonTitile = "Дальше"
             }
             

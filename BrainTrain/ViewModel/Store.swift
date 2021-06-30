@@ -10,6 +10,8 @@ import Combine
 
 class ViewModel: ObservableObject{
     
+    @Published var mainScreen = 1
+    
     @Published  var currentView = CurrentView.DateCard
     
     @AppStorage ("date") var day = 1
@@ -74,7 +76,7 @@ class ViewModel: ObservableObject{
     
     
 
-    @Published var notificationTime: Double = 10 //86400
+    @Published var notificationTime: Double = 86400 //86400
     
     func sendNotification() {
         let content = UNMutableNotificationContent()

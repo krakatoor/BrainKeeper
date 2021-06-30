@@ -25,14 +25,16 @@ struct Home: View {
                         .zIndex(1)
                         .opacity(viewModel.currentView == .DateCard ? 1 : 0)
   
-                TabView {
+                TabView (selection: $viewModel.mainScreen){
                     ZStack{
                     FirstTestView()
                         .padding(.top, 30)
                         .zIndex(viewModel.currentView == .MathTest && viewModel.brainTestsDay.contains(viewModel.day - 1) ? 0 : 1)
                     mathTest()
-                        .zIndex(viewModel.currentView == .MathTest ? 1 : 0)
+                        .opacity(viewModel.currentView == .MathTest ? 1 : 0)
                         .padding(.top, 30)
+                        .padding(.bottom)
+                        .tag(1)
                     }
                     .rotation3DEffect(
                         .degrees(Double(getProgress()) * 90),
@@ -43,6 +45,7 @@ struct Home: View {
                     )
                     .modifier(offsetModificator(anchorPoint: .leading, offset: $offset))
                     TestResultsView()
+                        .tag(2)
                 }
                
                 .padding(.bottom, -30)
@@ -50,7 +53,6 @@ struct Home: View {
                 .opacity(viewModel.currentView != .DateCard ? 1 : 0)
                
             }
-            
             .navigationBarHidden(true)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background()
@@ -109,10 +111,6 @@ struct Home_Previews: PreviewProvider {
             .environmentObject(ViewModel())
     }
 }
-
-
-
-
 
 struct ProgressCard: View {
     @EnvironmentObject var viewModel: ViewModel

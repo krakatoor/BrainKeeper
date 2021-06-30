@@ -16,6 +16,8 @@ let screenSize = UIScreen.main.bounds
 //}
 
 
+let small = UIScreen.main.bounds.height < 750
+
 var date: String {
     let date = Date()
     let dateFormatter = DateFormatter()
@@ -54,7 +56,7 @@ extension View {
 extension View {
     func mainButton() -> some View {
         self
-            .mainFont(size: 20)
+            .mainFont(size: small ? 18 : 20)
             .foregroundColor(.white)
             .frame(width: 150)
             .padding(10)
