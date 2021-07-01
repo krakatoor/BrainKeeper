@@ -23,6 +23,7 @@ struct WordsRememberTest: View {
        
             VStack {
                 if !startTest {
+                    VStack {
                     LottieView(name: "memory", loopMode: .playOnce, animationSpeed: 0.6)
                         .frame(height: small ? 120 : 200)
                     
@@ -39,7 +40,9 @@ struct WordsRememberTest: View {
                                 .redacted(reason: !startCountTest ? .placeholder : [] )
                                 .onChange(of: startCountTest, perform: { value in
                                     if !startCountTest{
+                                        withAnimation{
                                         startTest = true
+                                        }
                                     }
                                 })
                         }
@@ -59,8 +62,11 @@ struct WordsRememberTest: View {
                             .mainButton()
                     })
                     .padding()
+                    }
                     
                 } else {
+                    
+                    VStack{
                     if !startCountTest && viewModel.wordsTestResult.isEmpty{
                         Text("Постарайтесь вписать как можно больше запомненных слов.")
                             .fixedSize(horizontal: false, vertical: true)
@@ -178,7 +184,9 @@ struct WordsRememberTest: View {
                     })
                     .padding()
                 }
-                
+                    .transition(.move(edge: .trailing))
+                }
+               
             }
             .onDisappear{
                 if !viewModel.wordsTestResult.isEmpty{

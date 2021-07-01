@@ -12,7 +12,6 @@ struct FirstTestView: View {
     
     var body: some View {
         
-        ScrollView(small ? .vertical : [], showsIndicators: false) {
             VStack  {
                 Text("Неделя №\(viewModel.week)")
                     .bold()
@@ -52,7 +51,7 @@ struct FirstTestView: View {
                             .frame(width: screenSize.width / 1.3)
                             .foregroundColor(.primary)
                             .padding()
-                            .padding(.vertical)
+                            .padding(.vertical, small ? 0 : 15)
                             .background().cornerRadius(20).shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 0)
                             
                         })
@@ -83,8 +82,7 @@ struct FirstTestView: View {
                             .frame(width: screenSize.width / 1.3)
                             .foregroundColor(.primary)
                             .padding()
-                            
-                            .padding(.vertical)
+                            .padding(.vertical, small ? 0 : 15)
                             .background().cornerRadius(20).shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 0)
                             
                         })
@@ -116,8 +114,7 @@ struct FirstTestView: View {
                             .frame(width: screenSize.width / 1.3)
                             .foregroundColor(.primary)
                             .padding()
-                            
-                            .padding(.vertical)
+                            .padding(.vertical, small ? 0 : 15)
                             .background().cornerRadius(20).shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 0)
                             
                         })
@@ -134,7 +131,6 @@ struct FirstTestView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background()
             .mainFont(size: 20)
-        }
         
     }
 }

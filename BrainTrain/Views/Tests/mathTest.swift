@@ -28,17 +28,20 @@ struct mathTest: View {
     var body: some View {
         
         VStack {
+            
+            if !viewModel.isMathTestFinish {
             Text("Максмимально быстро решите математические задачи")
                 .mainFont(size: 18)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding()
+            }
             
             VStack (alignment: .center, spacing: 10){
                 
                 
                 LottieView(name: "math", loopMode: .loop, animationSpeed: 0.8)
-                    .frame(height: startTest ? 150 : 250)
+                    .frame(height: startTest ? 150 : (small ? 200 : 250))
                 
                 
                 VStack {
@@ -51,7 +54,7 @@ struct mathTest: View {
                                     withAnimation{
                                         startTest.toggle()
                                     }
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                             withAnimation{
                                             viewModel.isMathTestFinish = true
                                                 
@@ -69,6 +72,9 @@ struct mathTest: View {
                     
                 }
                 .mainFont(size: 20)
+                
+             
+                
                 timerView(result: $viewModel.mathTestResult, startTimer: $startTest, fontSize: 25, isMathTest: true)
                 
                 if !viewModel.isMathTestFinish {
@@ -93,7 +99,7 @@ struct mathTest: View {
                             .opacity(showAnswer ? 1 : 0)
                         Spacer()
                     }
-                    .opacity(viewModel.examplesCount == totalExample ? 0 : 1)
+                    .opacity( viewModel.isMathTestFinish ? 0 : 1)
                     
                 } else {
                     
@@ -111,13 +117,15 @@ struct mathTest: View {
                     .transition(.move(edge: .bottom))
                 }
                 
+              
+                
                 if startTest{
                     buttons
                         .padding(.top)
+                        .padding(.bottom, small ? 0 : 15)
                         .transition(.move(edge: .bottom))
                     
                 }
-                
                 Spacer()
             }
             .contentShape(Rectangle())
@@ -135,27 +143,10 @@ struct mathTest: View {
             if !startTest{
                 HStack {
                     Button(action:{
-                        if !startTest  && !viewModel.isMathTestFinish{
+                        if !startTest  || !viewModel.isMathTestFinish{
                             withAnimation{
                                 startTest.toggle()
                             }
-                            
-                        } else if viewModel.examplesCount < totalExample && totalSumText != ""{
-                            
-                            prevAnswer = "\(totalSum)"
-                            showAnswer.toggle()
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                showAnswer.toggle()
-                            }
-                            
-                            prevAnswerColor = totalSumText == String(totalSum) ? .green : .red
-                            
-                            if totalSumText == String(totalSum) {
-                                viewModel.correctAnswers += 1
-                            }
-                            totalSumText = ""
-                            viewModel.examplesCount += 1
-                            math()
                             
                         }
                         
@@ -265,7 +256,7 @@ struct mathTest: View {
                     }, label: {
                         Text(text.description)
                             .padding()
-                            .frame(width: 100, height: 70)
+                            .frame(width: 100, height: small ? 50 : 70)
                             .background(Color("back").shadow(radius: 3))
                     })
                     
@@ -280,7 +271,7 @@ struct mathTest: View {
                     }, label: {
                         Text(text.description)
                             .padding()
-                            .frame(width: 100, height: 70)
+                            .frame(width: 100, height: small ? 50 : 70)
                             .background(Color("back").shadow(radius: 3))
                     })
                     
@@ -295,7 +286,7 @@ struct mathTest: View {
                     }, label: {
                         Text(text.description)
                             .padding()
-                            .frame(width: 100, height: 70)
+                            .frame(width: 100, height: small ? 50 : 70)
                             .background(Color("back").shadow(radius: 3))
                     })
                     
@@ -312,9 +303,9 @@ struct mathTest: View {
                         .foregroundColor(.white)
                         .font(.title2)
                         .padding()
-                        .frame(width: 100, height: 70)
-                        .background(Color.red.shadow(radius: 3))
-                        .clipShape(CustomCorner(corners: .bottomLeft))
+                        .frame(width: 100, height: small ? 50 : 70)
+                        .background(Color.red.clipShape(CustomCorner(corners: small ? [] : .bottomLeft)).shadow(radius: 3).shadow(radius: 3))
+                        
                 })
                 
                 Button(action: {
@@ -322,7 +313,7 @@ struct mathTest: View {
                 }, label: {
                     Text("0")
                         .padding()
-                        .frame(width: 100, height: 70)
+                        .frame(width: 100, height: small ? 50 : 70)
                         .background(Color("back").shadow(radius: 3))
                 })
                 
@@ -331,7 +322,7 @@ struct mathTest: View {
                         
                         prevAnswer = "\(totalSum)"
                         showAnswer.toggle()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             showAnswer.toggle()
                         }
                         
@@ -350,9 +341,9 @@ struct mathTest: View {
                         .font(.title2)
                         .foregroundColor(.white)
                         .padding()
-                        .frame(width: 100, height: 70)
-                        .background(Color.blue.shadow(radius: 3))
-                        .clipShape(CustomCorner(corners: .bottomRight))
+                        .frame(width: 100, height: small ? 50 : 70)
+                        .background(Color.blue.clipShape(CustomCorner(corners: small ? [] : .bottomRight)).shadow(radius: 3).shadow(radius: 3))
+                       
                 })
                
             }
@@ -360,7 +351,6 @@ struct mathTest: View {
             
         }
         .accentColor(.primary)
-        .padding(.horizontal, 40)
         .onChange(of: totalSumText, perform: { value in
             if totalSumText.count > 2{
                 totalSumText.removeLast()

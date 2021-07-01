@@ -12,52 +12,62 @@ struct StroopTestPreparing: View {
     let colorsName = ["Синий","Красный","Зелёный","Жёлтый", "Фиолетовый"]
     var body: some View {
         
+        ScrollViewReader{ proxy in
             ScrollView(showsIndicators: false) {
-                
-                VStack  {
-                    Text("Перед началом тестирования пройдите подготовку к нему.\n\nНазывайте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись назовите цвет еще раз.")
-                        .mainFont(size: 20)
-                        .fixedSize(horizontal: false, vertical: true)
-                     
                     
-                    HStack {
-                        Text("(Пример: если написано")
-                            .mainFont(size: 20)
-                        Text("Красный,")
-                            .foregroundColor(.blue)
-                            .mainFont(size: 20)
-                    }
-                    .padding(.top)
-                    
+                    VStack  {
+                        Text("Перед началом тестирования пройдите подготовку к нему.\n\nНазывайте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись назовите цвет еще раз.")
+                            .mainFont(size: small ? 18 : 20)
+                            .fixedSize(horizontal: false, vertical: true)
+                         
+                        
                         HStack {
-                            Text("говорите Синий.)")
-                                .mainFont(size: 20)
-                                .padding(.leading)
+                            Text("(Пример: если написано")
+                                .mainFont(size: small ? 18 : 20)
+                            Text("Красный,")
+                                .foregroundColor(.blue)
+                                .mainFont(size: small ? 18 : 20)
                             Spacer()
                         }
+                        .padding(.top)
+                        .fixedSize(horizontal: false, vertical: true)
+                        
+                            HStack {
+                                Text("говорите Синий.)")
+                                    .mainFont(size: small ? 18 : 20)
+                                Spacer()
+                            }
+                        
+                        VStack (spacing: 15){
+                            ForEach(0..<colorsName.count, id: \.self) { index in
+                                Text(colorsName.reversed()[index])
+                                    .mainFont(size: 25)
+                                    .foregroundColor(colors[index])
+                            }
+                        }
+                        .padding(.vertical, 20)
+                        
+                        Text("Вы дали правильные ответы: синий, фиолетовый, красный, зелёный, жёлтый?\n\nТеперь приступайте к упражнению.")
+                            .mainFont(size: 20)
+                            .fixedSize(horizontal: false, vertical: true)
                     
-                    VStack (spacing: 15){
-                        ForEach(0..<colorsName.count, id: \.self) { index in
-                            Text(colorsName.reversed()[index])
-                                .mainFont(size: 25)
-                                .foregroundColor(colors[index])
+                       Spacer()
+                        .id(1)
+
+                    }
+                    .padding(.horizontal)
+                    .navigationTitle("Тест Струпа")
+                    .background()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onAppear{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                            withAnimation{
+                            proxy.scrollTo(1)
+                            }
                         }
                     }
-                    .padding(.vertical, 20)
-                    
-                    Text("Вы дали правильные ответы: синий, фиолетовый, красный, зелёный, жёлтый?\n\nТеперь приступайте к упражнению.")
-                        .mainFont(size: 20)
-                        .fixedSize(horizontal: false, vertical: true)
-                
-                   Spacer()
-                   
-
-                }
-                .padding(.horizontal)
-                .navigationTitle("Тест Струпа")
-                .background()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
+        }
             
         
       

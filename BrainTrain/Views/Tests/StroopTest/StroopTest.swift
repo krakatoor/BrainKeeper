@@ -16,22 +16,23 @@ struct StroopTest: View {
     @Environment(\.presentationMode) var presentation
     @Environment(\.managedObjectContext) private var viewContext
     @State private var buttonTitile = "Дальше"
-  
+  @State private var colorsViewTag = -1
+    @State private var stage: StroopTestStages = .prepare
     var body: some View {
         VStack {
             
-                viewModel.stroopTestViews()
+              stroopTestViews()
                     .transition(.slide)
                     .environmentObject(viewModel)
                     .padding(.top, 10)
-                    .onChange(of: viewModel.colorsViewTag, perform: { value in
+                    .onChange(of: colorsViewTag, perform: { value in
                         if value == 5 {
                             buttonTitile = "Назад"
-                            viewModel.colorsViewTag = -1
+                            colorsViewTag = -1
                             viewModel.startStroopTestTimer = false
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                                 withAnimation{
-                                viewModel.stage = .finish
+                                stage = .finish
                                 }
                               let testResult = TestResult(context: viewContext)
                               testResult.date = date
@@ -39,7 +40,6 @@ struct StroopTest: View {
                                 testResult.day = String(viewModel.day)
                               testResult.testName = "Тест Струпа"
                               testResult.testResult = viewModel.stroopTestResult
-                           
                                 testResult.isMathTest = false
                               do {
                                   try viewContext.save()
@@ -49,6 +49,10 @@ struct StroopTest: View {
                         }
                 })
             
+            if colorsViewTag != -1 {
+                timerView(result: $viewModel.stroopTestResult, startTimer: $viewModel.startStroopTestTimer)
+                .padding(.top, 10)
+            }
             
             Spacer()
             
@@ -66,15 +70,15 @@ struct StroopTest: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear{
             if viewModel.week != 1 {
-                viewModel.stage = .test
+               stage = .test
             }
         }
         .onDisappear{
             if viewModel.week == 1 {
-            viewModel.stage = .prepare
+           stage = .prepare
             }
             viewModel.startStroopTestTimer = false
-            viewModel.colorsViewTag = -1
+           colorsViewTag = -1
             
             if !viewModel.stroopTestResult.isEmpty{
             viewModel.isStroopTestFinish = true
@@ -88,24 +92,19 @@ struct StroopTest: View {
     }
     
     func testAction(){
-        switch viewModel.stage {
+        switch stage {
         
         case .prepare:
             buttonTitile = "Начать"
-            withAnimation{
-            viewModel.stage = .test
-            }
+            stage = .test
         case .test:
-            if viewModel.colorsViewTag == -1 {
-           
+            if colorsViewTag == -1 {
             viewModel.startStroopTestTimer = true
-                withAnimation {
-                viewModel.colorsViewTag = 0
-                }
+               colorsViewTag = 0
             buttonTitile = "Дальше"
-            } else if viewModel.colorsViewTag < 5 {
+            } else if colorsViewTag < 5 {
                 withAnimation{
-                viewModel.colorsViewTag += 1
+               colorsViewTag += 1
                 }
                 buttonTitile = "Дальше"
             }
@@ -120,7 +119,22 @@ struct StroopTest: View {
             
         }
     }
+    
+    @ViewBuilder func stroopTestViews() -> some View {
+
+        switch stage {
+        case .prepare:
+           StroopTestPreparing()
+        case .test:
+            StroopTesting(colorsViewTag: $colorsViewTag)
+        case .finish:
+            StroopFinish()
+        }
     }
+    }
+
+
+
 
 struct StrupTest_Previews: PreviewProvider {
     static var previews: some View {

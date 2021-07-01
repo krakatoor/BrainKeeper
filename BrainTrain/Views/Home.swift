@@ -29,7 +29,7 @@ struct Home: View {
                     ZStack{
                     FirstTestView()
                         .padding(.top, 30)
-                        .zIndex(viewModel.currentView == .MathTest && viewModel.brainTestsDay.contains(viewModel.day - 1) ? 0 : 1)
+                        .opacity(viewModel.currentView != .MathTest ? 1 : 0)
                     mathTest()
                         .opacity(viewModel.currentView == .MathTest ? 1 : 0)
                         .padding(.top, 30)
@@ -58,7 +58,7 @@ struct Home: View {
             .background()
             .environmentObject(viewModel)
             .onAppear{
-//                viewModel.day = 1
+                viewModel.day = 1
                 getPermession()
 //                for i in testResults{
 //                    viewContext.delete(i)

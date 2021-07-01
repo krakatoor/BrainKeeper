@@ -42,21 +42,7 @@ class ViewModel: ObservableObject{
     //Тест Струпа
     @Published var isStroopTestFinish = false
     @Published var stroopTestResult = ""
-    @Published var stage: StroopTestStages = .prepare
     @Published var startStroopTestTimer = false
-    @Published var colorsViewTag = -1
-    
-    @ViewBuilder func stroopTestViews() -> some View {
- 
-        switch stage {
-        case .prepare:
-           StroopTestPreparing()
-        case .test:
-            StroopTesting()
-        case .finish:
-            StroopFinish()
-        }
-    }
     
     //Запомниние слов
     @Published var isWordsTestFinish = false

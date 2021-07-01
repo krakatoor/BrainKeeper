@@ -11,11 +11,11 @@ struct timerView: View {
     @EnvironmentObject var viewModel: ViewModel
     @Binding var result: String
     @Binding var startTimer: Bool
-    @State private var timeRemaining = 0
+    @State private var timeRemaining:Double = 0
     var fontSize: CGFloat = 20
     var minus = false
     var isMathTest = false
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 0.10, on: .main, in: .common).autoconnect()
  
     var body: some View {
         Text(minus ? "Осталось: \(timeString(time: timeRemaining))" : "Время теста: \(timeString(time: timeRemaining))")
@@ -36,26 +36,24 @@ struct timerView: View {
             })
             .onReceive(timer){ _ in
                 if startTimer {
-                    if minus && timeRemaining == 0 {
-                        timer.upstream.connect().cancel()
+                    if minus && timeString(time: timeRemaining) == "00:00" {
+                            timer.upstream.connect().cancel()
                         startTimer = false
+                       
                     }
                     if !minus{
-                    timeRemaining += 1
+                        timeRemaining += 0.10
                     } else {
-                        if timeRemaining != 0 {
-                        timeRemaining -= 1
+                        if timeString(time: timeRemaining) != "00:00" {
+                            timeRemaining -= 0.10
                         }
                     }
-                } else {
-                    timer.upstream.connect().cancel()
-                   
                 }
             }
     }
-    func timeString(time: Int) -> String {
+    func timeString(time: Double) -> String {
         let minutes   = Int(time) / 3600
-        let seconds = time - Int(minutes) * 60
+        let seconds = Int(time) - Int(minutes) * 60
         
         return String(format:"%02i:%02i", minutes, seconds)
     }
