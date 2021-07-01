@@ -34,8 +34,9 @@ struct Home: View {
                         .opacity(viewModel.currentView == .MathTest ? 1 : 0)
                         .padding(.top, 30)
                         .padding(.bottom)
-                        .tag(1)
+                        
                     }
+                    .tag(1)
                     .rotation3DEffect(
                         .degrees(Double(getProgress()) * 90),
                         axis: (x: 0.0, y: 1.0, z: 0.0),
@@ -58,8 +59,8 @@ struct Home: View {
             .background()
             .environmentObject(viewModel)
             .onAppear{
-                viewModel.day = 1
-                getPermession()
+                viewModel.day = 2
+//                viewModel.isTestFinish = false
 //                for i in testResults{
 //                    viewContext.delete(i)
 //                    do {
@@ -85,23 +86,6 @@ struct Home: View {
         return progress
     }
     
-    private func getPermession() {
-        let center = UNUserNotificationCenter.current()
-        center.getNotificationSettings { (settings) in
-
-            if(settings.authorizationStatus == .authorized) {
-                print("Push notification is enabled")
-            } else {
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-                    if success {
-                        print("All set!")
-                    } else if let error = error {
-                        print(error.localizedDescription)
-                    }
-                }
-            }
-        }
-    }
     
 }
 

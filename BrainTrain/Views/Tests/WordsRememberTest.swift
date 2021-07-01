@@ -10,19 +10,19 @@ import Introspect
 
 struct WordsRememberTest: View {
     @EnvironmentObject var viewModel: ViewModel
-    @State private var startCountTest = false
+    @State private var startCount = false
     @State private var startTest = false
     @State private var word = ""
     @State private var error = false
     @State private var wordsAlreadyExist = false
-    @State var timeRemaining = 7200
+    @State private var timeRemaining = 7200
     @Environment(\.presentationMode) var presentation
     @Environment(\.managedObjectContext) private var viewContext
     
     var body: some View {
        
             VStack {
-                if !startTest {
+                if !startTest && !viewModel.isWordsTestFinish {
                     VStack {
                     LottieView(name: "memory", loopMode: .playOnce, animationSpeed: 0.6)
                         .frame(height: small ? 120 : 200)
@@ -37,9 +37,9 @@ struct WordsRememberTest: View {
                         ForEach(viewModel.firstWeekWords, id: \.self) {
                             Text($0)
                                 .mainFont(size: 22)
-                                .redacted(reason: !startCountTest ? .placeholder : [] )
-                                .onChange(of: startCountTest, perform: { value in
-                                    if !startCountTest{
+                                .redacted(reason: !startCount ? .placeholder : [] )
+                                .onChange(of: startCount, perform: { value in
+                                    if !startCount{
                                         withAnimation{
                                         startTest = true
                                         }
@@ -48,34 +48,39 @@ struct WordsRememberTest: View {
                         }
                     }
                     Spacer()
-                    timerView(result: .constant(""), startTimer: $startCountTest, fontSize: small ? 20 : 25, minus: true)
+                    timerView(result: .constant(""), startTimer: $startCount, fontSize: small ? 20 : 25, minus: true)
                         .padding(.top)
                     
                     
                     
                     Button(action: {
-                        startCountTest.toggle()
+                        startCount.toggle()
                         timeRemaining = 200
                     },
                     label: {
-                        Text( startCountTest ? "Дальше" :  "Старт")
+                        Text( startCount ? "Дальше" :  "Старт")
                             .mainButton()
                     })
-                    .padding()
+                    .padding(.bottom, 20)
                     }
                     
                 } else {
                     
                     VStack{
-                    if !startCountTest && viewModel.wordsTestResult.isEmpty{
+                    if !startCount && viewModel.wordsTestResult.isEmpty{
                         Text("Постарайтесь вписать как можно больше запомненных слов.")
                             .fixedSize(horizontal: false, vertical: true)
                             .padding()
                     }
                     VStack {
                         
+                        if startCount {
                         Text("Слов запомнено: \(viewModel.words.count)")
                             .font(.title3)
+                            .padding(.top)
+                           
+                            
+                        }
                         
                         ZStack {
                             Text(error ? "Попробуйте другое слово" : " ")
@@ -85,7 +90,7 @@ struct WordsRememberTest: View {
                                 .foregroundColor(.red)
                         }
                         
-                        
+                        if viewModel.wordsTestResult.isEmpty {
                         ZStack (alignment: .trailing){
                             TextField("Введите слово", text: $word)
                                 .introspectTextField{ textfield in
@@ -96,10 +101,10 @@ struct WordsRememberTest: View {
                                 .autocapitalization(.none)
                                 .padding()
                                 
-                                .disabled(!startCountTest)
+                                .disabled(!startCount)
                                 .contentShape(Rectangle())
                                 .onTapGesture {
-                                    startCountTest = true
+                                    startCount = true
                             }
                             
                             Button(action: {word = ""}, label: {
@@ -109,7 +114,7 @@ struct WordsRememberTest: View {
                             })
 
                         }
-                        
+                        }
                         ScrollView {
                             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 3) {
                                 ForEach(viewModel.words, id: \.self) {
@@ -125,64 +130,97 @@ struct WordsRememberTest: View {
                     Spacer()
                     
                     if viewModel.wordsTestResult.isEmpty {
-                    timerView(result: $viewModel.wordsTestResult, startTimer: $startCountTest, fontSize: 25, minus: true)
+                    timerView(result: $viewModel.wordsTestResult, startTimer: $startCount, fontSize: 25, minus: true)
                        
                     } else {
-                        Text("Тест завершён")
-                            .font(.title)
-                            .bold()
+                        VStack {
+                            
+                            LottieView(name: "memory", loopMode: .playOnce, animationSpeed: 0.6)
+                                .frame(height: 200)
+                            
+                            Text("Слов запомнено: \(viewModel.words.count)")
+                                .font(.title)
+                              
+                            
+                            Text("Тест завершён")
+                                .font(.title)
+                                .bold()
+                                .padding(.bottom)
+                        }
                     }
                     
-                    Button(action: {
-                        if   !viewModel.wordsTestResult.isEmpty {
-                            viewModel.isWordsTestFinish = true
-                            let testResult = TestResult(context: viewContext)
-                            testResult.date = date
-                              testResult.week = String(viewModel.week)
-                              testResult.day = String(viewModel.day)
-                            testResult.testName = "Тест на запоминание слов"
-                            testResult.testResult = "Слов запомнено: \(viewModel.words.count)"
-                            testResult.isMathTest = false
-                                  do {
-                                      try viewContext.save()
-                                  } catch {return}
-                            if viewModel.isCountTestFinish && viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
-                                withAnimation(.linear){
-                                    viewModel.currentView = .MathTest
-                                }
+                        HStack {
+                            if !viewModel.wordsTestResult.isEmpty  {
+                            Button(action: {
+                                viewModel.wordsTestResult = ""
+                                timeRemaining = 0
+                                startTest = false
+                                viewModel.isWordsTestFinish = false
+                                viewModel.words.removeAll()
+                            }, label: {
+                               Image(systemName: "arrow.clockwise")
+                                .font(.title)
+                            })
                             }
-                            presentation.wrappedValue.dismiss()
-                        } else {
-                        if startCountTest {
-                            if viewModel.firstWeekWords.contains(word.trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.trimmingCharacters(in: .whitespacesAndNewlines)) {
-                                viewModel.words.append(word)
-                                word = ""
-                            } else if viewModel.words.contains(word.trimmingCharacters(in: .whitespacesAndNewlines)){
-                                wordsAlreadyExist.toggle()
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                            if   !viewModel.wordsTestResult.isEmpty {
+                                viewModel.isWordsTestFinish = true
+                                let testResult = TestResult(context: viewContext)
+                                testResult.date = date
+                                  testResult.week = String(viewModel.week)
+                                  testResult.day = String(viewModel.day)
+                                testResult.testName = "Тест на запоминание слов"
+                                testResult.testResult = "Слов запомнено: \(viewModel.words.count)"
+                                testResult.isMathTest = false
+                                      do {
+                                          try viewContext.save()
+                                      } catch {return}
+                                if viewModel.isCountTestFinish && viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
+                                    withAnimation(.linear){
+                                        viewModel.currentView = .MathTest
+                                    }
+                                }
+                                presentation.wrappedValue.dismiss()
+                            } else {
+                            if startCount {
+                                if viewModel.firstWeekWords.contains(word.trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.trimmingCharacters(in: .whitespacesAndNewlines)) {
+                                    viewModel.words.append(word)
+                                    word = ""
+                                } else if viewModel.words.contains(word.trimmingCharacters(in: .whitespacesAndNewlines)){
                                     wordsAlreadyExist.toggle()
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        wordsAlreadyExist.toggle()
+                                    }
+                                } else {
+                                    error.toggle()
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        error.toggle()
+                                    }
                                 }
                             } else {
-                                error.toggle()
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                    error.toggle()
-                                }
+                                startCount = true
                             }
-                        } else {
-                            startCountTest = true
-                        }
-                        }
-                    },
-                    label: {
-                        if   !viewModel.wordsTestResult.isEmpty {
-                            Text("Назад" )
+                            }
+                        },
+                        label: {
+                            if   !viewModel.wordsTestResult.isEmpty {
+                                Text("Назад" )
+                                    .mainButton()
+                            } else {
+                            Text(startCount ? "Добавить" : "Старт" )
                                 .mainButton()
-                        } else {
-                        Text(startCountTest ? "Добавить" : "Старт" )
-                            .mainButton()
+                            }
+                        })
+                            .padding(.leading, -20)
+                          
+                            Spacer()
                         }
-                    })
-                    .padding()
+                        .padding(.bottom)
+                        .padding(.horizontal, 30)
+                        
                 }
                     .transition(.move(edge: .trailing))
                 }

@@ -23,8 +23,14 @@ struct CounterTestView: View {
                 LottieView(name: "timer", loopMode: .loop, animationSpeed: 0.3)
                            .frame(height: 200)
                 
+                if viewModel.isCountTestFinish{
+                    Text("\(viewModel.countTestResult)")
+                        .font(.system(size: 25))
+                        .padding()
+                } else {
                 timerView(result: $viewModel.countTestResult, startTimer: $startCountTest, fontSize: 25).environmentObject(viewModel)
                     .padding()
+                }
                 
                 VStack {
                     if viewModel.countTestResult.isEmpty  {
@@ -49,6 +55,7 @@ struct CounterTestView: View {
                         Button(action: {
                             viewModel.countTestResult = ""
                             timeRemaining = 0
+                            viewModel.isCountTestFinish = false
                         }, label: {
                            Image(systemName: "arrow.clockwise")
                             .font(.title)

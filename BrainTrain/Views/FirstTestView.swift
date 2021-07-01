@@ -15,6 +15,7 @@ struct FirstTestView: View {
             VStack  {
                 Text("Неделя №\(viewModel.week)")
                     .bold()
+                    .padding(.top, 40)
                 
                 Text("Прежде чем начать тренировку, определите с помощью следующих тестов, как сейчас работает ваш мозг.")
                     .mainFont(size: 18)
@@ -52,7 +53,7 @@ struct FirstTestView: View {
                             .foregroundColor(.primary)
                             .padding()
                             .padding(.vertical, small ? 0 : 15)
-                            .background().cornerRadius(20).shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 0)
+                            .background().cornerRadius(20).shadow(color: Color.primary.opacity(0.5), radius: 5, x: 0, y: 0)
                             
                         })
                         .buttonStyle(PlainButtonStyle())
@@ -83,7 +84,7 @@ struct FirstTestView: View {
                             .foregroundColor(.primary)
                             .padding()
                             .padding(.vertical, small ? 0 : 15)
-                            .background().cornerRadius(20).shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 0)
+                            .background().cornerRadius(20).shadow(color: Color.primary.opacity(0.5), radius: 5, x: 0, y: 0)
                             
                         })
                         .buttonStyle(PlainButtonStyle())
@@ -115,13 +116,14 @@ struct FirstTestView: View {
                             .foregroundColor(.primary)
                             .padding()
                             .padding(.vertical, small ? 0 : 15)
-                            .background().cornerRadius(20).shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 0)
+                            .background().cornerRadius(20).shadow(color: Color.primary.opacity(0.5), radius: 5, x: 0, y: 0)
                             
                         })
                         .buttonStyle(PlainButtonStyle())
                     Spacer()
                 }
                 .padding(.top, 40)
+              
                 
                 
                 Spacer()

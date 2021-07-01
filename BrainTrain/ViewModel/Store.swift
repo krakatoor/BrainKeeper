@@ -11,10 +11,11 @@ import Combine
 class ViewModel: ObservableObject{
     
     @Published var mainScreen = 1
-    
     @Published  var currentView = CurrentView.DateCard
-    
     @AppStorage ("date") var day = 1
+    @AppStorage ("isTestFinish") var isTestFinish = false
+    @AppStorage ("currentDay") var currentDay = date
+    
     let brainTestsDay = Array(1...60).filter {$0.isMultiple(of:5)}
     
     var week: Int {
@@ -55,6 +56,7 @@ class ViewModel: ObservableObject{
     
     //Ежедневные примеры
     @Published var mathTestResult = ""
+    @Published  var totalExample = 15
     @Published var examplesCount = 0
     @Published var correctAnswers = 0
     @Published var isMathTestFinish = false
@@ -62,9 +64,30 @@ class ViewModel: ObservableObject{
     
     
 
-    @Published var notificationTime: Double = 86400 //86400
+    @Published var notificationTime: Double = 10 //86400
+    
+    
+    
+    func getPermession() {
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { (settings) in
+
+            if(settings.authorizationStatus == .authorized) {
+                print("Push notification is enabled")
+            } else {
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+                    if success {
+                        print("All set!")
+                    } else if let error = error {
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        }
+    }
     
     func sendNotification() {
+        getPermession()
         let content = UNMutableNotificationContent()
         content.title = "Пришло время размять мозги"
         content.subtitle = "Вы не тренировались уже 24 часа"
@@ -79,6 +102,7 @@ class ViewModel: ObservableObject{
         // add our notification request
         UNUserNotificationCenter.current().add(request)
     }
+  
  
 }
 

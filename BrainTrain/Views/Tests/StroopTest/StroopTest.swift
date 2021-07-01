@@ -56,13 +56,34 @@ struct StroopTest: View {
             
             Spacer()
             
-            Button(action: {
-                testAction()
-            }, label: {
-                Text(buttonTitile)
-                    .mainButton()
-            })
+            HStack {
+                
+                if !viewModel.stroopTestResult.isEmpty  {
+                Button(action: {
+                    viewModel.stroopTestResult = ""
+                    viewModel.isStroopTestFinish = false
+                    stage = .prepare
+                }, label: {
+                   Image(systemName: "arrow.clockwise")
+                    .font(.title)
+                })
+                }
+                
+                Spacer()
+                
+                
+                Button(action: {
+                    testAction()
+                }, label: {
+                    Text(buttonTitile)
+                        .mainButton()
+                })
+                .padding(.leading, -20)
+                Spacer()
+                   
+            }
             .padding(.bottom)
+            .padding(.horizontal, 30)
         }
         .navigationTitle("Тест Струпа")
         .navigationBarTitleDisplayMode(small ? .inline : .large)
@@ -70,7 +91,11 @@ struct StroopTest: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear{
             if viewModel.week != 1 {
-               stage = .test
+                stage = .test
+            } else if !viewModel.stroopTestResult.isEmpty {
+             
+                   stage = .finish
+                buttonTitile = "Назад"
             }
         }
         .onDisappear{
