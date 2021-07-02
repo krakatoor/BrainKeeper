@@ -27,7 +27,7 @@ struct TestResultsView: View {
                 ForEach(1...viewModel.week , id: \.self) { week in
                     VStack (spacing: 15) {
                         HStack {
-                            Text("Неделя №\(week)")
+                            Text("Неделя \(week)")
                                 .bold()
                                 .mainFont(size: 22)
                             
@@ -99,14 +99,19 @@ struct resultCard: View {
                 VStack (alignment: .leading){
                     
                     if result.isMathTest{
+                        
                         Text( "День " + (result.day ?? ""))
                             .bold()
-                        Text("Дата прохождения теста: " + (result.date ?? ""))
+                        Text("Дата прохождения теста:\n" + (result.date ?? ""))
+                            .padding(.top, 1)
+                        
                     } else {
+                        
                         Text(result.testName ?? "")
                             .bold()
                     }
                     Text(result.testResult ?? "")
+                        .padding(.top, 1)
                 }
                 .padding()
                 

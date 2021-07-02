@@ -13,7 +13,7 @@ struct FirstTestView: View {
     var body: some View {
         
             VStack  {
-                Text("Неделя №\(viewModel.week)")
+                Text("Неделя \(viewModel.week)")
                     .bold()
                     .padding(.top, 40)
                 

@@ -90,8 +90,12 @@ struct mathTest: View {
                     .mainFont(size: 20)
                     
                     
-                    
+                    if viewModel.isMathTestFinish {
+                        Text(viewModel.mathTestResult)
+                            .font(.title3)
+                    } else {
                     timerView(result: $viewModel.mathTestResult, startTimer: $startTest, fontSize: 25, isMathTest: true)
+                    }
                     
                     if !viewModel.isMathTestFinish {
                         
@@ -205,22 +209,18 @@ struct mathTest: View {
             .onAppear{
                 math()
                 let date = date
-                if viewModel.currentDay == date && viewModel.isTestFinish {
-                    viewModel.isMathTestFinish = true
-                    startTest = false
-                    
+              
                   
                     for i in 0..<testResults.count {
-                        if testResults[i].isMathTest &&  testResults[i].date == date {
+                        if testResults[i].isMathTest &&  testResults[i].date == date &&  !testResults[i].testResult!.isEmpty {
                             viewModel.mathTestResult = testResults[i].testResult!
+                            viewModel.isMathTestFinish = true
                         }
                     }
                     
                    
                     
-                } else {
-                    viewModel.isTestFinish = false
-                }
+                
             }
         }
     }
