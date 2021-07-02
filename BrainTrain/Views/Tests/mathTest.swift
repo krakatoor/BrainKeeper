@@ -209,8 +209,12 @@ struct mathTest: View {
                     viewModel.isMathTestFinish = true
                     startTest = false
                     
-                    let testResult = TestResult(context: viewContext)
-                 
+                  
+                    for i in 0..<testResults.count {
+                        if testResults[i].isMathTest &&  testResults[i].date == date {
+                            viewModel.mathTestResult = testResults[i].testResult!
+                        }
+                    }
                     
                    
                     

@@ -12,9 +12,7 @@ struct StroopTestPreparing: View {
     let colorsName = ["Синий","Красный","Зелёный","Жёлтый", "Фиолетовый"]
     var body: some View {
         
-        ScrollViewReader{ proxy in
-            ScrollView(showsIndicators: false) {
-                    
+     
                     VStack  {
                         Text("Перед началом тестирования пройдите подготовку к нему.\n\nНазывайте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись назовите цвет еще раз.")
                             .mainFont(size: small ? 18 : 20)
@@ -38,10 +36,10 @@ struct StroopTestPreparing: View {
                                 Spacer()
                             }
                         
-                        VStack (spacing: 15){
+                        VStack (spacing: 5){
                             ForEach(0..<colorsName.count, id: \.self) { index in
                                 Text(colorsName.reversed()[index])
-                                    .mainFont(size: 25)
+                                    .mainFont(size: 20)
                                     .foregroundColor(colors[index])
                             }
                         }
@@ -52,26 +50,15 @@ struct StroopTestPreparing: View {
                             .fixedSize(horizontal: false, vertical: true)
                     
                        Spacer()
-                        .id(1)
 
                     }
                     .padding(.horizontal)
                     .navigationTitle("Тест Струпа")
                     .background()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .onAppear{
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                            withAnimation{
-                            proxy.scrollTo(1)
-                            }
-                        }
-                    }
+                   
             }
-        }
-            
-        
       
-    }
     
 }
 

@@ -30,7 +30,7 @@ struct StroopTesting: View {
                 .redacted(reason: colorsViewTag == -1  ? .placeholder : [])
                
             }
-            .disabled(true)
+            .disabled(colorsViewTag < 0)
             .tabViewStyle(PageTabViewStyle())
             
           

@@ -21,9 +21,11 @@ struct Home: View {
         
         NavigationView {
             ZStack {
+                if viewModel.currentView == .DateCard {
                     ProgressCard()
                         .zIndex(1)
-                        .opacity(viewModel.currentView == .DateCard ? 1 : 0)
+                        .transition(.move(edge: .bottom))
+                }
   
                 TabView (selection: $viewModel.mainScreen){
                     ZStack{

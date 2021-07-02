@@ -26,6 +26,11 @@ struct StroopTest: View {
                     .environmentObject(viewModel)
                     .padding(.top, 10)
                     .onChange(of: colorsViewTag, perform: { value in
+                        
+                        if value == 4 {
+                            buttonTitile = "Стоп"
+                        }
+                        
                         if value == 5 {
                             buttonTitile = "Назад"
                             colorsViewTag = -1
@@ -63,6 +68,7 @@ struct StroopTest: View {
                     viewModel.stroopTestResult = ""
                     viewModel.isStroopTestFinish = false
                     stage = .prepare
+                    buttonTitile = "Дальше"
                 }, label: {
                    Image(systemName: "arrow.clockwise")
                     .font(.title)
@@ -131,7 +137,6 @@ struct StroopTest: View {
                 withAnimation{
                colorsViewTag += 1
                 }
-                buttonTitile = "Дальше"
             }
             
         case .finish:
