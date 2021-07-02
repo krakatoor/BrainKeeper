@@ -43,8 +43,10 @@ struct TestResultsView: View {
                             currentWeek = week
                             showDetail.toggle()
                     }
-                        resultCard(week: week, currentWeek: $currentWeek, showDetail: $showDetail)
+                        ChartsResult(currentWeek: $currentWeek, showDetail: $showDetail, week: viewModel.week)
+                            .padding(.leading)
                         
+                        Spacer()
                     }
                 }
             
@@ -135,6 +137,7 @@ struct resultCard: View {
         .onAppear{
             if  currentWeek == viewModel.week {
                 showDetail = true
+                showDetail.toggle()
             }
         }
         .onTapGesture {

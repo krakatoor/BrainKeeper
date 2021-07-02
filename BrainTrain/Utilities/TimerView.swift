@@ -29,6 +29,8 @@ struct timerView: View {
                 if !value{
                     if isMathTest{
                         result = "Время теста: \(timeString(time: timeRemaining)).\nПравильных ответов: \(viewModel.correctAnswers)"
+                        viewModel.mathTestResultTime = timeRemaining / 150
+                        print("Done")
                     } else {
                         result = "Время теста: \(timeString(time: timeRemaining))"
                     }
@@ -52,7 +54,7 @@ struct timerView: View {
             }
     }
     func timeString(time: Double) -> String {
-        let minutes   = Int(time) / 3600
+        let minutes   = Int(time) / 60
         let seconds = Int(time) - Int(minutes) * 60
         
         return String(format:"%02i:%02i", minutes, seconds)

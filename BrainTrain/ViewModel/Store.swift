@@ -55,14 +55,16 @@ class ViewModel: ObservableObject{
     
     
     //Ежедневные примеры
+    @Published var mathTestResultTime = 0.0
     @Published var mathTestResult = ""
-    @Published  var totalExample = 15
+    @Published  var totalExample = 2
     @Published var examplesCount = 0
     @Published var correctAnswers = 0
     @Published var isMathTestFinish = false
     @Published var showResults = false
     
-    
+    //Результаты
+    @Published var results = [0.0, 0.0, 0.0, 0.0, 0.0]
 
     @Published var notificationTime: Double = 10 //86400
     

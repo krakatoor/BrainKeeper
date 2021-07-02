@@ -209,18 +209,13 @@ struct mathTest: View {
             .onAppear{
                 math()
                 let date = date
-              
-                  
-                    for i in 0..<testResults.count {
-                        if testResults[i].isMathTest &&  testResults[i].date == date &&  !testResults[i].testResult!.isEmpty {
-                            viewModel.mathTestResult = testResults[i].testResult!
-                            viewModel.isMathTestFinish = true
-                        }
-                    }
+//                    for i in 0..<testResults.count {
+//                        if testResults[i].isMathTest &&  testResults[i].date == date &&  !testResults[i].testResult!.isEmpty {
+//                            viewModel.mathTestResult = testResults[i].testResult!
+//                            viewModel.isMathTestFinish = true
+//                        }
+//                    }
                     
-                   
-                    
-                
             }
         }
     }
@@ -270,7 +265,8 @@ struct mathTest: View {
         testResult.testName = "Ежедневный тест"
         testResult.testResult = viewModel.mathTestResult
         testResult.isMathTest = true
-        
+        testResult.result = viewModel.mathTestResultTime
+        print( viewModel.mathTestResultTime)
         if testResults.contains(testResult) {
             viewContext.delete(testResult)
         } else {

@@ -11,6 +11,8 @@
 		6B21B3F6268313BE00354990 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 6B21B3F5268313BE00354990 /* Introspect */; };
 		6B25C3E8268B4B2C0066F118 /* StroopTestPreparing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B25C3E7268B4B2C0066F118 /* StroopTestPreparing.swift */; };
 		6B25C3EA268B673B0066F118 /* StroopTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B25C3E9268B673B0066F118 /* StroopTesting.swift */; };
+		6B2CD062268F832100217B22 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 6B2CD061268F832100217B22 /* Charts */; };
+		6B2CD065268F837300217B22 /* ChartsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2CD064268F837300217B22 /* ChartsResult.swift */; };
 		6B494C3B2572E02F0001864A /* StroopTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B494C3A2572E02F0001864A /* StroopTest.swift */; };
 		6B68B60A26835F0000E45556 /* results.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B68B60926835F0000E45556 /* results.json */; };
 		6B88F431268E3BEA00F23083 /* MathTestCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B88F430268E3BEA00F23083 /* MathTestCover.swift */; };
@@ -46,6 +48,7 @@
 		6B0F19802639FAC400480B91 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		6B25C3E7268B4B2C0066F118 /* StroopTestPreparing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StroopTestPreparing.swift; sourceTree = "<group>"; };
 		6B25C3E9268B673B0066F118 /* StroopTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StroopTesting.swift; sourceTree = "<group>"; };
+		6B2CD064268F837300217B22 /* ChartsResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsResult.swift; sourceTree = "<group>"; };
 		6B494C3A2572E02F0001864A /* StroopTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StroopTest.swift; sourceTree = "<group>"; };
 		6B68B60926835F0000E45556 /* results.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = results.json; sourceTree = "<group>"; };
 		6B88F430268E3BEA00F23083 /* MathTestCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathTestCover.swift; sourceTree = "<group>"; };
@@ -84,6 +87,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BD254542675F47400D061E3 /* Lottie in Frameworks */,
+				6B2CD062268F832100217B22 /* Charts in Frameworks */,
 				6B21B3F6268313BE00354990 /* Introspect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,6 +95,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B2CD063268F835300217B22 /* MathTest */ = {
+			isa = PBXGroup;
+			children = (
+				6B88F430268E3BEA00F23083 /* MathTestCover.swift */,
+				6B88F432268E460100F23083 /* MathTestFinish.swift */,
+			);
+			path = MathTest;
+			sourceTree = "<group>";
+		};
 		6B494C3D2572E0650001864A /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +111,7 @@
 				6BBAF08126739098009B69AE /* FirstTestView.swift */,
 				6BD25486267CAED900D061E3 /* RingView.swift */,
 				6BBAF088267410F5009B69AE /* Tests */,
+				6B2CD064268F837300217B22 /* ChartsResult.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -127,8 +141,7 @@
 				6B494C3A2572E02F0001864A /* StroopTest.swift */,
 				6B88F429268D09D600F23083 /* StroopTest */,
 				6BD2547026776B4100D061E3 /* mathTest.swift */,
-				6B88F430268E3BEA00F23083 /* MathTestCover.swift */,
-				6B88F432268E460100F23083 /* MathTestFinish.swift */,
+				6B2CD063268F835300217B22 /* MathTest */,
 				6BD25484267B951400D061E3 /* TestResultsView.swift */,
 			);
 			path = Tests;
@@ -229,6 +242,7 @@
 			packageProductDependencies = (
 				6BD254532675F47400D061E3 /* Lottie */,
 				6B21B3F5268313BE00354990 /* Introspect */,
+				6B2CD061268F832100217B22 /* Charts */,
 			);
 			productName = BrainTrain;
 			productReference = 8E9F1F4D253EE0AD0029E5F3 /* BrainTrain.app */;
@@ -261,6 +275,7 @@
 			packageReferences = (
 				6BD254522675F47400D061E3 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				6B21B3F4268313BE00354990 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				6B2CD060268F832100217B22 /* XCRemoteSwiftPackageReference "swiftui-charts" */,
 			);
 			productRefGroup = 8E9F1F4E253EE0AD0029E5F3 /* Products */;
 			projectDirPath = "";
@@ -317,6 +332,7 @@
 				8E9F1F53253EE0AD0029E5F3 /* ContentView.swift in Sources */,
 				8E9F1F51253EE0AD0029E5F3 /* BrainTrainApp.swift in Sources */,
 				6B88F431268E3BEA00F23083 /* MathTestCover.swift in Sources */,
+				6B2CD065268F837300217B22 /* ChartsResult.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,6 +542,14 @@
 				minimumVersion = 0.1.3;
 			};
 		};
+		6B2CD060268F832100217B22 /* XCRemoteSwiftPackageReference "swiftui-charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/spacenation/swiftui-charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		6BD254522675F47400D061E3 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios";
@@ -541,6 +565,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6B21B3F4268313BE00354990 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = Introspect;
+		};
+		6B2CD061268F832100217B22 /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6B2CD060268F832100217B22 /* XCRemoteSwiftPackageReference "swiftui-charts" */;
+			productName = Charts;
 		};
 		6BD254532675F47400D061E3 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;

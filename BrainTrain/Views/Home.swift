@@ -47,7 +47,7 @@ struct Home: View {
                         perspective: 0.6
                     )
                     .modifier(offsetModificator(anchorPoint: .leading, offset: $offset))
-                    TestResultsView()
+                  TestResultsView()
                         .tag(2)
                 }
                
@@ -61,7 +61,7 @@ struct Home: View {
             .background()
             .environmentObject(viewModel)
             .onAppear{
-                viewModel.day = 2
+//                viewModel.day = 2
 //                viewModel.isTestFinish = false
 //                for i in testResults{
 //                    viewContext.delete(i)
