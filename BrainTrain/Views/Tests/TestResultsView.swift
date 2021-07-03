@@ -13,43 +13,41 @@ struct TestResultsView: View {
     private var testResults: FetchedResults<TestResult>
     @EnvironmentObject var viewModel: ViewModel
     @State private var currentWeek = 1
-    @State private var showDetail = false
 
     var body: some View {
         VStack{
-            ScrollView(showsIndicators: false) {
+          
             Text("Результаты тестов")
                 .bold()
                 .mainFont(size: 25)
                 .padding(.vertical, 30)
                 
             if !testResults.isEmpty {
-                ForEach(1...viewModel.week , id: \.self) { week in
-                    VStack (spacing: 15) {
-                        HStack {
-                            Text("Неделя \(week)")
-                                .bold()
-                                .mainFont(size: 22)
-                            
-                                Spacer()
-                            
-                            Text(showDetail && week == currentWeek ? "Скрыть" : "Показать")
-                                .foregroundColor(.blue)
-                                .mainFont(size: 16)
-                            
+               
+                TabView (selection: $currentWeek){
+                            ForEach(1...viewModel.week , id: \.self) { week in
+                                VStack (spacing: 15) {
+                                        Text("Неделя \(week)")
+                                            .bold()
+                                            .mainFont(size: 22)
+                                     
+                                    
+                                    
+                                    
+                                    ChartsResult(currentWeek: $currentWeek, week: week)
+                                
+                                }
+                                .tag(week)
+                               
+                            }
                         }
-                        .padding(.horizontal)
-                        .onTapGesture {
-                            currentWeek = week
-                            showDetail.toggle()
-                    }
-                        ChartsResult(currentWeek: $currentWeek, showDetail: $showDetail, week: viewModel.week)
-                            .padding(.leading)
-                        
-                        Spacer()
-                    }
-                }
-            
+                
+                .frame(width: screenSize.width, height: 450)
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: currentWeek > 1 ? .always : .never))
+                        .onAppear{
+                       
+                        }
+                
             } else {
                 VStack {
                     LottieView(name: "results", loopMode: .loop, animationSpeed: 0.8)
@@ -66,11 +64,12 @@ struct TestResultsView: View {
             }
             Spacer()
             }
-        }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background()
         .onAppear{
-            currentWeek = viewModel.week
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                    currentWeek = viewModel.week
+            }
         }
         .onDisappear{
             viewModel.mainScreen = 1
@@ -82,67 +81,5 @@ struct TestResultsView_Previews: PreviewProvider {
     static var previews: some View {
         TestResultsView()
             .environmentObject(ViewModel())
-    }
-}
-
-struct resultCard: View {
-    @Environment(\.managedObjectContext) private var  viewContext
-    @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
-    private var testResults: FetchedResults<TestResult>
-    @EnvironmentObject var viewModel: ViewModel
-    var week: Int
-    @Binding var currentWeek: Int
-    @Binding var showDetail: Bool
-    var body: some View {
-        VStack {
-            if showDetail && week == currentWeek{
-            ForEach(testResults.sorted{$0.isMathTest == $1.isMathTest}.filter{$0.week == String(week)}, id: \.self) { result in
-            HStack {
-                VStack (alignment: .leading){
-                    
-                    if result.isMathTest{
-                        
-                        Text( "День " + (result.day ?? ""))
-                            .bold()
-                        Text("Дата прохождения теста:\n" + (result.date ?? ""))
-                            .padding(.top, 1)
-                        
-                    } else {
-                        
-                        Text(result.testName ?? "")
-                            .bold()
-                    }
-                    Text(result.testResult ?? "")
-                        .padding(.top, 1)
-                }
-                .padding()
-                
-                Spacer()
-                
-                Image(systemName: "trash.circle.fill")
-                    .renderingMode(.original)
-                    .font(.title)
-                    .onTapGesture {
-                        viewContext.delete(result)
-                        do {
-                            try viewContext.save()
-                        } catch {return}
-                    }
-            }
-            .mainFont(size: 18)
-            .padding(.horizontal)
-            }
-        }
-        }
-        .onAppear{
-            if  currentWeek == viewModel.week {
-                showDetail = true
-                showDetail.toggle()
-            }
-        }
-        .onTapGesture {
-            currentWeek = week
-            showDetail.toggle()
-    }
     }
 }

@@ -15,7 +15,6 @@ struct mathTest: View {
     @State private var operator1 = ""
     @State private var totalSum = 0
     @State private var totalSumText = ""
-    @State private var startTest = false
     @State private var timeRemaining = 0
     @State private var prevAnswer = ""
     @State private var prevAnswerColor = Color.black
@@ -56,7 +55,7 @@ struct mathTest: View {
                     
                     
                     LottieView(name: "math", loopMode: .loop, animationSpeed: 0.8)
-                        .frame(height: startTest ? 150 : (small ? 200 : 250))
+                        .frame(height: viewModel.startTest ? 150 : (small ? 200 : 250))
                     
                     
                     VStack {
@@ -67,7 +66,7 @@ struct mathTest: View {
                                     if viewModel.examplesCount == viewModel.totalExample {
                                         
                                         withAnimation{
-                                            startTest.toggle()
+                                            viewModel.startTest.toggle()
                                         }
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                             withAnimation{
@@ -89,12 +88,13 @@ struct mathTest: View {
                     }
                     .mainFont(size: 20)
                     
+                    Spacer()
                     
                     if viewModel.isMathTestFinish {
                         Text(viewModel.mathTestResult)
                             .font(.title3)
                     } else {
-                    timerView(result: $viewModel.mathTestResult, startTimer: $startTest, fontSize: 25, isMathTest: true)
+                    timerView(result: $viewModel.mathTestResult, startTimer: $viewModel.startTest, fontSize: 25, isMathTest: true)
                     }
                     
                     if !viewModel.isMathTestFinish {
@@ -102,11 +102,11 @@ struct mathTest: View {
                         HStack {
                             Spacer()
                             
-                            if startTest {
+                            if viewModel.startTest {
                                 Text("\(number1) \(operator1) \(number2) =")
                             } else {
                                 Text("3 x 3 =")
-                                    .redacted(reason: startTest ? [] : .placeholder)
+                                    .redacted(reason: viewModel.startTest ? [] : .placeholder)
                             }
                             
                             Text(totalSumText)
@@ -139,20 +139,20 @@ struct mathTest: View {
                     
                     
                     
-                    if startTest{
+                    if viewModel.startTest{
                         buttons
                             .padding(.top)
-                            .padding(.bottom, small ? 0 : 15)
+                            .padding(.bottom, 10)
                             .transition(.move(edge: .bottom))
-                        
+                        Spacer()
                     }
-                    Spacer()
+                    
                 }
                 .contentShape(Rectangle())
                 .onTapGesture {
                     if viewModel.examplesCount != viewModel.totalExample{
                         withAnimation{
-                            startTest = true
+                            viewModel.startTest = true
                         }
                     }
                 }
@@ -160,12 +160,12 @@ struct mathTest: View {
                 Spacer()
                 
                 
-                if !startTest{
+                if !viewModel.startTest{
                     HStack {
                         Button(action:{
-                            if !startTest  && !viewModel.isMathTestFinish {
+                            if !viewModel.startTest  && !viewModel.isMathTestFinish {
                                 withAnimation{
-                                    startTest.toggle()
+                                    viewModel.startTest.toggle()
                                 }
                                 
                             } else {
@@ -184,7 +184,7 @@ struct mathTest: View {
                                     .background(Color.blue.cornerRadius(15))
                                 
                             } else if viewModel.examplesCount < viewModel.totalExample {
-                                Text(!startTest ? "Старт" : "Дальше")
+                                Text(!viewModel.startTest ? "Старт" : "Дальше")
                                     .mainFont(size: 20)
                                     .foregroundColor(.white)
                                     .frame(width: 250)
@@ -208,19 +208,19 @@ struct mathTest: View {
             .mainFont(size: 30)
             .onAppear{
                 math()
-                let date = date
+//                let date = date
 //                    for i in 0..<testResults.count {
 //                        if testResults[i].isMathTest &&  testResults[i].date == date &&  !testResults[i].testResult!.isEmpty {
 //                            viewModel.mathTestResult = testResults[i].testResult!
 //                            viewModel.isMathTestFinish = true
 //                        }
 //                    }
-                    
+//                    
             }
         }
     }
     
-    
+  
     private func math () {
         operator1 = ["+", "-", "×", "÷"].randomElement()!
         if operator1 == "+" {

@@ -15,7 +15,8 @@ struct FirstTestView: View {
             VStack  {
                 Text("Неделя \(viewModel.week)")
                     .bold()
-                    .padding(.top, 40)
+                    .mainFont(size: 25)
+                    .padding(.top, 20)
                 
                 Text("Прежде чем начать тренировку, определите с помощью следующих тестов, как сейчас работает ваш мозг.")
                     .mainFont(size: 18)
@@ -26,39 +27,35 @@ struct FirstTestView: View {
                 Spacer()
                 
                 VStack (spacing: 40) {
-                    
-                    
-                    NavigationLink(
-                        destination: CounterTestView()
-                            .environmentObject(viewModel),
-                        label: {
-                            VStack (spacing: 5) {
-                                Text("Тест на счёт")
-                                    .font(.title2)
-                                    .bold()
-                                    .padding(.top, 10)
-                                
-                                HStack {
-                                    Spacer()
-                                    Text("Оценка работы лобных долей")
-                                        .foregroundColor(.secondary)
-                                        .mainFont(size: 14)
-                                        .fixedSize()
-                                    
-                                    Spacer()
-                                }
-                                .padding([.leading, .bottom])
-                            }
-                            .frame(width: screenSize.width / 1.3)
-                            .foregroundColor(.primary)
-                            .padding()
-                            .padding(.vertical, small ? 0 : 15)
-                            .background().cornerRadius(20).shadow(color: Color.primary.opacity(0.5), radius: 5, x: 0, y: 0)
-                            
-                        })
-                        .buttonStyle(PlainButtonStyle())
-                    
-                    
+//                    NavigationLink(
+//                        destination: CounterTestView()
+//                            .environmentObject(viewModel),
+//                        label: {
+//                            VStack (spacing: 5) {
+//                                Text("Тест на счёт")
+//                                    .font(.title2)
+//                                    .bold()
+//                                    .padding(.top, 10)
+//
+//                                HStack {
+//                                    Spacer()
+//                                    Text("Оценка работы лобных долей")
+//                                        .foregroundColor(.secondary)
+//                                        .mainFont(size: 14)
+//                                        .fixedSize()
+//
+//                                    Spacer()
+//                                }
+//                                .padding([.leading, .bottom])
+//                            }
+//                            .frame(width: screenSize.width / 1.3)
+//                            .foregroundColor(.primary)
+//                            .padding()
+//                            .padding(.vertical, small ? 0 : 15)
+//                            .background().cornerRadius(20).shadow(color: Color.primary.opacity(0.5), radius: 5, x: 0, y: 0)
+//
+//                        })
+//                        .buttonStyle(PlainButtonStyle())
                     
                     
                     NavigationLink(

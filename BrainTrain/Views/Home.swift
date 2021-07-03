@@ -30,7 +30,6 @@ struct Home: View {
                 TabView (selection: $viewModel.mainScreen){
                     ZStack{
                     FirstTestView()
-                        .padding(.top, 30)
                         .opacity(viewModel.currentView != .MathTest ? 1 : 0)
                     mathTest()
                         .opacity(viewModel.currentView == .MathTest ? 1 : 0)
@@ -50,9 +49,8 @@ struct Home: View {
                   TestResultsView()
                         .tag(2)
                 }
-               
                 .padding(.bottom, -30)
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: viewModel.mainScreen == 1 && viewModel.currentView != .MathTest ? .always : .never))
                 .opacity(viewModel.currentView != .DateCard ? 1 : 0)
                
             }
@@ -61,7 +59,8 @@ struct Home: View {
             .background()
             .environmentObject(viewModel)
             .onAppear{
-//                viewModel.day = 2
+                
+//                viewModel.day = 1
 //                viewModel.isTestFinish = false
 //                for i in testResults{
 //                    viewContext.delete(i)
@@ -69,9 +68,36 @@ struct Home: View {
 //                        try viewContext.save()
 //                    } catch {return}
 //                }
+                
+                if viewModel.currentView == .DateCard {
+                let date = date
+                    for result in testResults{
+                            if result.date == date {
+                                if result.testName == "Тест на запоминание слов"{
+                                    if viewModel.wordsTestResult.isEmpty {
+                                        viewModel.wordsTestResult = result.testResult!
+                                        viewModel.isWordsTestFinish = true
+                                    }
+                            }
+                                
+                                if result.testName == "Тест Струпа"{
+                                    if viewModel.stroopTestResult.isEmpty {
+                                        viewModel.stroopTestResult = result.testResult!
+                                        viewModel.isStroopTestFinish = true
+                                    }
+                                }
+                        }
+                       
+                    }
+                    
+                   
+                }
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         withAnimation(.linear){
-                            if viewModel.currentView == .DateCard && viewModel.brainTestsDay.contains(viewModel.day - 1) || viewModel.day == 1{
+                            if  viewModel.isWordsTestFinish &&  viewModel.isStroopTestFinish {
+                                viewModel.currentView = .MathTest
+                            } else  if viewModel.currentView == .DateCard && viewModel.brainTestsDay.contains(viewModel.day - 1) || viewModel.day == 1{
                             viewModel.currentView = .BrainTests
                             } else {
                                 viewModel.currentView = .MathTest

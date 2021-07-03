@@ -89,3 +89,20 @@ struct CustomCorner: Shape {
 }
 
 
+
+struct Leading: ViewModifier {
+    func body(content: Content) -> some View {
+        HStack {
+            content
+            Spacer()
+        }
+        .padding(.leading)
+    }
+}
+
+extension View {
+    func leadingView() -> some View {
+        self
+            .modifier(Leading())
+    }
+}

@@ -100,9 +100,14 @@ struct WordsRememberTest: View {
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .autocapitalization(.none)
                                 .padding()
-                                
                                 .disabled(!startCount)
                                 .contentShape(Rectangle())
+                                .onChange(of: word, perform: { value in
+                                    if viewModel.firstWeekWords.contains(word.trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.trimmingCharacters(in: .whitespacesAndNewlines)) {
+                                        viewModel.words.append(word)
+                                        word = ""
+                                    }
+                                })
                                 .onTapGesture {
                                     startCount = true
                             }
@@ -138,14 +143,21 @@ struct WordsRememberTest: View {
                             LottieView(name: "memory", loopMode: .playOnce, animationSpeed: 0.6)
                                 .frame(height: 200)
                             
-                            Text("Слов запомнено: \(viewModel.words.count)")
-                                .font(.title)
-                              
-                            
                             Text("Тест завершён")
                                 .font(.title)
                                 .bold()
+                               
+                            if viewModel.isWordsTestFinish{
+                                Text(viewModel.wordsTestResult)
+                                    .font(.title)
+                                    .padding(.bottom)
+                            } else {
+                            Text("Слов запомнено: \(viewModel.words.count)")
+                                .font(.title)
                                 .padding(.bottom)
+                            }
+                            
+                           
                         }
                     }
                     
@@ -178,7 +190,7 @@ struct WordsRememberTest: View {
                                       do {
                                           try viewContext.save()
                                       } catch {return}
-                                if viewModel.isCountTestFinish && viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
+                                if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                                     withAnimation(.linear){
                                         viewModel.currentView = .MathTest
                                     }
@@ -230,7 +242,7 @@ struct WordsRememberTest: View {
                 if !viewModel.wordsTestResult.isEmpty{
                 viewModel.isWordsTestFinish = true
                 }
-                if viewModel.isCountTestFinish && viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
+                if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                     withAnimation(.linear){
                         viewModel.currentView = .MathTest
                     }

@@ -16,11 +16,10 @@ struct StroopTest: View {
     @Environment(\.presentationMode) var presentation
     @Environment(\.managedObjectContext) private var viewContext
     @State private var buttonTitile = "Дальше"
-  @State private var colorsViewTag = -1
+    @State private var colorsViewTag = -1
     @State private var stage: StroopTestStages = .prepare
     var body: some View {
         VStack {
-            
               stroopTestViews()
                     .transition(.slide)
                     .environmentObject(viewModel)
@@ -114,7 +113,7 @@ struct StroopTest: View {
             if !viewModel.stroopTestResult.isEmpty{
             viewModel.isStroopTestFinish = true
             }
-            if viewModel.isCountTestFinish && viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
+            if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                 withAnimation(.linear){
                     viewModel.currentView = .MathTest
                 }
@@ -124,7 +123,6 @@ struct StroopTest: View {
     
     func testAction(){
         switch stage {
-        
         case .prepare:
             buttonTitile = "Начать"
             stage = .test
@@ -141,7 +139,7 @@ struct StroopTest: View {
             
         case .finish:
             presentation.wrappedValue.dismiss()
-            if viewModel.isCountTestFinish && viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
+            if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                 withAnimation(.linear){
                     viewModel.currentView = .MathTest
                 }
