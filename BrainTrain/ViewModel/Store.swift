@@ -35,10 +35,10 @@ class ViewModel: ObservableObject{
     
     //Результаты тестов
     @Published var testsResults: [Result] = []
-   
-    //Тест на счет
-    @Published var countTestResult = ""
-    @Published var isCountTestFinish = false
+
+    
+    @Published var wordsTestTapped = false
+    @Published var stroopTestTapped = false
     
     //Тест Струпа
     @Published var isStroopTestFinish = false
@@ -49,7 +49,7 @@ class ViewModel: ObservableObject{
     @Published var isWordsTestFinish = false
     @Published var wordsTestResult = ""
     @Published var words: [String] = []
-    
+    @Published var timeRemaining:Double = 12 //in seconds
     //Проверка функциональности лобных долей
     let firstWeekWords = ["темница", "сервер", "кнут", "колье","белье","алебастр","копыто","косточка","задник","шашлык","дерево","чайка","аромат","залог","журавль","мокасин","звено","миндаль","капсула","ягода"]
     

@@ -11,43 +11,39 @@ struct timerView: View {
     @EnvironmentObject var viewModel: ViewModel
     @Binding var result: String
     @Binding var startTimer: Bool
-    @State private var timeRemaining:Double = 0
     var fontSize: CGFloat = 20
     var minus = false
     var isMathTest = false
     let timer = Timer.publish(every: 0.10, on: .main, in: .common).autoconnect()
  
     var body: some View {
-        Text(minus ? "Осталось: \(timeString(time: timeRemaining))" : "Время теста: \(timeString(time: timeRemaining))")
+        Text(minus ? "Осталось: \(timeString(time: viewModel.timeRemaining))" : "Время теста: \(timeString(time: viewModel.timeRemaining))")
             .font(.system(size: fontSize))
-            .onAppear{
-                if minus{
-                    timeRemaining = 10
-                }
-            }
             .onChange(of: startTimer, perform: { value in
                 if !value{
                     if isMathTest{
-                        result = "Время теста: \(timeString(time: timeRemaining)).\nПравильных ответов: \(viewModel.correctAnswers)"
-                        viewModel.mathTestResultTime = timeRemaining / 150
+                        result = "Время теста: \(timeString(time: viewModel.timeRemaining)).\nПравильных ответов: \(viewModel.correctAnswers)"
+                        viewModel.mathTestResultTime = viewModel.timeRemaining / 150
                         print("Done")
                     } else {
-                        result = "Время теста: \(timeString(time: timeRemaining))"
+                        result = "Время теста: \(timeString(time: viewModel.timeRemaining))"
                     }
                 }
             })
             .onReceive(timer){ _ in
                 if startTimer {
-                    if minus && timeString(time: timeRemaining) == "00:00" {
+                    if minus && timeString(time: viewModel.timeRemaining) == "00:00" {
                             timer.upstream.connect().cancel()
+                        withAnimation (.spring()){
                         startTimer = false
+                        }
                        
                     }
                     if !minus{
-                        timeRemaining += 0.10
+                        viewModel.timeRemaining += 0.10
                     } else {
-                        if timeString(time: timeRemaining) != "00:00" {
-                            timeRemaining -= 0.10
+                        if timeString(time: viewModel.timeRemaining) != "00:00" {
+                            viewModel.timeRemaining -= 0.10
                         }
                     }
                 }

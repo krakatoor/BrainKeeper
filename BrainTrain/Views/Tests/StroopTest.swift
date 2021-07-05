@@ -13,11 +13,11 @@ enum StroopTestStages {
 
 struct StroopTest: View {
     @EnvironmentObject var viewModel: ViewModel
-    @Environment(\.presentationMode) var presentation
     @Environment(\.managedObjectContext) private var viewContext
     @State private var buttonTitile = "Дальше"
     @State private var colorsViewTag = -1
     @State private var stage: StroopTestStages = .prepare
+    var animation: Namespace.ID
     var body: some View {
         VStack {
               stroopTestViews()
@@ -83,17 +83,22 @@ struct StroopTest: View {
                     Text(buttonTitile)
                         .mainButton()
                 })
-                .padding(.leading, -20)
+                .padding(.leading,  !viewModel.stroopTestResult.isEmpty  ? -20 : 0)
                 Spacer()
                    
             }
             .padding(.bottom)
             .padding(.horizontal, 30)
         }
-        .navigationTitle("Тест Струпа")
-        .navigationBarTitleDisplayMode(small ? .inline : .large)
+        .padding(.vertical, 20)
         .background()
+        .matchedGeometryEffect(id: "background1", in: animation)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onTapGesture {
+            withAnimation(.spring()){
+            viewModel.stroopTestTapped.toggle()
+            }
+        }
         .onAppear{
             if viewModel.week != 1 {
                 stage = .test
@@ -138,7 +143,9 @@ struct StroopTest: View {
             }
             
         case .finish:
-            presentation.wrappedValue.dismiss()
+            withAnimation(.spring()){
+            viewModel.stroopTestTapped = false
+            }
             if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                 withAnimation(.linear){
                     viewModel.currentView = .MathTest
@@ -152,11 +159,11 @@ struct StroopTest: View {
 
         switch stage {
         case .prepare:
-           StroopTestPreparing()
+           StroopTestPreparing(animation: animation)
         case .test:
             StroopTesting(colorsViewTag: $colorsViewTag)
         case .finish:
-            StroopFinish()
+            StroopFinish(animation: animation)
         }
     }
     }
@@ -165,8 +172,9 @@ struct StroopTest: View {
 
 
 struct StrupTest_Previews: PreviewProvider {
+    @Namespace static var namespace
     static var previews: some View {
-        StroopTest()
+        StroopTest(animation: namespace)
             .environmentObject(ViewModel())
     }
 }

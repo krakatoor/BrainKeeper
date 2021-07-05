@@ -17,9 +17,12 @@ struct Home: View {
     //
     @State private var offset: CGFloat = .zero
 
+    init() {
+        UIScrollView.appearance().showsVerticalScrollIndicator = false
+    }
     var body: some View {
         
-        NavigationView {
+     
             ZStack {
                 if viewModel.currentView == .DateCard {
                     ProgressCard()
@@ -31,6 +34,7 @@ struct Home: View {
                     ZStack{
                     FirstTestView()
                         .opacity(viewModel.currentView != .MathTest ? 1 : 0)
+                        
                     mathTest()
                         .opacity(viewModel.currentView == .MathTest ? 1 : 0)
                         .padding(.top, 30)
@@ -50,11 +54,10 @@ struct Home: View {
                         .tag(2)
                 }
                 .padding(.bottom, -30)
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: viewModel.mainScreen == 1 && viewModel.currentView != .MathTest ? .always : .never))
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: viewModel.mainScreen == 1 && !viewModel.wordsTestTapped && !viewModel.stroopTestTapped ? .always : .never))
                 .opacity(viewModel.currentView != .DateCard ? 1 : 0)
                
             }
-            .navigationBarHidden(true)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background()
             .environmentObject(viewModel)
@@ -105,8 +108,7 @@ struct Home: View {
                         }
                     }
             }
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
+    
     }
     
     private func getProgress() -> CGFloat {

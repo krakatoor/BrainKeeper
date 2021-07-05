@@ -21,7 +21,6 @@
 		6B93670026829F66000BB506 /* offsetModificator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9366FF26829F66000BB506 /* offsetModificator.swift */; };
 		6BBAF0802673903E009B69AE /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBAF07F2673903E009B69AE /* TimerView.swift */; };
 		6BBAF08226739098009B69AE /* FirstTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBAF08126739098009B69AE /* FirstTestView.swift */; };
-		6BBAF084267395C9009B69AE /* CounterTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBAF083267395C9009B69AE /* CounterTestView.swift */; };
 		6BBAF0872673A3A4009B69AE /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBAF0862673A3A4009B69AE /* Store.swift */; };
 		6BBAF08A2674111B009B69AE /* WordsRememberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBAF0892674111B009B69AE /* WordsRememberTest.swift */; };
 		6BD254542675F47400D061E3 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD254532675F47400D061E3 /* Lottie */; };
@@ -58,7 +57,6 @@
 		6B9366FF26829F66000BB506 /* offsetModificator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = offsetModificator.swift; sourceTree = "<group>"; };
 		6BBAF07F2673903E009B69AE /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		6BBAF08126739098009B69AE /* FirstTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTestView.swift; sourceTree = "<group>"; };
-		6BBAF083267395C9009B69AE /* CounterTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterTestView.swift; sourceTree = "<group>"; };
 		6BBAF0862673A3A4009B69AE /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		6BBAF0892674111B009B69AE /* WordsRememberTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsRememberTest.swift; sourceTree = "<group>"; };
 		6BD254552675F51A00D061E3 /* timer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timer.json; sourceTree = "<group>"; };
@@ -137,7 +135,6 @@
 		6BBAF088267410F5009B69AE /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				6BBAF083267395C9009B69AE /* CounterTestView.swift */,
 				6BBAF0892674111B009B69AE /* WordsRememberTest.swift */,
 				6B494C3A2572E02F0001864A /* StroopTest.swift */,
 				6B88F429268D09D600F23083 /* StroopTest */,
@@ -313,7 +310,6 @@
 				6BBAF08226739098009B69AE /* FirstTestView.swift in Sources */,
 				8E9F1F5A253EE0AF0029E5F3 /* Persistence.swift in Sources */,
 				6B0F19812639FAC400480B91 /* Extensions.swift in Sources */,
-				6BBAF084267395C9009B69AE /* CounterTestView.swift in Sources */,
 				6BD2547126776B4200D061E3 /* mathTest.swift in Sources */,
 				6BBAF0872673A3A4009B69AE /* Store.swift in Sources */,
 				6BD254752677FBA300D061E3 /* Home.swift in Sources */,
