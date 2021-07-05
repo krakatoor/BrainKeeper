@@ -12,6 +12,8 @@ struct ChartView: View {
     @State private var showTime = 0.0
     @State private var showDetail = false
     @State private var viewHeight: CGFloat = 200
+    @State private var startAnimation = true
+
     var body: some View {
         
         ZStack (alignment: .top){
@@ -42,12 +44,17 @@ struct ChartView: View {
                                     Spacer()
                                     Rectangle()
                                         .foregroundColor(chart > 1.0 ? .red : .orange)
-                                        .frame(height: CGFloat(chart > 1.0 ? 200 : chart * 210))
+                                        .frame(height: startAnimation ? 0 : CGFloat(chart > 1.0 ? 200 : chart * 210))
                                 }
                             )
                     }
                     .frame(height: viewHeight < 210 ? 210 : viewHeight * 210)
                     .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            withAnimation(.linear) {
+                                startAnimation = false
+                            }
+                        }
                         let sorted = results.sorted{$0 > $1}
                         viewHeight = CGFloat( sorted[0])
                     }

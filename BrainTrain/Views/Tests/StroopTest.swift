@@ -13,7 +13,9 @@ enum StroopTestStages {
 
 struct StroopTest: View {
     @EnvironmentObject var viewModel: ViewModel
-    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.managedObjectContext) private var  viewContext
+    @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
+    private var testResults: FetchedResults<TestResult>
     @State private var buttonTitile = "Дальше"
     @State private var colorsViewTag = -1
     @State private var stage: StroopTestStages = .prepare
@@ -23,14 +25,12 @@ struct StroopTest: View {
               stroopTestViews()
                     .transition(.slide)
                     .environmentObject(viewModel)
-                    .padding(.top, 10)
                     .onChange(of: colorsViewTag, perform: { value in
-                        
                         if value == 4 {
                             buttonTitile = "Стоп"
                         }
-                        
                         if value == 5 {
+                            viewModel.startStroopTestTimer = false
                             buttonTitile = "Назад"
                             colorsViewTag = -1
                             viewModel.startStroopTestTimer = false
@@ -46,8 +46,16 @@ struct StroopTest: View {
                               testResult.testResult = viewModel.stroopTestResult
                                 testResult.isMathTest = false
                               do {
+                                for result in testResults{
+                                        if result.date == testResult.date {
+                                            if result.testName == testResult.testName{
+                                                    viewContext.delete(result)
+                                        }
+                                    }
+                                }
                                   try viewContext.save()
                               } catch {return}
+                                print("save stroop")
                                 viewModel.isStroopTestFinish = true
                             }
                         }
@@ -55,6 +63,7 @@ struct StroopTest: View {
             
             if colorsViewTag != -1 {
                 timerView(result: $viewModel.stroopTestResult, startTimer: $viewModel.startStroopTestTimer)
+                    .environmentObject(viewModel)
                 .padding(.top, 10)
             }
             
@@ -96,10 +105,11 @@ struct StroopTest: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onTapGesture {
             withAnimation(.spring()){
-            viewModel.stroopTestTapped.toggle()
+            viewModel.stroopTestTapped = false
             }
         }
         .onAppear{
+            viewModel.timeRemaining = 0
             if viewModel.week != 1 {
                 stage = .test
             } else if !viewModel.stroopTestResult.isEmpty {
@@ -121,6 +131,7 @@ struct StroopTest: View {
             if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                 withAnimation(.linear){
                     viewModel.currentView = .MathTest
+                    viewModel.timeRemaining = 0
                 }
             }
         }
@@ -144,7 +155,7 @@ struct StroopTest: View {
             
         case .finish:
             withAnimation(.spring()){
-            viewModel.stroopTestTapped = false
+                viewModel.stroopTestTapped = false
             }
             if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                 withAnimation(.linear){

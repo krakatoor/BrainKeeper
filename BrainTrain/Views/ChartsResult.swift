@@ -17,14 +17,15 @@ struct ChartsResult: View {
     @State private var results = [0.0, 0.0, 0.0, 0.0, 0.0]
     @State private var wordsTestResult = "Тест на запоминание слов"
     @State private var StroopTestResult = "Тест Струпа"
+    @State private var startAnimation = true
     var week: Int
     
     var body: some View {
         VStack {
             Rectangle()
                 .fill(Color.blue)
-                .frame(height: 25)
-                .padding(.horizontal)
+                .frame(width: startAnimation ? 0 : screenSize.width - 30,  height: 25)
+                .leadingView()
                 .overlay(
                 Text(wordsTestResult)
                     .foregroundColor(.black)
@@ -35,8 +36,8 @@ struct ChartsResult: View {
          
             Rectangle()
                 .fill(Color.green)
-                .frame(height: 25)
-                .padding(.horizontal)
+                .frame(width: startAnimation ? 0 : screenSize.width - 30,  height: 25)
+                .leadingView()
                 .overlay(
                     Text(StroopTestResult)
                         .foregroundColor(.black)
@@ -87,6 +88,11 @@ struct ChartsResult: View {
                 .padding()
                 .onAppear{
                     updateResult()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        withAnimation(.linear) {
+                            startAnimation = false
+                        }
+                    }
                 }
               
         }

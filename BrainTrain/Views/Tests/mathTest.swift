@@ -266,7 +266,6 @@ struct mathTest: View {
         testResult.testResult = viewModel.mathTestResult
         testResult.isMathTest = true
         testResult.result = viewModel.mathTestResultTime
-        print( viewModel.mathTestResultTime)
         if testResults.contains(testResult) {
             viewContext.delete(testResult)
         } else {
@@ -392,7 +391,9 @@ struct mathTest: View {
                 totalSumText.removeLast()
             }
         })
-        
+        .onAppear{
+            viewModel.timeRemaining = 0
+        }
     }
 }
 

@@ -62,7 +62,6 @@ struct Home: View {
             .background()
             .environmentObject(viewModel)
             .onAppear{
-                
 //                viewModel.day = 1
 //                viewModel.isTestFinish = false
 //                for i in testResults{
@@ -71,10 +70,10 @@ struct Home: View {
 //                        try viewContext.save()
 //                    } catch {return}
 //                }
-                
                 if viewModel.currentView == .DateCard {
                 let date = date
                     for result in testResults{
+                        print(result)
                             if result.date == date {
                                 if result.testName == "Тест на запоминание слов"{
                                     if viewModel.wordsTestResult.isEmpty {
@@ -96,7 +95,7 @@ struct Home: View {
                    
                 }
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                         withAnimation(.linear){
                             if  viewModel.isWordsTestFinish &&  viewModel.isStroopTestFinish {
                                 viewModel.currentView = .MathTest

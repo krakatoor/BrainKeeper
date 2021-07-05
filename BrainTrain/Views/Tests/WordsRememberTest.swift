@@ -15,7 +15,9 @@ struct WordsRememberTest: View {
     @State private var word = ""
     @State private var error = false
     @State private var wordsAlreadyExist = false
-    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.managedObjectContext) private var  viewContext
+    @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
+    private var testResults: FetchedResults<TestResult>
     var animation: Namespace.ID
     @StateObject var keyboard = KeyboardResponder()
     var body: some View {
@@ -26,13 +28,13 @@ struct WordsRememberTest: View {
                         Text("Тест на запоминание слов")
                             .font(.title2)
                             .bold()
-                            .padding(.top, 20)
+                            .padding(.top, small ? 0 : 20)
                             .matchedGeometryEffect(id: "Тест", in: animation)
                         
                         
                     LottieView(name: "memory", loopMode: .loop, animationSpeed: 0.6)
                             .matchedGeometryEffect(id: "lamp", in: animation)
-                        .frame(height: small ? 120 : 200)
+                        .frame(height: small ? 100 : 200)
                         .padding(.top)
                     
                     Text("В течении 2х минут постарайтесь запомнить как можно больше слов.")
@@ -58,7 +60,7 @@ struct WordsRememberTest: View {
                     Spacer()
                     timerView(result: .constant(""), startTimer: $startCount, fontSize: small ? 20 : 25, minus: true)
                         .padding(.top)
-                    
+                        .environmentObject(viewModel)
                     
                     
                     Button(action: {
@@ -79,6 +81,7 @@ struct WordsRememberTest: View {
                             Text("Постарайтесь вписать как можно больше запомненных слов.")
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding()
+                                .padding(.top, small ? 0 : 18)
                                
                         }
                         VStack {
@@ -87,8 +90,6 @@ struct WordsRememberTest: View {
                             Text("Слов запомнено: \(viewModel.words.count)")
                                 .font(.title3)
                                 .padding(.top)
-                               
-                                
                             }
                             
                             ZStack {
@@ -146,7 +147,32 @@ struct WordsRememberTest: View {
                         
                         if viewModel.wordsTestResult.isEmpty {
                         timerView(result: $viewModel.wordsTestResult, startTimer: $startCount, fontSize: 25, minus: true)
-                           
+                            .environmentObject(viewModel)
+                            .onChange(of: startCount, perform: { value in
+                                if !value {
+                                    viewModel.isWordsTestFinish = true
+                                    let testResult = TestResult(context: viewContext)
+                                    testResult.date = date
+                                      testResult.week = String(viewModel.week)
+                                      testResult.day = String(viewModel.day)
+                                    testResult.testName = "Тест на запоминание слов"
+                                    testResult.testResult = "Слов запомнено: \(viewModel.words.count)"
+                                    testResult.isMathTest = false
+                                          do {
+                                                for result in testResults{
+                                                        if result.date == testResult.date {
+                                                            if result.testName == testResult.testName{
+                                                                    viewContext.delete(result)
+                                                        }
+                                                    }
+                                                   
+                                                }
+                                            
+                                              try viewContext.save()
+                                          } catch {return}
+                                 print("saved")
+                                }
+                            })
                         } else {
                             VStack {
                                 
@@ -158,7 +184,7 @@ struct WordsRememberTest: View {
                                     .font(.title)
                                     .bold()
                                    
-                                if viewModel.isWordsTestFinish{
+                                if !viewModel.isWordsTestFinish{
                                     Text(viewModel.wordsTestResult)
                                         .font(.title)
                                         .padding(.bottom)
@@ -179,6 +205,7 @@ struct WordsRememberTest: View {
                                     startTest = false
                                     viewModel.isWordsTestFinish = false
                                     viewModel.words.removeAll()
+                                    viewModel.timeRemaining = 12
                                 }, label: {
                                    Image(systemName: "arrow.clockwise")
                                     .font(.title)
@@ -189,17 +216,7 @@ struct WordsRememberTest: View {
                                 
                                 Button(action: {
                                 if   !viewModel.wordsTestResult.isEmpty {
-                                    viewModel.isWordsTestFinish = true
-                                    let testResult = TestResult(context: viewContext)
-                                    testResult.date = date
-                                      testResult.week = String(viewModel.week)
-                                      testResult.day = String(viewModel.day)
-                                    testResult.testName = "Тест на запоминание слов"
-                                    testResult.testResult = "Слов запомнено: \(viewModel.words.count)"
-                                    testResult.isMathTest = false
-                                          do {
-                                              try viewContext.save()
-                                          } catch {return}
+                                    
                                     if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                                         withAnimation(.linear){
                                             viewModel.currentView = .MathTest
@@ -225,6 +242,7 @@ struct WordsRememberTest: View {
                                         }
                                     }
                                 } else {
+                            
                                     startCount = true
                                 }
                                 }
@@ -248,23 +266,30 @@ struct WordsRememberTest: View {
                             
                     }
                         .padding(.top, keyboard.currentHeight / 2.5)
-                        .padding(.bottom, keyboard.currentHeight / 2)
+                        .padding(.bottom, keyboard.currentHeight / 2.5)
                         .padding(.vertical, 20)
                         .transition(.move(edge: .trailing))
+                        .onAppear{
+                            
+                                viewModel.timeRemaining = 12
+                        }
                   
                 }
                
             }
             .onDisappear{
+                viewModel.timeRemaining = 12
                 if !viewModel.wordsTestResult.isEmpty{
                 viewModel.isWordsTestFinish = true
                 }
                 if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                     withAnimation(.linear){
                         viewModel.currentView = .MathTest
+                        viewModel.timeRemaining = 0
                     }
                 }
             }
+            
             .mainFont(size: 18)
             .background()
             .matchedGeometryEffect(id: "background", in: animation)

@@ -19,11 +19,10 @@ struct StroopTestPreparing: View {
                             .bold()
                             .matchedGeometryEffect(id: "Тест Струпа", in: animation)
                         
-                        Text("Перед началом тестирования пройдите подготовку к нему.\n\nНазывайте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись назовите цвет еще раз.")
+                        Text("Перед началом тестирования пройдите подготовку к нему.\nНазывайте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись назовите цвет еще раз.")
                             .mainFont(size: 18)
                             .fixedSize(horizontal: false, vertical: true)
-                            .padding(.top, 10)
-                         
+                            .padding(.top, small ? 5 : 10)
                         
                         HStack {
                             Text("(Пример: если написано")
@@ -33,7 +32,6 @@ struct StroopTestPreparing: View {
                                 .mainFont(size: 18)
                             Spacer()
                         }
-                        .padding(.top)
                         .fixedSize(horizontal: false, vertical: true)
                         
                             HStack {
@@ -49,7 +47,7 @@ struct StroopTestPreparing: View {
                                     .foregroundColor(colors[index])
                             }
                         }
-                        .padding(.vertical, 20)
+                        .padding(.vertical, small ? 10 : 20)
                         
                         Text("Вы дали правильные ответы: синий, фиолетовый, красный, зелёный, жёлтый?\n\nТеперь приступайте к упражнению.")
                             .mainFont(size: 18)
