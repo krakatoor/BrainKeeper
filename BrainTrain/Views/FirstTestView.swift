@@ -9,7 +9,6 @@ import SwiftUI
 
 struct FirstTestView: View {
     @EnvironmentObject var viewModel: ViewModel
-    
     @Namespace var animation
     
     var body: some View {
@@ -21,9 +20,8 @@ struct FirstTestView: View {
                     Text("Неделя \(viewModel.week)")
                         .bold()
                         .mainFont(size: 25)
-                        .padding(.top, 20)
                     
-                    Text("Прежде чем начать тренировку, определите с помощью следующих тестов, как сейчас работает ваш мозг.")
+                    Text("Прежде чем начать тренировку, определим с помощью тестов, как сейчас работает ваш мозг.")
                         .mainFont(size: 18)
                         .padding()
                         .fixedSize(horizontal: false, vertical: true)
@@ -58,7 +56,7 @@ struct FirstTestView: View {
                         .padding([.leading, .bottom])
                         
                         
-                        LottieView(name: "memory", loopMode: .loop, animationSpeed: 0.6)
+                        LottieView(name: "memory", loopMode: .loop, animationSpeed: 0.4)
                             .matchedGeometryEffect(id: "lamp", in: animation)
                             .frame(height: small ? 100 : 150)
                             .padding(.top)
@@ -73,7 +71,7 @@ struct FirstTestView: View {
                     .background()
                     .matchedGeometryEffect(id: "background", in: animation)
                     .cornerRadius(20).shadow(color: Color.primary.opacity(0.5), radius: 5, x: 0, y: 0)
-                    .offset(y: height * (small ? 0.27 : 0.25))
+                    .offset(y: height * (small ? 0.27 : 0.23))
                     .onTapGesture {
                         withAnimation(.spring()){
                             viewModel.wordsTestTapped.toggle()
@@ -122,7 +120,7 @@ struct FirstTestView: View {
                     .background()
                     .matchedGeometryEffect(id: "background1", in: animation)
                     .cornerRadius(20).shadow(color: Color.primary.opacity(0.5), radius: 5, x: 0, y: 0)
-                    .offset(y: height * (small ? 0.62 : 0.62))
+                    .offset(y: height * (small ? 0.62 : 0.60))
                     .onTapGesture {
                         withAnimation(.spring()){
                             viewModel.stroopTestTapped.toggle()
@@ -137,7 +135,6 @@ struct FirstTestView: View {
             }
         }
         .ignoresSafeArea(.all)
-        
     }
 }
 

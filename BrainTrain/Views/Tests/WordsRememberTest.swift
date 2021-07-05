@@ -20,8 +20,24 @@ struct WordsRememberTest: View {
     private var testResults: FetchedResults<TestResult>
     var animation: Namespace.ID
     @StateObject var keyboard = KeyboardResponder()
+    
     var body: some View {
-       
+        GeometryReader { geo in
+            let y = geo.frame(in: .global).minY
+          
+            ZStack (alignment: Alignment(horizontal: .trailing, vertical: .top)){
+                
+                Image(systemName: "xmark.circle")
+                    .font(.title)
+                    .zIndex(1)
+                    .padding(.trailing)
+                    .padding(.top, -(y - 50))
+                    .onTapGesture {
+                        withAnimation(.spring()) {
+                            viewModel.wordsTestTapped = false
+                        }
+                    }
+                
             VStack {
                 if !startTest && !viewModel.isWordsTestFinish {
                     VStack {
@@ -30,6 +46,13 @@ struct WordsRememberTest: View {
                             .bold()
                             .padding(.top, small ? 0 : 20)
                             .matchedGeometryEffect(id: "Тест", in: animation)
+                            .onChange(of: y) { _ in
+                                if y > 120 {
+                                    withAnimation(.spring()) {
+                                    viewModel.wordsTestTapped = false
+                                }
+                                }
+                            }
                         
                         
                     LottieView(name: "memory", loopMode: .loop, animationSpeed: 0.6)
@@ -205,7 +228,7 @@ struct WordsRememberTest: View {
                                     startTest = false
                                     viewModel.isWordsTestFinish = false
                                     viewModel.words.removeAll()
-                                    viewModel.timeRemaining = 12
+                                    viewModel.timeRemaining = 20
                                 }, label: {
                                    Image(systemName: "arrow.clockwise")
                                     .font(.title)
@@ -271,14 +294,14 @@ struct WordsRememberTest: View {
                         .transition(.move(edge: .trailing))
                         .onAppear{
                             
-                                viewModel.timeRemaining = 12
+                                viewModel.timeRemaining = 20
                         }
                   
                 }
                
             }
             .onDisappear{
-                viewModel.timeRemaining = 12
+                viewModel.timeRemaining = 20
                 if !viewModel.wordsTestResult.isEmpty{
                 viewModel.isWordsTestFinish = true
                 }
@@ -289,7 +312,6 @@ struct WordsRememberTest: View {
                     }
                 }
             }
-            
             .mainFont(size: 18)
             .background()
             .matchedGeometryEffect(id: "background", in: animation)
@@ -299,6 +321,9 @@ struct WordsRememberTest: View {
                 viewModel.wordsTestTapped.toggle()
                 }
             }
+        }
+        }
+       
     }
 }
 

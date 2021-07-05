@@ -139,8 +139,8 @@
 				6B494C3A2572E02F0001864A /* StroopTest.swift */,
 				6B88F429268D09D600F23083 /* StroopTest */,
 				6BD2547026776B4100D061E3 /* mathTest.swift */,
-				6BD25484267B951400D061E3 /* TestResultsView.swift */,
 				6B2CD063268F835300217B22 /* MathTest */,
+				6BD25484267B951400D061E3 /* TestResultsView.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";

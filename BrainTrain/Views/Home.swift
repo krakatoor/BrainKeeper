@@ -62,6 +62,7 @@ struct Home: View {
             .background()
             .environmentObject(viewModel)
             .onAppear{
+                
 //                viewModel.day = 1
 //                viewModel.isTestFinish = false
 //                for i in testResults{
@@ -70,6 +71,7 @@ struct Home: View {
 //                        try viewContext.save()
 //                    } catch {return}
 //                }
+                
                 if viewModel.currentView == .DateCard {
                 let date = date
                     for result in testResults{

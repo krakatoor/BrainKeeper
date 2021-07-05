@@ -34,7 +34,7 @@ struct mathTest: View {
                     .zIndex(1)
                     .transition(.move(edge: .bottom))
             }
-            
+
             if showAlert {
                 MathTestFinish(hideCover: $showAlert)
                     .zIndex(1)
@@ -88,7 +88,7 @@ struct mathTest: View {
                     }
                     .mainFont(size: 20)
                     
-                    Spacer()
+             
                     
                     if viewModel.isMathTestFinish {
                         Text(viewModel.mathTestResult)
@@ -96,7 +96,7 @@ struct mathTest: View {
                     } else {
                     timerView(result: $viewModel.mathTestResult, startTimer: $viewModel.startTest, fontSize: 25, isMathTest: true)
                     }
-                    
+                    Spacer()
                     if !viewModel.isMathTestFinish {
                         
                         HStack {
@@ -104,14 +104,17 @@ struct mathTest: View {
                             
                             if viewModel.startTest {
                                 Text("\(number1) \(operator1) \(number2) =")
+                                    .transition(.move(edge: .bottom))
+                                    .mainFont(size: 40)
                             } else {
                                 Text("3 x 3 =")
                                     .redacted(reason: viewModel.startTest ? [] : .placeholder)
                             }
                             
                             Text(totalSumText)
-                                .frame(width: 44, height: 30)
-                                .overlay(Rectangle().stroke().frame(width: 46, height: 32))
+                                .mainFont(size: 40)
+                                .frame(width: viewModel.startTest ?  60 : 40, height: viewModel.startTest ? 45 : 35)
+                                .overlay(Rectangle().stroke().frame(width: viewModel.startTest ?  60 : 40, height: viewModel.startTest ? 45 : 35))
                             
                             Image(systemName: totalSumText != String(totalSum) ?  "checkmark.circle.fill" : "xmark.circle.fill")
                                 .foregroundColor(prevAnswerColor)
@@ -119,7 +122,7 @@ struct mathTest: View {
                                 .opacity(showAnswer ? 1 : 0)
                             Spacer()
                         }
-                        .opacity( viewModel.isMathTestFinish ? 0 : 1)
+               
                         
                     } else {
                         
@@ -271,6 +274,14 @@ struct mathTest: View {
         } else {
             
             do {
+                for result in testResults{
+                    if result.date == testResult.date {
+                        if result.testName == testResult.testName{
+                            viewContext.delete(result)
+                        }
+                    }
+                }
+                
                 try viewContext.save()
             } catch {return}
         }

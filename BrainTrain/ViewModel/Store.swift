@@ -49,7 +49,7 @@ class ViewModel: ObservableObject{
     @Published var isWordsTestFinish = false
     @Published var wordsTestResult = ""
     @Published var words: [String] = []
-    @Published var timeRemaining:Double = 12 //in seconds
+    @Published var timeRemaining:Double = 20 //in seconds
     //Проверка функциональности лобных долей
     let firstWeekWords = ["темница", "сервер", "кнут", "колье","белье","алебастр","копыто","косточка","задник","шашлык","дерево","чайка","аромат","залог","журавль","мокасин","звено","миндаль","капсула","ягода"]
     
@@ -58,7 +58,7 @@ class ViewModel: ObservableObject{
     @Published var startTest = false
     @Published var mathTestResultTime = 0.0
     @Published var mathTestResult = ""
-    @Published  var totalExample = 2
+    @Published  var totalExample = 10
     @Published var examplesCount = 0
     @Published var correctAnswers = 0
     @Published var isMathTestFinish = false
@@ -67,9 +67,7 @@ class ViewModel: ObservableObject{
     //Результаты
     @Published var results = [0.0, 0.0, 0.0, 0.0, 0.0]
 
-    @Published var notificationTime: Double = 10 //86400
-    
-    
+   
     
     func getPermession() {
         let center = UNUserNotificationCenter.current()
@@ -89,6 +87,8 @@ class ViewModel: ObservableObject{
         }
     }
     
+    @Published var notificationTime: Double = 86400 //86400
+    
     func sendNotification() {
         getPermession()
         let content = UNMutableNotificationContent()
@@ -96,13 +96,10 @@ class ViewModel: ObservableObject{
         content.subtitle = "Вы не тренировались уже 24 часа"
         content.sound = UNNotificationSound.default
 
-        // show this notification five seconds from now
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: notificationTime, repeats: false)
 
-        // choose a random identifier
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 
-        // add our notification request
         UNUserNotificationCenter.current().add(request)
     }
   
