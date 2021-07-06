@@ -47,7 +47,7 @@ struct WordsRememberTest: View {
                             .padding(.top, small ? 0 : 20)
                             .matchedGeometryEffect(id: "Тест", in: animation)
                             .onChange(of: y) { _ in
-                                if y > 120 {
+                                if y > 130 {
                                     withAnimation(.spring()) {
                                     viewModel.wordsTestTapped = false
                                 }
@@ -175,7 +175,7 @@ struct WordsRememberTest: View {
                                 if !value {
                                     viewModel.isWordsTestFinish = true
                                     let testResult = TestResult(context: viewContext)
-                                    testResult.date = date
+                                    testResult.date = today
                                       testResult.week = String(viewModel.week)
                                       testResult.day = String(viewModel.day)
                                     testResult.testName = "Тест на запоминание слов"
@@ -316,11 +316,6 @@ struct WordsRememberTest: View {
             .background()
             .matchedGeometryEffect(id: "background", in: animation)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .onTapGesture {
-                withAnimation(.spring()){
-                viewModel.wordsTestTapped.toggle()
-                }
-            }
         }
         }
        

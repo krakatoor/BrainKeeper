@@ -27,7 +27,7 @@ struct Home: View {
                 if viewModel.currentView == .DateCard {
                     ProgressCard()
                         .zIndex(1)
-                        .transition(.move(edge: .bottom))
+                        .transition(.move(edge: .leading))
                 }
   
                 TabView (selection: $viewModel.mainScreen){
@@ -72,11 +72,14 @@ struct Home: View {
 //                    } catch {return}
 //                }
                 
+//                if today != viewModel.currentDay {
+//                    viewModel.day += 1
+//                }
+                
                 if viewModel.currentView == .DateCard {
-                let date = date
+          
                     for result in testResults{
-                        print(result)
-                            if result.date == date {
+                            if result.date == today {
                                 if result.testName == "Тест на запоминание слов"{
                                     if viewModel.wordsTestResult.isEmpty {
                                         viewModel.wordsTestResult = result.testResult!
@@ -93,12 +96,10 @@ struct Home: View {
                         }
                        
                     }
-                    
-                   
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                        withAnimation(.linear){
+                        withAnimation{
                             if  viewModel.isWordsTestFinish &&  viewModel.isStroopTestFinish {
                                 viewModel.currentView = .MathTest
                             } else  if viewModel.currentView == .DateCard && viewModel.brainTestsDay.contains(viewModel.day - 1) || viewModel.day == 1{
@@ -130,7 +131,8 @@ struct Home_Previews: PreviewProvider {
 struct ProgressCard: View {
     @EnvironmentObject var viewModel: ViewModel
     var body: some View {
-        VStack {
+        
+       
             VStack {
                 Spacer()
                 
@@ -148,8 +150,6 @@ struct ProgressCard: View {
             .background(BlurView(style: .regular).cornerRadius(20).shadow(radius: 10))
             .frame(width: screenSize.width - 50, height: screenSize.height * 0.5)
             .overlay(RoundedRectangle(cornerRadius: 20).stroke(lineWidth: 0.3))
-        }
-        
         
     }
 }

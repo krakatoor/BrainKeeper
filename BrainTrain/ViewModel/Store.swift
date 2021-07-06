@@ -14,7 +14,7 @@ class ViewModel: ObservableObject{
     @Published  var currentView = CurrentView.DateCard
     @AppStorage ("date") var day = 1
     @AppStorage ("isTestFinish") var isTestFinish = false
-    @AppStorage ("currentDay") var currentDay = date
+    @AppStorage ("currentDay") var currentDay = today
     
     let brainTestsDay = Array(1...60).filter {$0.isMultiple(of:5)}
     
@@ -31,7 +31,7 @@ class ViewModel: ObservableObject{
     }
     
     @AppStorage ("skipBrainTest") var skipBrainTest = false
-    @AppStorage ("currentDate") var currentDate = date
+    @AppStorage ("currentDate") var currentDate = today
     
     //Результаты тестов
     @Published var testsResults: [Result] = []

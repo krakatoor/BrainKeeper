@@ -44,7 +44,7 @@ struct StroopTest: View {
                         .transition(.slide)
                         .environmentObject(viewModel)
                         .onChange(of: y) { _ in
-                            if y > 120 {
+                            if y > 130 {
                                 withAnimation(.spring()) {
                                     viewModel.stroopTestTapped = false
                                 }
@@ -64,7 +64,7 @@ struct StroopTest: View {
                                         stage = .finish
                                     }
                                     let testResult = TestResult(context: viewContext)
-                                    testResult.date = date
+                                    testResult.date = today
                                     testResult.week = String(viewModel.week)
                                     testResult.day = String(viewModel.day)
                                     testResult.testName = "Тест Струпа"
@@ -86,11 +86,12 @@ struct StroopTest: View {
                             }
                         })
                     
-                    if colorsViewTag != -1 {
+                  
                         timerView(result: $viewModel.stroopTestResult, startTimer: $viewModel.startStroopTestTimer)
                             .environmentObject(viewModel)
                             .padding(.top, 10)
-                    }
+                            .opacity(stage == .test ? 1 : 0)
+                   
                     
                     Spacer()
                     
@@ -128,11 +129,6 @@ struct StroopTest: View {
                 .background()
                 .matchedGeometryEffect(id: "background1", in: animation)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .onTapGesture {
-                    withAnimation(.spring()){
-                        viewModel.stroopTestTapped = false
-                    }
-                }
                 .onAppear{
                     viewModel.timeRemaining = 0
                     if viewModel.week != 1 {
@@ -180,7 +176,6 @@ struct StroopTest: View {
                     colorsViewTag += 1
                 }
             }
-            
         case .finish:
             withAnimation(.spring()){
                 viewModel.stroopTestTapped = false
@@ -195,6 +190,7 @@ struct StroopTest: View {
             StroopTestPreparing(animation: animation)
         case .test:
             StroopTesting(colorsViewTag: $colorsViewTag)
+                .environmentObject(viewModel)
         case .finish:
             StroopFinish(animation: animation)
         }

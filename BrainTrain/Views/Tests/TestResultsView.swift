@@ -52,7 +52,7 @@ struct TestResultsView: View {
                 VStack {
                     LottieView(name: "results", loopMode: .loop, animationSpeed: 0.8)
                         .frame(height: 400)
-                    Text("Ждем результатов ")
+                    Text("Ждем результатов...")
                         .bold()
                         .mainFont(size: 20)
                         .offset(y: -50)

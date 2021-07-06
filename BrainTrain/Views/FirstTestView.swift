@@ -85,9 +85,14 @@ struct FirstTestView: View {
                     
                 }
                 
-                if !viewModel.stroopTestTapped{
+                if viewModel.stroopTestTapped{
+                    StroopTest(animation: animation)
+                        .environmentObject(viewModel)
+                        .zIndex(3)
+                      
+                } else {
+           
                     VStack (spacing: 5) {
-                        
                         Text("Тест Струпа")
                             .font(.title2)
                             .bold()
@@ -126,12 +131,9 @@ struct FirstTestView: View {
                             viewModel.stroopTestTapped.toggle()
                         }
                     }
-                } else {
-                    StroopTest(animation: animation)
-                        .environmentObject(viewModel)
-                        .zIndex(3)
-                      
+                
                 }
+             
             }
         }
         .ignoresSafeArea(.all)

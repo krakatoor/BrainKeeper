@@ -7,25 +7,26 @@
 
 import SwiftUI
 import CoreData
+
 let screenSize = UIScreen.main.bounds
-
-//
-//@objc(TestResult)
-//public class TestResult: NSManagedObject {
-//
-//}
-
-
-
 let small = UIScreen.main.bounds.height < 750
 
-var date: String {
+var today: String {
     let date = Date()
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "d MMM"
     
     return "\(dateFormatter.string(from: date))"
 }
+
+var tomorrow: String {
+    let date = Date().addingTimeInterval(86400)
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "d MMM"
+    
+    return "\(dateFormatter.string(from: date))"
+}
+
 var time: String {
     let date = Date()
     let dateFormatter = DateFormatter()
@@ -107,6 +108,25 @@ extension View {
             .modifier(Leading())
     }
 }
+
+
+struct Center: ViewModifier {
+    func body(content: Content) -> some View {
+        HStack {
+            content
+            Spacer()
+        }
+        .padding(.leading)
+    }
+}
+
+extension View {
+    func centerView() -> some View {
+        self
+            .modifier(Center())
+    }
+}
+
 
 
 //Remove navLink tap animation

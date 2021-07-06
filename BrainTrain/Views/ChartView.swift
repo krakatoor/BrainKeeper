@@ -13,6 +13,7 @@ struct ChartView: View {
     @State private var showDetail = false
     @State private var viewHeight: CGFloat = 200
     @State private var startAnimation = true
+     var correctAnswers = ""
 
     var body: some View {
         
@@ -21,12 +22,13 @@ struct ChartView: View {
             if showDetail{
 
                 VStack (spacing: 5){
-                    Text("Время теста")
-                    Text(timeString(time: showTime * 150))
+                    Text("Время теста: " + timeString(time: showTime * 150)) 
+                    Text(correctAnswers)
                     
                 }
-                .padding()
-                .background(BlurView(style: .regular).cornerRadius(10).shadow(radius: 5))
+                .mainFont(size: 15)
+                .padding(8)
+                .background(BlurView(style: .regular).cornerRadius(10).shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0))
                 .zIndex(1)
                 .onTapGesture {
                     showDetail.toggle()

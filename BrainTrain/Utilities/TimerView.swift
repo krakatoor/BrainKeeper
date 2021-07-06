@@ -22,10 +22,10 @@ struct timerView: View {
             .onChange(of: startTimer, perform: { value in
                 if !value{
                     if isMathTest{
-                        result = "Время теста: \(timeString(time: viewModel.timeRemaining)).\nПравильных ответов: \(viewModel.correctAnswers)"
+                        result = "Правильных ответов: \(viewModel.correctAnswers)"
                         viewModel.mathTestResultTime = viewModel.timeRemaining / 150
                     } else {
-                        result = "Время теста: \(timeString(time: viewModel.timeRemaining))"
+                        result = "время теста: \(timeString(time: viewModel.timeRemaining))"
                     }
                 }
             })

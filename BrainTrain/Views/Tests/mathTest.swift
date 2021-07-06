@@ -25,6 +25,7 @@ struct mathTest: View {
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
+    let buttonWidth = screenSize.width / 3 - 5
     
     var body: some View {
         
@@ -262,32 +263,26 @@ struct mathTest: View {
     private func saveResult() {
         
         let testResult = TestResult(context: viewContext)
-        testResult.date = date
+        testResult.date = today
         testResult.week = String(viewModel.week)
         testResult.day = String(viewModel.day)
         testResult.testName = "Ежедневный тест"
         testResult.testResult = viewModel.mathTestResult
         testResult.isMathTest = true
         testResult.result = viewModel.mathTestResultTime
-        if testResults.contains(testResult) {
-            viewContext.delete(testResult)
-        } else {
-            
-            do {
-                for result in testResults{
-                    if result.date == testResult.date {
-                        if result.testName == testResult.testName{
-                            viewContext.delete(result)
-                        }
+     
+        do {
+            for result in testResults{
+                if result.day == testResult.day {
+                    if result.testName == testResult.testName{
+                        viewContext.delete(result)
                     }
                 }
-                
-                try viewContext.save()
-            } catch {return}
-        }
-        
+            }
+            try viewContext.save()
+        } catch { return }
         viewModel.day += 1
-        viewModel.currentDay = date
+        viewModel.currentDay = today
         viewModel.isTestFinish = true
     }
     
@@ -302,7 +297,7 @@ struct mathTest: View {
                     }, label: {
                         Text(text.description)
                             .padding()
-                            .frame(width: 100, height: small ? 50 : 70)
+                            .frame(width: buttonWidth, height: small ? 50 : 70)
                             .background(Color("back").shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0))
                     })
                     
@@ -317,7 +312,7 @@ struct mathTest: View {
                     }, label: {
                         Text(text.description)
                             .padding()
-                            .frame(width: 100, height: small ? 50 : 70)
+                            .frame(width: buttonWidth, height: small ? 50 : 70)
                             .background(Color("back").shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0))
                     })
                     
@@ -332,7 +327,7 @@ struct mathTest: View {
                     }, label: {
                         Text(text.description)
                             .padding()
-                            .frame(width: 100, height: small ? 50 : 70)
+                            .frame(width: buttonWidth, height: small ? 50 : 70)
                             .background(Color("back").shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0))
                     })
                     
@@ -349,7 +344,7 @@ struct mathTest: View {
                         .foregroundColor(.white)
                         .font(.title2)
                         .padding()
-                        .frame(width: 100, height: small ? 50 : 70)
+                        .frame(width: buttonWidth, height: small ? 50 : 70)
                         .background(Color.red.clipShape(CustomCorner(corners: small ? [] : .bottomLeft)).shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0).shadow(color: Color.primary.opacity(0.3), radius: 1, x: 1, y: 0))
                         
                 })
@@ -359,7 +354,7 @@ struct mathTest: View {
                 }, label: {
                     Text("0")
                         .padding()
-                        .frame(width: 100, height: small ? 50 : 70)
+                        .frame(width: buttonWidth, height: small ? 50 : 70)
                         .background(Color("back").shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0))
                 })
                 
@@ -387,7 +382,7 @@ struct mathTest: View {
                         .font(.title2)
                         .foregroundColor(.white)
                         .padding()
-                        .frame(width: 100, height: small ? 50 : 70)
+                        .frame(width: buttonWidth, height: small ? 50 : 70)
                         .background(Color.blue.clipShape(CustomCorner(corners: small ? [] : .bottomRight)).shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0).shadow(color: Color.primary.opacity(0.3), radius: 1, x: -1, y: 0))
                        
                 })
