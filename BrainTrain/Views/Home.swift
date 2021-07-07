@@ -63,19 +63,23 @@ struct Home: View {
             .environmentObject(viewModel)
             .onAppear{
                 
-//                viewModel.day = 1
-//                viewModel.isTestFinish = false
-//                for i in testResults{
-//                    viewContext.delete(i)
-//                    do {
-//                        try viewContext.save()
-//                    } catch {return}
-//                }
+                //reset all data
                 
-//                if today != viewModel.currentDay {
-//                    viewModel.day += 1
-//                }
+                viewModel.day = 1
+                viewModel.isTestFinish = false
+                for i in testResults{
+                    viewContext.delete(i)
+                    do {
+                        try viewContext.save()
+                    } catch {return}
+                }
                 
+                if today != viewModel.currentDay {
+                    viewModel.day += 1
+                }
+                
+                
+                //check if tests finish
                 if viewModel.currentView == .DateCard {
           
                     for result in testResults{
@@ -91,6 +95,13 @@ struct Home: View {
                                     if viewModel.stroopTestResult.isEmpty {
                                         viewModel.stroopTestResult = result.testResult!
                                         viewModel.isStroopTestFinish = true
+                                    }
+                                }
+                                
+                                if result.testName == "Ежедневный тест"{
+                                    if viewModel.mathTestResult.isEmpty {
+                                        viewModel.mathTestResult = result.testResult!
+                                        viewModel.isMathTestFinish = true
                                     }
                                 }
                         }
@@ -128,30 +139,5 @@ struct Home_Previews: PreviewProvider {
     }
 }
 
-struct ProgressCard: View {
-    @EnvironmentObject var viewModel: ViewModel
-    var body: some View {
-        
-       
-            VStack {
-                Spacer()
-                
-                Text("День \(viewModel.day)")
-                    .font(.system(size: 40, weight: .black, design: .serif))
-                    .foregroundColor(.primary)
-                    .transition(.scale)
-                
-                
-                Spacer()
-                Image("puzzle")
-                    .resizable()
-                    .scaledToFit()
-            }
-            .background(BlurView(style: .regular).cornerRadius(20).shadow(radius: 10))
-            .frame(width: screenSize.width - 50, height: screenSize.height * 0.5)
-            .overlay(RoundedRectangle(cornerRadius: 20).stroke(lineWidth: 0.3))
-        
-    }
-}
 
 

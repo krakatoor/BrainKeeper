@@ -36,6 +36,7 @@
 		6BD25485267B951400D061E3 /* TestResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD25484267B951400D061E3 /* TestResultsView.swift */; };
 		6BD25487267CAED900D061E3 /* RingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD25486267CAED900D061E3 /* RingView.swift */; };
 		6BD25488267CD15C00D061E3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6BD2548A267CD15C00D061E3 /* Localizable.strings */; };
+		6BDF62632695A0EE00210F06 /* ProgressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDF62622695A0EE00210F06 /* ProgressCard.swift */; };
 		8E9F1F51253EE0AD0029E5F3 /* BrainTrainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F1F50253EE0AD0029E5F3 /* BrainTrainApp.swift */; };
 		8E9F1F53253EE0AD0029E5F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F1F52253EE0AD0029E5F3 /* ContentView.swift */; };
 		8E9F1F55253EE0AF0029E5F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E9F1F54253EE0AF0029E5F3 /* Assets.xcassets */; };
@@ -71,6 +72,7 @@
 		6BD25484267B951400D061E3 /* TestResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestResultsView.swift; sourceTree = "<group>"; };
 		6BD25486267CAED900D061E3 /* RingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RingView.swift; sourceTree = "<group>"; };
 		6BD25489267CD15C00D061E3 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6BDF62622695A0EE00210F06 /* ProgressCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressCard.swift; sourceTree = "<group>"; };
 		8E9F1F4D253EE0AD0029E5F3 /* BrainTrain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BrainTrain.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E9F1F50253EE0AD0029E5F3 /* BrainTrainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainTrainApp.swift; sourceTree = "<group>"; };
 		8E9F1F52253EE0AD0029E5F3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -106,11 +108,10 @@
 			isa = PBXGroup;
 			children = (
 				6BD254742677FBA300D061E3 /* Home.swift */,
+				6BDF62622695A0EE00210F06 /* ProgressCard.swift */,
 				6BBAF08126739098009B69AE /* FirstTestView.swift */,
 				6BD25486267CAED900D061E3 /* RingView.swift */,
 				6BBAF088267410F5009B69AE /* Tests */,
-				6B2CD064268F837300217B22 /* ChartsResult.swift */,
-				6B2CD0682690626E00217B22 /* ChartView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -141,6 +142,7 @@
 				6BD2547026776B4100D061E3 /* mathTest.swift */,
 				6B2CD063268F835300217B22 /* MathTest */,
 				6BD25484267B951400D061E3 /* TestResultsView.swift */,
+				6BDF62612695A0C400210F06 /* TestResult */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -177,6 +179,15 @@
 				6BD25482267B926200D061E3 /* TestResult.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		6BDF62612695A0C400210F06 /* TestResult */ = {
+			isa = PBXGroup;
+			children = (
+				6B2CD064268F837300217B22 /* ChartsResult.swift */,
+				6B2CD0682690626E00217B22 /* ChartView.swift */,
+			);
+			path = TestResult;
 			sourceTree = "<group>";
 		};
 		8E9F1F44253EE0AD0029E5F3 = {
@@ -326,6 +337,7 @@
 				6B88F433268E460100F23083 /* MathTestFinish.swift in Sources */,
 				8E9F1F53253EE0AD0029E5F3 /* ContentView.swift in Sources */,
 				8E9F1F51253EE0AD0029E5F3 /* BrainTrainApp.swift in Sources */,
+				6BDF62632695A0EE00210F06 /* ProgressCard.swift in Sources */,
 				6B88F431268E3BEA00F23083 /* MathTestCover.swift in Sources */,
 				6B2CD065268F837300217B22 /* ChartsResult.swift in Sources */,
 				6B2CD0692690626E00217B22 /* ChartView.swift in Sources */,

@@ -14,6 +14,7 @@ struct WordsRememberTest: View {
     @State private var startTest = false
     @State private var word = ""
     @State private var error = false
+    @State private var showAlert = false
     @State private var wordsAlreadyExist = false
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
@@ -224,30 +225,38 @@ struct WordsRememberTest: View {
                             HStack {
                                 if !viewModel.wordsTestResult.isEmpty  {
                                 Button(action: {
-                                    viewModel.wordsTestResult = ""
-                                    startTest = false
-                                    viewModel.isWordsTestFinish = false
-                                    viewModel.words.removeAll()
-                                    viewModel.timeRemaining = 20
+                                    showAlert = true
                                 }, label: {
                                    Image(systemName: "arrow.clockwise")
                                     .font(.title)
                                 })
+                                .alert(isPresented: $showAlert) {
+                                    Alert(title: Text("Начать тест заново?"), message: Text("При прохождении теста результаты будут заменены"),
+                                          primaryButton: .destructive(Text("Да")) {
+                                            viewModel.wordsTestResult = ""
+                                            startTest = false
+                                            viewModel.isWordsTestFinish = false
+                                            viewModel.words.removeAll()
+                                            viewModel.timeRemaining = 20
+                                          },
+                                          secondaryButton: .cancel(Text("Нет")) 
+                                    )
+                                }
                                 }
                                 
                                 Spacer()
                                 
                                 Button(action: {
-                                if   !viewModel.wordsTestResult.isEmpty {
-                                    
-                                    if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
+                                if  viewModel.isWordsTestFinish {
+                                    withAnimation(.spring()) {
+                                    viewModel.wordsTestTapped = false
+                                    }
+                                    if viewModel.isStroopTestFinish{
                                         withAnimation(.linear){
                                             viewModel.currentView = .MathTest
                                         }
                                     }
-                                    withAnimation(.spring()) {
-                                    viewModel.wordsTestTapped = false
-                                    }
+                                   
                                 } else {
                                 if startCount {
                                     if viewModel.firstWeekWords.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) {
@@ -292,23 +301,21 @@ struct WordsRememberTest: View {
                         .padding(.bottom, keyboard.currentHeight / 2.5)
                         .padding(.vertical, 20)
                         .transition(.move(edge: .trailing))
-                        .onAppear{
-                            
-                                viewModel.timeRemaining = 20
-                        }
+                       
                   
                 }
                
             }
-            .onDisappear{
+            .onAppear{
                 viewModel.timeRemaining = 20
+            }
+            .onDisappear{
                 if !viewModel.wordsTestResult.isEmpty{
                 viewModel.isWordsTestFinish = true
                 }
                 if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                     withAnimation(.linear){
                         viewModel.currentView = .MathTest
-                        viewModel.timeRemaining = 0
                     }
                 }
             }

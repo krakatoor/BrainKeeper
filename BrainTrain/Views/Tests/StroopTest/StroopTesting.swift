@@ -50,7 +50,6 @@ struct StroopTesting: View {
 struct StroopTesting_Previews: PreviewProvider {
     static var previews: some View {
         StroopTesting(colorsViewTag: .constant(0))
-            .environmentObject(ViewModel())
     }
 }
 

@@ -58,7 +58,7 @@ class ViewModel: ObservableObject{
     @Published var startTest = false
     @Published var mathTestResultTime = 0.0
     @Published var mathTestResult = ""
-    @Published  var totalExample = 10
+    @Published  var totalExample = 1
     @Published var examplesCount = 0
     @Published var correctAnswers = 0
     @Published var isMathTestFinish = false
@@ -70,13 +70,12 @@ class ViewModel: ObservableObject{
    
     
     func getPermession() {
-        let center = UNUserNotificationCenter.current()
-        center.getNotificationSettings { (settings) in
+        notificationCenter.getNotificationSettings { (settings) in
 
             if(settings.authorizationStatus == .authorized) {
                 print("Push notification is enabled")
             } else {
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+                notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
                     if success {
                         print("All set!")
                     } else if let error = error {
@@ -98,9 +97,9 @@ class ViewModel: ObservableObject{
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: notificationTime, repeats: false)
 
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: "timeToTrain", content: content, trigger: trigger)
 
-        UNUserNotificationCenter.current().add(request)
+        notificationCenter.add(request)
     }
   
  

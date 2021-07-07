@@ -19,9 +19,10 @@ struct mathTest: View {
     @State private var prevAnswer = ""
     @State private var prevAnswerColor = Color.black
     @State private var showAnswer = false
-    @State private var showAlert = false
+    @State private var testFinishCover = false
     @State private var showCover = true
     @State private var results = ""
+    @State private var showAlert = false
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
@@ -35,9 +36,9 @@ struct mathTest: View {
                     .zIndex(1)
                     .transition(.move(edge: .bottom))
             }
-
-            if showAlert {
-                MathTestFinish(hideCover: $showAlert)
+            
+            if testFinishCover {
+                MathTestFinish(hideCover: $testFinishCover)
                     .zIndex(1)
                     .environmentObject(viewModel)
             }
@@ -72,7 +73,7 @@ struct mathTest: View {
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                             withAnimation{
                                                 viewModel.isMathTestFinish = true
-                                                showAlert = true
+                                                testFinishCover = true
                                             }
                                             saveResult()
                                         }
@@ -89,13 +90,13 @@ struct mathTest: View {
                     }
                     .mainFont(size: 20)
                     
-             
+                    
                     
                     if viewModel.isMathTestFinish {
                         Text(viewModel.mathTestResult)
                             .font(.title3)
                     } else {
-                    timerView(result: $viewModel.mathTestResult, startTimer: $viewModel.startTest, fontSize: 25, isMathTest: true)
+                        timerView(result: $viewModel.mathTestResult, startTimer: $viewModel.startTest, fontSize: 25, isMathTest: true)
                     }
                     Spacer()
                     if !viewModel.isMathTestFinish {
@@ -107,6 +108,7 @@ struct mathTest: View {
                                 Text("\(number1) \(operator1) \(number2) =")
                                     .transition(.move(edge: .bottom))
                                     .mainFont(size: 40)
+                                    .redacted(reason: viewModel.examplesCount == viewModel.totalExample ? .placeholder : [])
                             } else {
                                 Text("3 x 3 =")
                                     .redacted(reason: viewModel.startTest ? [] : .placeholder)
@@ -123,7 +125,7 @@ struct mathTest: View {
                                 .opacity(showAnswer ? 1 : 0)
                             Spacer()
                         }
-               
+                        
                         
                     } else {
                         
@@ -166,6 +168,31 @@ struct mathTest: View {
                 
                 if !viewModel.startTest{
                     HStack {
+                        
+                        if !viewModel.mathTestResult.isEmpty  {
+                            Button(action: {
+                                showAlert = true
+                            }, label: {
+                                Image(systemName: "arrow.clockwise")
+                                    .font(.title)
+                            })
+                            .padding(.leading)
+                            .alert(isPresented: $showAlert) {
+                                Alert(title: Text("Начать тест заново?"), message: Text("При прохождении теста результаты будут заменены"),
+                                      primaryButton: .destructive(Text("Да")) {
+                                        viewModel.mathTestResult = ""
+                                        viewModel.timeRemaining = 0
+                                        withAnimation{
+                                            viewModel.isMathTestFinish = false
+                                        }
+                                      },
+                                      secondaryButton: .cancel(Text("Нет"))
+                                )
+                            }
+                        }
+                        
+                        Spacer()
+                        
                         Button(action:{
                             if !viewModel.startTest  && !viewModel.isMathTestFinish {
                                 withAnimation{
@@ -197,11 +224,12 @@ struct mathTest: View {
                                 
                             }
                         })
-                        .padding(.leading)
+                        .padding(.leading,  !viewModel.mathTestResult.isEmpty  ? -20 : 0)
+                        
+                        Spacer()
                         
                         
                     }
-                    .padding()
                     .padding(.bottom, 40)
                     
                 }
@@ -212,19 +240,11 @@ struct mathTest: View {
             .mainFont(size: 30)
             .onAppear{
                 math()
-//                let date = date
-//                    for i in 0..<testResults.count {
-//                        if testResults[i].isMathTest &&  testResults[i].date == date &&  !testResults[i].testResult!.isEmpty {
-//                            viewModel.mathTestResult = testResults[i].testResult!
-//                            viewModel.isMathTestFinish = true
-//                        }
-//                    }
-//                    
             }
         }
     }
     
-  
+    
     private func math () {
         operator1 = ["+", "-", "×", "÷"].randomElement()!
         if operator1 == "+" {
@@ -247,14 +267,14 @@ struct mathTest: View {
         }
         
         if operator1 == "÷" {
-          number1 = (Int.random(in: 10..<30))
-        number2 = Int.random(in: 2..<10)
+            number1 = (Int.random(in: 10..<30))
+            number2 = Int.random(in: 2..<10)
             
             while(number1 %  number2 != 0 ){
                 number1 = (Int.random(in: 10..<30))
-                  number2 = Int.random(in: 2..<10)
-                }
-           
+                number2 = Int.random(in: 2..<10)
+            }
+            
             totalSum = Int(number1 / number2)
         }
         
@@ -270,7 +290,7 @@ struct mathTest: View {
         testResult.testResult = viewModel.mathTestResult
         testResult.isMathTest = true
         testResult.result = viewModel.mathTestResultTime
-     
+        
         do {
             for result in testResults{
                 if result.day == testResult.day {
@@ -279,9 +299,11 @@ struct mathTest: View {
                     }
                 }
             }
+            notificationCenter.removePendingNotificationRequests(withIdentifiers: ["timeToTrain"])
+            notificationCenter.removeDeliveredNotifications(withIdentifiers: ["timeToTrain"])
+            
             try viewContext.save()
         } catch { return }
-        viewModel.day += 1
         viewModel.currentDay = today
         viewModel.isTestFinish = true
     }
@@ -346,7 +368,7 @@ struct mathTest: View {
                         .padding()
                         .frame(width: buttonWidth, height: small ? 50 : 70)
                         .background(Color.red.clipShape(CustomCorner(corners: small ? [] : .bottomLeft)).shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0).shadow(color: Color.primary.opacity(0.3), radius: 1, x: 1, y: 0))
-                        
+                    
                 })
                 
                 Button(action: {
@@ -384,9 +406,9 @@ struct mathTest: View {
                         .padding()
                         .frame(width: buttonWidth, height: small ? 50 : 70)
                         .background(Color.blue.clipShape(CustomCorner(corners: small ? [] : .bottomRight)).shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0).shadow(color: Color.primary.opacity(0.3), radius: 1, x: -1, y: 0))
-                       
+                    
                 })
-               
+                
             }
             
             

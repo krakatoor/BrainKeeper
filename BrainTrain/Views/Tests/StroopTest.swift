@@ -19,6 +19,7 @@ struct StroopTest: View {
     @State private var buttonTitile = "Дальше"
     @State private var colorsViewTag = -1
     @State private var stage: StroopTestStages = .prepare
+    @State private var showAlert = false
     var animation: Namespace.ID
     var body: some View {
         
@@ -59,7 +60,7 @@ struct StroopTest: View {
                                 buttonTitile = "Назад"
                                 colorsViewTag = -1
                                 viewModel.startStroopTestTimer = false
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                     withAnimation{
                                         stage = .finish
                                     }
@@ -99,14 +100,23 @@ struct StroopTest: View {
                         
                         if !viewModel.stroopTestResult.isEmpty  {
                             Button(action: {
-                                viewModel.stroopTestResult = ""
-                                viewModel.isStroopTestFinish = false
-                                stage = .prepare
-                                buttonTitile = "Дальше"
+                                showAlert = true
                             }, label: {
                                 Image(systemName: "arrow.clockwise")
                                     .font(.title)
                             })
+                            .alert(isPresented: $showAlert) {
+                                Alert(title: Text("Начать тест заново?"), message: Text("При прохождении теста результаты будут заменены"),
+                                      primaryButton: .destructive(Text("Да")) {
+                                        viewModel.stroopTestResult = ""
+                                        viewModel.isStroopTestFinish = false
+                                        viewModel.timeRemaining = 0
+                                        stage = .prepare
+                                        buttonTitile = "Дальше"
+                                      },
+                                      secondaryButton: .cancel(Text("Нет")) 
+                                )
+                            }
                         }
                         
                         Spacer()
@@ -119,6 +129,7 @@ struct StroopTest: View {
                                 .mainButton()
                         })
                         .padding(.leading,  !viewModel.stroopTestResult.isEmpty  ? -20 : 0)
+                        
                         Spacer()
                         
                     }
@@ -152,7 +163,6 @@ struct StroopTest: View {
                     if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
                         withAnimation(.linear){
                             viewModel.currentView = .MathTest
-                            viewModel.timeRemaining = 0
                         }
                     }
                 }
@@ -190,9 +200,9 @@ struct StroopTest: View {
             StroopTestPreparing(animation: animation)
         case .test:
             StroopTesting(colorsViewTag: $colorsViewTag)
-                .environmentObject(viewModel)
         case .finish:
             StroopFinish(animation: animation)
+                .environmentObject(viewModel)
         }
     }
 }

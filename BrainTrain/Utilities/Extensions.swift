@@ -10,6 +10,7 @@ import CoreData
 
 let screenSize = UIScreen.main.bounds
 let small = UIScreen.main.bounds.height < 750
+let notificationCenter = UNUserNotificationCenter.current()
 
 var today: String {
     let date = Date()
