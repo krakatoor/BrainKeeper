@@ -39,8 +39,6 @@ struct StroopTesting: View {
             Spacer()
         }
         .padding(.bottom)
-        .background()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     
         
     }
@@ -56,13 +54,11 @@ struct StroopTesting_Previews: PreviewProvider {
 
 struct StroopFinish: View {
     @EnvironmentObject var viewModel: ViewModel
-    var animation: Namespace.ID
     var body: some View {
         VStack {
             LottieView(name: "stroop", loopMode: .autoReverse, animationSpeed: 0.6)
                                         .frame(width: 250, height: 250)
                 .padding(.top, 20)
-                .matchedGeometryEffect(id: "stroop", in: animation)
             
             VStack (alignment: .leading){
                 Text("\(viewModel.stroopTestResult.capitalized)")

@@ -13,6 +13,7 @@ enum StroopTestStages {
 
 struct StroopTest: View {
     @EnvironmentObject var viewModel: ViewModel
+    @Environment (\.presentationMode) private var presentation
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
@@ -20,159 +21,123 @@ struct StroopTest: View {
     @State private var colorsViewTag = -1
     @State private var stage: StroopTestStages = .prepare
     @State private var showAlert = false
-    var animation: Namespace.ID
     var body: some View {
         
-        
-        GeometryReader { geo in
-            let y = geo.frame(in: .global).minY
-            
-            ZStack (alignment: Alignment(horizontal: .trailing, vertical: .top)){
-                
-                Image(systemName: "xmark.circle")
-                    .font(.title)
-                    .zIndex(1)
-                    .padding(.trailing)
-                    .padding(.top, -(y - 50))
-                    .onTapGesture {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                        withAnimation(.spring()) {
-                            viewModel.stroopTestTapped = false
-                        }
-                        }
-                    }
-                
-                VStack {
-                    stroopTestViews()
-                        .transition(.slide)
-                        .environmentObject(viewModel)
-                        .onChange(of: y) { _ in
-                            if y > 130 {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                                withAnimation(.spring()) {
-                                    viewModel.stroopTestTapped = false
+                    VStack {
+                        stroopTestViews()
+                            .background()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .transition(.slide)
+                            .environmentObject(viewModel)
+                            .onChange(of: colorsViewTag, perform: { value in
+                                if value == 4 {
+                                    buttonTitile = "Стоп"
                                 }
-                            }
-                            }
-                        }
-                        .onChange(of: colorsViewTag, perform: { value in
-                            if value == 4 {
-                                buttonTitile = "Стоп"
-                            }
-                            if value == 5 {
-                                viewModel.startStroopTestTimer = false
-                                buttonTitile = "Назад"
-                                colorsViewTag = -1
-                                viewModel.startStroopTestTimer = false
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                    withAnimation{
-                                        stage = .finish
-                                    }
-                                    let testResult = TestResult(context: viewContext)
-                                    testResult.date = today
-                                    testResult.week = String(viewModel.week)
-                                    testResult.day = String(viewModel.day)
-                                    testResult.testName = "Тест Струпа"
-                                    testResult.testResult = viewModel.stroopTestResult
-                                    testResult.isMathTest = false
-                                    do {
-                                        for result in testResults{
-                                            if result.date == testResult.date {
-                                                if result.testName == testResult.testName{
-                                                    viewContext.delete(result)
+                                if value == 5 {
+                                    viewModel.startStroopTestTimer = false
+                                    buttonTitile = "Назад"
+                                    colorsViewTag = -1
+                                    viewModel.startStroopTestTimer = false
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                        withAnimation{
+                                            stage = .finish
+                                        }
+                                        let testResult = TestResult(context: viewContext)
+                                        testResult.date = today
+                                        testResult.week = String(viewModel.week)
+                                        testResult.day = String(viewModel.day)
+                                        testResult.testName = "Тест Струпа"
+                                        testResult.testResult = viewModel.stroopTestResult
+                                        testResult.isMathTest = false
+                                        do {
+                                            for result in testResults{
+                                                if result.date == testResult.date {
+                                                    if result.testName == testResult.testName{
+                                                        viewContext.delete(result)
+                                                    }
                                                 }
                                             }
-                                        }
-                                        try viewContext.save()
-                                    } catch {return}
-                                    print("save stroop")
-                                    viewModel.isStroopTestFinish = true
+                                            try viewContext.save()
+                                        } catch {return}
+                                        print("save stroop")
+                                        viewModel.isStroopTestFinish = true
+                                    }
                                 }
-                            }
-                        })
-                    
-                  
+                            })
+                        
+                        
                         timerView(result: $viewModel.stroopTestResult, startTimer: $viewModel.startStroopTestTimer)
                             .environmentObject(viewModel)
                             .padding(.top, 10)
                             .opacity(stage == .test ? 1 : 0)
-                   
-                    
-                    Spacer()
-                    
-                    HStack {
                         
-                        if !viewModel.stroopTestResult.isEmpty  {
-                            Button(action: {
-                                showAlert = true
-                            }, label: {
-                                Image(systemName: "arrow.clockwise")
-                                    .font(.title)
-                            })
-                            .alert(isPresented: $showAlert) {
-                                Alert(title: Text("Начать тест заново?"), message: Text("При прохождении теста результаты будут заменены"),
-                                      primaryButton: .destructive(Text("Да")) {
-                                        viewModel.stroopTestResult = ""
-                                        viewModel.isStroopTestFinish = false
-                                        viewModel.timeRemaining = 0
-                                        stage = .prepare
-                                        buttonTitile = "Дальше"
-                                      },
-                                      secondaryButton: .cancel(Text("Нет")) 
-                                )
+                        
+                  
+                        
+                        HStack {
+                            
+                            if !viewModel.stroopTestResult.isEmpty  {
+                                Button(action: {
+                                    showAlert = true
+                                }, label: {
+                                    Image(systemName: "arrow.clockwise")
+                                        .font(.title)
+                                })
+                                .alert(isPresented: $showAlert) {
+                                    Alert(title: Text("Начать тест заново?"), message: Text("При прохождении теста результаты будут заменены"),
+                                          primaryButton: .destructive(Text("Да")) {
+                                            viewModel.stroopTestResult = ""
+                                            viewModel.isStroopTestFinish = false
+                                            viewModel.timeRemaining = 0
+                                            stage = .prepare
+                                            buttonTitile = "Дальше"
+                                          },
+                                          secondaryButton: .cancel(Text("Нет"))
+                                    )
+                                }
                             }
+                            
+                            Spacer()
+                            
+                            
+                            Button(action: {
+                                testAction()
+                            }, label: {
+                                Text(buttonTitile)
+                                    .mainButton()
+                            })
+                            .padding(.leading,  !viewModel.stroopTestResult.isEmpty  ? -20 : 0)
+                            
+                            Spacer()
+                            
                         }
-                        
-                        Spacer()
-                        
-                        
-                        Button(action: {
-                            testAction()
-                        }, label: {
-                            Text(buttonTitile)
-                                .mainButton()
-                        })
-                        .padding(.leading,  !viewModel.stroopTestResult.isEmpty  ? -20 : 0)
-                        
-                        Spacer()
-                        
+                       
+                        .padding(.horizontal, 30)
                     }
-                    .padding(.bottom)
-                    .padding(.horizontal, 30)
-                }
-                .padding(.vertical, 20)
-                .background()
-                .matchedGeometryEffect(id: "background1", in: animation)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .onAppear{
-                    viewModel.timeRemaining = 0
-                    if viewModel.week != 1 {
-                        stage = .test
-                    } else if !viewModel.stroopTestResult.isEmpty {
-                        
-                        stage = .finish
-                        buttonTitile = "Назад"
-                    }
-                }
-                .onDisappear{
-                    if viewModel.week == 1 {
-                        stage = .prepare
-                    }
-                    viewModel.startStroopTestTimer = false
-                    colorsViewTag = -1
-                    
-                    if !viewModel.stroopTestResult.isEmpty{
-                        viewModel.isStroopTestFinish = true
-                    }
-                    if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
-                        withAnimation(.linear){
-                            viewModel.currentView = .MathTest
+                    .padding(.top, -50)
+                    .background()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onAppear{
+                        viewModel.timeRemaining = 0
+                        if viewModel.week != 1 {
+                            stage = .test
+                        } else if !viewModel.stroopTestResult.isEmpty {
+                            stage = .finish
+                            buttonTitile = "Назад"
                         }
                     }
+                    .onDisappear{
+                        if viewModel.week == 1 {
+                            stage = .prepare
+                        }
+                        viewModel.startStroopTestTimer = false
+                        colorsViewTag = -1
+                        
+                        if !viewModel.stroopTestResult.isEmpty{
+                            viewModel.isStroopTestFinish = true
+                        }
                 }
-            }
-            
-        }
+        
     }
     
     func testAction(){
@@ -192,9 +157,9 @@ struct StroopTest: View {
             }
         case .finish:
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-            withAnimation(){
-                viewModel.stroopTestTapped = false
-            }
+                withAnimation(){
+                    presentation.wrappedValue.dismiss()
+                }
             }
         }
     }
@@ -203,11 +168,14 @@ struct StroopTest: View {
         
         switch stage {
         case .prepare:
-            StroopTestPreparing(animation: animation)
+            StroopTestPreparing()
+                .frame(height: screenSize.height * 0.7)
         case .test:
             StroopTesting(colorsViewTag: $colorsViewTag)
+                .frame(height: screenSize.height * 0.7)
         case .finish:
-            StroopFinish(animation: animation)
+            StroopFinish()
+                .frame(height: screenSize.height * 0.7)
                 .environmentObject(viewModel)
         }
     }
@@ -217,9 +185,8 @@ struct StroopTest: View {
 
 
 struct StrupTest_Previews: PreviewProvider {
-    @Namespace static var namespace
     static var previews: some View {
-        StroopTest(animation: namespace)
+        StroopTest()
             .environmentObject(ViewModel())
     }
 }

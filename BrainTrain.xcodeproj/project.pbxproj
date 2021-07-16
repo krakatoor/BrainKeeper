@@ -112,8 +112,10 @@
 				6BD254742677FBA300D061E3 /* Home.swift */,
 				6BDF62622695A0EE00210F06 /* ProgressCard.swift */,
 				6BBAF08126739098009B69AE /* FirstTestView.swift */,
-				6BD25486267CAED900D061E3 /* RingView.swift */,
 				6BBAF088267410F5009B69AE /* Tests */,
+				6BD25486267CAED900D061E3 /* RingView.swift */,
+				6BD25484267B951400D061E3 /* TestResultsView.swift */,
+				6BDF62612695A0C400210F06 /* TestResult */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -144,8 +146,6 @@
 				6B88F429268D09D600F23083 /* StroopTest */,
 				6BD2547026776B4100D061E3 /* mathTest.swift */,
 				6B2CD063268F835300217B22 /* MathTest */,
-				6BD25484267B951400D061E3 /* TestResultsView.swift */,
-				6BDF62612695A0C400210F06 /* TestResult */,
 			);
 			path = Tests;
 			sourceTree = "<group>";

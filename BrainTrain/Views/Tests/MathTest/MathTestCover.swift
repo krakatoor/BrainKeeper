@@ -36,7 +36,8 @@ struct MathTestCover: View {
         }
         .padding()
         .background(BlurView(style: .regular).cornerRadius(15).shadow(radius: 5))
-        .frame(width: screenSize.width - 40, height: screenSize.height - 140)
+        .overlay(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: 0.5))
+        .frame(width: screenSize.width - 40, height: screenSize.height - 180)
         .padding(.bottom)
     }
 }

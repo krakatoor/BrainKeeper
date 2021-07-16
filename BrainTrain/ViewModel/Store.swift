@@ -14,7 +14,6 @@ class ViewModel: ObservableObject{
         case DateCard, BrainTests, MathTest, Result
     }
     
-    @Published var mainScreen = 1
     @Published  var currentView = CurrentView.DateCard
     @AppStorage ("day") var day = 1
     @AppStorage ("isTestFinish") var isTestFinish = false

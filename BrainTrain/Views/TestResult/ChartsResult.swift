@@ -89,7 +89,7 @@ struct ChartsResult: View {
                 .padding()
                 .onAppear{
                     updateResult()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.7) {
                         withAnimation(.linear) {
                             startAnimation = false
                         }

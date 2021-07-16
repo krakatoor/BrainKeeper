@@ -10,6 +10,7 @@ import Introspect
 
 struct mathTest: View {
     @EnvironmentObject var viewModel: ViewModel
+    @Environment (\.presentationMode) private var presentation
     @State private var number1 = 0
     @State private var number2 = 0
     @State private var operator1 = ""
@@ -221,13 +222,13 @@ struct mathTest: View {
                                     
                                 } else {
                                     withAnimation{
-                                        viewModel.mainScreen = 2
+                                        presentation.wrappedValue.dismiss()
                                     }
                                 }
                             }, label:{
                                 
                                 if viewModel.isMathTestFinish{
-                                    Text("К результатам!")
+                                    Text("Назад")
                                         .mainFont(size: 20)
                                         .foregroundColor(.white)
                                         .frame(width: 250)

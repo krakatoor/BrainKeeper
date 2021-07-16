@@ -14,15 +14,16 @@ struct Home: View {
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
-    //
-    @State private var offset: CGFloat = .zero
+  
 
     init() {
         UIScrollView.appearance().showsVerticalScrollIndicator = false
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+           UINavigationBar.appearance().shadowImage = UIImage()       
     }
     var body: some View {
         
-     
+        NavigationView {
             ZStack {
                 if viewModel.currentView == .DateCard {
                     ProgressCard()
@@ -31,36 +32,10 @@ struct Home: View {
                         .environmentObject(viewModel)
                 }
   
-                TabView (selection: $viewModel.mainScreen){
-                    ZStack{
                     FirstTestView()
                         .opacity(viewModel.currentView != .MathTest ? 1 : 0)
                         .environmentObject(viewModel)
-                        
-                    mathTest()
-                        .environmentObject(viewModel)
-                        .opacity(viewModel.currentView == .MathTest ? 1 : 0)
-                        .padding(.top, 30)
-                        .padding(.bottom)
-                    }
-                    .tag(1)
-                    .rotation3DEffect(
-                        .degrees(Double(getProgress()) * 90),
-                        axis: (x: 0.0, y: 1.0, z: 0.0),
-                        anchor: offset > 0 ? .leading : .trailing,
-                        anchorZ: 0.0,
-                        perspective: 0.6
-                    )
-                    .modifier(offsetModificator(anchorPoint: .leading, offset: $offset))
-                    
-                  TestResultsView()
-                    .environmentObject(viewModel)
-                        .tag(2)
-                }
-                .padding(.bottom, -30)
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: viewModel.mainScreen == 1 && !viewModel.wordsTestTapped && !viewModel.stroopTestTapped ? .always : .never))
-                .opacity(viewModel.currentView != .DateCard ? 1 : 0)
-               
+                
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background()
@@ -118,24 +93,16 @@ struct Home: View {
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                         withAnimation{
-                            if  viewModel.isWordsTestFinish &&  viewModel.isStroopTestFinish {
-                                viewModel.currentView = .MathTest
-                            } else  if viewModel.currentView == .DateCard && viewModel.brainTestsDay.contains(viewModel.day - 1) || viewModel.day == 1{
+                       
                             viewModel.currentView = .BrainTests
-                            } else {
-                                viewModel.currentView = .MathTest
-                            }
+                            
                         }
                     }
             }
-    
+            .padding(.top, -50)
     }
-    
-    private func getProgress() -> CGFloat {
-        let progress = offset / UIScreen.main.bounds.width
-        return progress
+        .accentColor(.primary)
     }
-    
     
 }
 
