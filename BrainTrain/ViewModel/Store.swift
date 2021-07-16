@@ -9,30 +9,39 @@ import SwiftUI
 import Combine
 
 class ViewModel: ObservableObject{
+ 
+    enum CurrentView{
+        case DateCard, BrainTests, MathTest, Result
+    }
     
     @Published var mainScreen = 1
     @Published  var currentView = CurrentView.DateCard
-    @AppStorage ("date") var day = 1
+    @AppStorage ("day") var day = 1
     @AppStorage ("isTestFinish") var isTestFinish = false
     @AppStorage ("currentDay") var currentDay = today
-    
-    let brainTestsDay = Array(1...60).filter {$0.isMultiple(of:5)}
-    
-    var week: Int {
-     var current = 1
-        for i in 1...day {
-        for testDay in brainTestsDay {
-            if testDay == i - 1 {
-                current += 1
-            }
-        }
-        }
-        return current
-    }
-    
     @AppStorage ("skipBrainTest") var skipBrainTest = false
     @AppStorage ("currentDate") var currentDate = today
+    @AppStorage ("mathTestDay") var mathTestDay = 1
+    @AppStorage("showNotification") var showNotificationCover = true
     
+    let brainTestsDay = Array(1...60).filter {$0.isMultiple(of:5)}
+//    or stride(from: 1, to: 60, by: 6)
+    
+    var week: Int {
+        var current = 1
+        
+        for i in 1...day {
+            for testDay in brainTestsDay {
+                if testDay == i - 1 {
+                    current += 1
+                }
+            }
+        }
+        
+        return current
+    }
+
+  
     //Результаты тестов
     @Published var testsResults: [Result] = []
 
@@ -50,15 +59,12 @@ class ViewModel: ObservableObject{
     @Published var wordsTestResult = ""
     @Published var words: [String] = []
     @Published var timeRemaining:Double = 20 //in seconds
-    //Проверка функциональности лобных долей
-    let firstWeekWords = ["темница", "сервер", "кнут", "колье","белье","алебастр","копыто","косточка","задник","шашлык","дерево","чайка","аромат","залог","журавль","мокасин","звено","миндаль","капсула","ягода"]
-    
-    
+ 
     //Ежедневные примеры
     @Published var startTest = false
     @Published var mathTestResultTime = 0.0
     @Published var mathTestResult = ""
-    @Published  var totalExample = 1
+    @Published var totalExample = 50
     @Published var examplesCount = 0
     @Published var correctAnswers = 0
     @Published var isMathTestFinish = false
@@ -77,7 +83,7 @@ class ViewModel: ObservableObject{
             } else {
                 notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
                     if success {
-                        print("All set!")
+                        print("Push notification set")
                     } else if let error = error {
                         print(error.localizedDescription)
                     }
@@ -107,6 +113,8 @@ class ViewModel: ObservableObject{
 
 
 
-enum CurrentView{
-    case DateCard, BrainTests, MathTest, Result
-}
+
+
+
+
+

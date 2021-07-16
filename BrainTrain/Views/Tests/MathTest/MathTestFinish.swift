@@ -9,7 +9,10 @@ import SwiftUI
 
 struct MathTestFinish: View {
     @Binding var hideCover: Bool
+    @State private var showNotificationToggle = false
+    var animation: Namespace.ID
     @EnvironmentObject var viewModel: ViewModel
+    
         var body: some View {
             VStack (alignment: .leading, spacing: 10){
                 LottieView(name: "MathFinish", loopMode: .playOnce, animationSpeed: 1)
@@ -65,6 +68,35 @@ struct MathTestFinish: View {
                 })
                     Spacer()
                 }
+                
+                HStack {
+                    Spacer()
+
+                    Text("Больше не показывать")
+                    
+                    ZStack {
+                        Rectangle()
+                            .fill(Color.white)
+                            .frame(width: 20, height: 20)
+                            .overlay(Rectangle().stroke(lineWidth: 0.5)).foregroundColor(.primary)
+                           
+                        
+                        if showNotificationToggle{
+                        Image(systemName: "checkmark")
+                            .matchedGeometryEffect(id: "deskclock", in: animation)
+                        }
+                    }
+                    .onTapGesture {
+                        showNotificationToggle.toggle()
+                        withAnimation(){
+                        viewModel.showNotificationCover.toggle()
+                        }
+                    }
+                    
+                    Spacer()
+
+                }
+                .padding(.top, 5)
 
             }
             .padding()
@@ -76,8 +108,9 @@ struct MathTestFinish: View {
 }
 
 struct MathTestFinish_Previews: PreviewProvider {
+    @Namespace static var namespace
     static var previews: some View {
-        MathTestFinish(hideCover: .constant(false))
+        MathTestFinish(hideCover: .constant(false), animation: namespace)
             .environmentObject(ViewModel())
     }
 }

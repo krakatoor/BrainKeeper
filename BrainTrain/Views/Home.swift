@@ -28,18 +28,20 @@ struct Home: View {
                     ProgressCard()
                         .zIndex(1)
                         .transition(.move(edge: .leading))
+                        .environmentObject(viewModel)
                 }
   
                 TabView (selection: $viewModel.mainScreen){
                     ZStack{
                     FirstTestView()
                         .opacity(viewModel.currentView != .MathTest ? 1 : 0)
+                        .environmentObject(viewModel)
                         
                     mathTest()
+                        .environmentObject(viewModel)
                         .opacity(viewModel.currentView == .MathTest ? 1 : 0)
                         .padding(.top, 30)
                         .padding(.bottom)
-                        
                     }
                     .tag(1)
                     .rotation3DEffect(
@@ -50,7 +52,9 @@ struct Home: View {
                         perspective: 0.6
                     )
                     .modifier(offsetModificator(anchorPoint: .leading, offset: $offset))
+                    
                   TestResultsView()
+                    .environmentObject(viewModel)
                         .tag(2)
                 }
                 .padding(.bottom, -30)
@@ -60,28 +64,26 @@ struct Home: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background()
-            .environmentObject(viewModel)
             .onAppear{
                 
                 //reset all data
                 
-                viewModel.day = 1
-                viewModel.isTestFinish = false
-                for i in testResults{
-                    viewContext.delete(i)
-                    do {
-                        try viewContext.save()
-                    } catch {return}
-                }
+//                viewModel.day = 1
+//                viewModel.mathTestDay = 1
+//                viewModel.isTestFinish = false
+//                for i in testResults{
+//                    viewContext.delete(i)
+//                    do {
+//                        try viewContext.save()
+//                    } catch {return}
+//                }
+//
+              
+
                 
-                if today != viewModel.currentDay {
-                    viewModel.day += 1
-                }
-                
-                
-                //check if tests finish
+//                check if tests finish
                 if viewModel.currentView == .DateCard {
-          
+
                     for result in testResults{
                             if result.date == today {
                                 if result.testName == "Тест на запоминание слов"{
@@ -90,22 +92,27 @@ struct Home: View {
                                         viewModel.isWordsTestFinish = true
                                     }
                             }
-                                
+
                                 if result.testName == "Тест Струпа"{
                                     if viewModel.stroopTestResult.isEmpty {
                                         viewModel.stroopTestResult = result.testResult!
                                         viewModel.isStroopTestFinish = true
                                     }
                                 }
-                                
+
                                 if result.testName == "Ежедневный тест"{
                                     if viewModel.mathTestResult.isEmpty {
                                         viewModel.mathTestResult = result.testResult!
                                         viewModel.isMathTestFinish = true
+                                        
+                                        if today != viewModel.currentDay {
+                                            viewModel.day += 1
+                                        }
                                     }
+                                    
                                 }
                         }
-                       
+
                     }
                 }
                 
@@ -134,7 +141,11 @@ struct Home: View {
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
+        Group{
         Home()
+            Home()
+                .environment(\.locale, .init(identifier: "eng"))
+        }
             .environmentObject(ViewModel())
     }
 }

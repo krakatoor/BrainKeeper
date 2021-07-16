@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ChartView: View {
+    
+    @EnvironmentObject var viewModel: ViewModel
     @Binding var results: [Double]
     @State private var showTime = 0.0
     @State private var showDetail = false
@@ -23,7 +25,7 @@ struct ChartView: View {
 
                 VStack (spacing: 5){
                     Text("Время теста: " + timeString(time: showTime * 150)) 
-                    Text(correctAnswers)
+                    Text(correctAnswers + "/\(viewModel.totalExample)")
                     
                 }
                 .mainFont(size: 15)
@@ -81,5 +83,6 @@ struct ChartView: View {
 struct ChartView_Previews: PreviewProvider {
     static var previews: some View {
         ChartView(results: .constant([0.8, 2.3, 1.6, 4.7, 2,4]))
+            .environmentObject(ViewModel())
     }
 }

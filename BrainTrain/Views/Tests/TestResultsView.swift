@@ -15,64 +15,97 @@ struct TestResultsView: View {
     @State private var currentWeek = 1
 
     var body: some View {
-        VStack{
-          
-            Text("Результаты тестов")
-                .bold()
-                .mainFont(size: 25)
-                .padding(.vertical, 30)
-                
-            if !testResults.isEmpty {
-               
-                TabView (selection: $currentWeek){
-                            ForEach(1...viewModel.week , id: \.self) { week in
-                                VStack (spacing: 15) {
-                                        Text("Неделя \(week)")
-                                            .bold()
-                                            .mainFont(size: 22)
-                                     
-                                    
-                                    
-                                    
-                                    ChartsResult(currentWeek: $currentWeek, week: week)
+        
+        
+        ZStack (alignment: Alignment(horizontal: .leading, vertical: .bottom)){
+            
+            if viewModel.week > 1 {
+            Image(systemName: "chevron.left")
+                .font(.title2)
+                .zIndex(1)
+                .padding()
+                .onTapGesture {
+                    withAnimation{
+                    viewModel.mainScreen = 1
+                    }
+                }
+            }
+            
+            VStack{
+                Text("Результаты тестов")
+                    .bold()
+                    .mainFont(size: 25)
+                    .padding(.vertical, 30)
+                    .onAppear{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            if viewModel.mathTestDay == 1 && viewModel.isTestFinish{
+                                currentWeek = viewModel.week - 1
+                            } else {
                                 
-                                }
-                                .tag(week)
-                               
+                                currentWeek = viewModel.week
                             }
                         }
-                
-                .frame(width: screenSize.width, height: 450)
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: currentWeek > 1 ? .always : .never))
-                        .onAppear{
-                       
-                        }
-                
-            } else {
-                VStack {
-                    LottieView(name: "results", loopMode: .loop, animationSpeed: 0.8)
-                        .frame(height: 400)
-                    Text("Ждем результатов...")
-                        .bold()
-                        .mainFont(size: 20)
-                        .offset(y: -50)
-                      
-                    Spacer()
+                     
+                    }
+                    
+                if !testResults.isEmpty {
                    
+                    TabView (selection: $currentWeek){
+                                ForEach(1...viewModel.week , id: \.self) { week in
+                                    VStack (spacing: 15) {
+                                            Text("Неделя \(week)")
+                                                .bold()
+                                                .mainFont(size: 22)
+                                        
+                                        ChartsResult(currentWeek: $currentWeek, week: week)
+                                            .environmentObject(viewModel)
+                                    
+                                    }
+                                    .tag(week)
+                                   
+                                }
+                            }
+                    
+                    .frame(width: screenSize.width, height: 450)
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: currentWeek > 1 ? .always : .never))
+                            
+                    
+                } else {
+                    VStack {
+                        LottieView(name: "results", loopMode: .loop, animationSpeed: 0.8)
+                            .frame(height: 400)
+                        Text("Ждем результатов...")
+                            .bold()
+                            .mainFont(size: 20)
+                            .offset(y: -50)
+                          
+                        Spacer()
+                       
+                    }
+                 
                 }
-             
+                Spacer()
+                }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background()
+            .onChange(of: viewModel.isWordsTestFinish) { _ in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                        currentWeek = viewModel.week
+                }
             }
-            Spacer()
+            .onChange(of: viewModel.isWordsTestFinish) { _ in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                        currentWeek = viewModel.week
+                }
             }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background()
-        .onAppear{
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                    currentWeek = viewModel.week
+            .onChange(of: viewModel.isMathTestFinish) { _ in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                        currentWeek = viewModel.week
+                }
             }
+            .onDisappear{
+                viewModel.mainScreen = 1
         }
-        .onDisappear{
-            viewModel.mainScreen = 1
         }
     }
 }

@@ -35,8 +35,10 @@ struct StroopTest: View {
                     .padding(.trailing)
                     .padding(.top, -(y - 50))
                     .onTapGesture {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                         withAnimation(.spring()) {
                             viewModel.stroopTestTapped = false
+                        }
                         }
                     }
                 
@@ -46,9 +48,11 @@ struct StroopTest: View {
                         .environmentObject(viewModel)
                         .onChange(of: y) { _ in
                             if y > 130 {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                                 withAnimation(.spring()) {
                                     viewModel.stroopTestTapped = false
                                 }
+                            }
                             }
                         }
                         .onChange(of: colorsViewTag, perform: { value in
@@ -187,8 +191,10 @@ struct StroopTest: View {
                 }
             }
         case .finish:
-            withAnimation(.spring()){
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            withAnimation(){
                 viewModel.stroopTestTapped = false
+            }
             }
         }
     }

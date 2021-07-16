@@ -33,7 +33,7 @@ struct StroopTesting: View {
                 .redacted(reason: colorsViewTag == -1  ? .placeholder : [])
                
             }
-            .disabled(colorsViewTag < 0)
+            .disabled(true)
             .tabViewStyle(PageTabViewStyle())
            
             Spacer()

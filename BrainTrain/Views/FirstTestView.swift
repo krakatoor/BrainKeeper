@@ -69,20 +69,18 @@ struct FirstTestView: View {
                     .padding()
                     .padding(.vertical, small ? 0 : 15)
                     .background()
-                    .matchedGeometryEffect(id: "background", in: animation)
                     .cornerRadius(20).shadow(color: Color.primary.opacity(0.5), radius: 5, x: 0, y: 0)
                     .offset(y: height * (small ? 0.27 : 0.23))
+                    .matchedGeometryEffect(id: "background", in: animation)
                     .onTapGesture {
-                        withAnimation(.spring()){
+                        withAnimation(.spring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)){
                             viewModel.wordsTestTapped.toggle()
                         }
                     }
                 } else {
-                    
                     WordsRememberTest(animation: animation)
                         .environmentObject(viewModel)
                         .zIndex(3)
-                    
                 }
                 
                 if viewModel.stroopTestTapped{
@@ -123,11 +121,11 @@ struct FirstTestView: View {
                     .padding()
                     .padding(.vertical, small ? 0 : 15)
                     .background()
-                    .matchedGeometryEffect(id: "background1", in: animation)
                     .cornerRadius(20).shadow(color: Color.primary.opacity(0.5), radius: 5, x: 0, y: 0)
                     .offset(y: height * (small ? 0.62 : 0.60))
+                    .matchedGeometryEffect(id: "background1", in: animation)
                     .onTapGesture {
-                        withAnimation(.spring()){
+                        withAnimation(.spring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)){
                             viewModel.stroopTestTapped.toggle()
                         }
                     }
@@ -142,13 +140,8 @@ struct FirstTestView: View {
 
 struct FirstTestView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
             FirstTestView()
                 .environmentObject(ViewModel())
-                .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
-            FirstTestView()
-                .environmentObject(ViewModel())
-                .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
-        }
+        
     }
 }

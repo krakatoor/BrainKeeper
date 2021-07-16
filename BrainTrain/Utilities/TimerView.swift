@@ -33,7 +33,7 @@ struct timerView: View {
                 if startTimer {
                     if minus && timeString(time: viewModel.timeRemaining) == "00:00" {
                             timer.upstream.connect().cancel()
-                        withAnimation (.spring()){
+                        withAnimation {
                         startTimer = false
                         }
                        

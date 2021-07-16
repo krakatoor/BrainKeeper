@@ -32,7 +32,6 @@ struct ChartsResult: View {
                     .foregroundColor(.black)
                     .leadingView()
                     .padding(.leading, 10)
-                    
                 )
          
             Rectangle()
@@ -55,6 +54,7 @@ struct ChartsResult: View {
                             .rotationEffect(.degrees(270))
                         
                         ChartView(results: $results, correctAnswers: correctAnswers)
+                            .environmentObject(viewModel)
                             .onChange(of: viewModel.isMathTestFinish, perform: { value in
                                 if value {
                                     updateResult()
@@ -99,7 +99,9 @@ struct ChartsResult: View {
     }
     
     private func updateResult() {
-        for result in testResults  {
+        
+        testResults.forEach  { result in 
+            
             if result.week == String(week){
                 
                 if result.testName == "Тест на запоминание слов" {
@@ -110,7 +112,7 @@ struct ChartsResult: View {
                 StroopTestResult = result.testName! + ": " + result.testResult!
                 }
                 
-            if !results.contains(result.result) {
+                if !results.contains(result.result) {
                results[Int(result.day!)! - 1] = result.result
                 correctAnswers = result.testResult!
             }

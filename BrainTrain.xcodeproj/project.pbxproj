@@ -37,6 +37,7 @@
 		6BD25487267CAED900D061E3 /* RingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD25486267CAED900D061E3 /* RingView.swift */; };
 		6BD25488267CD15C00D061E3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6BD2548A267CD15C00D061E3 /* Localizable.strings */; };
 		6BDF62632695A0EE00210F06 /* ProgressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDF62622695A0EE00210F06 /* ProgressCard.swift */; };
+		6BDF62AE269C516300210F06 /* words.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6BDF62AD269C516300210F06 /* words.txt */; };
 		8E9F1F51253EE0AD0029E5F3 /* BrainTrainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F1F50253EE0AD0029E5F3 /* BrainTrainApp.swift */; };
 		8E9F1F53253EE0AD0029E5F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F1F52253EE0AD0029E5F3 /* ContentView.swift */; };
 		8E9F1F55253EE0AF0029E5F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E9F1F54253EE0AF0029E5F3 /* Assets.xcassets */; };
@@ -73,6 +74,7 @@
 		6BD25486267CAED900D061E3 /* RingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RingView.swift; sourceTree = "<group>"; };
 		6BD25489267CD15C00D061E3 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6BDF62622695A0EE00210F06 /* ProgressCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressCard.swift; sourceTree = "<group>"; };
+		6BDF62AD269C516300210F06 /* words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.txt; sourceTree = "<group>"; };
 		8E9F1F4D253EE0AD0029E5F3 /* BrainTrain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BrainTrain.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E9F1F50253EE0AD0029E5F3 /* BrainTrainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainTrainApp.swift; sourceTree = "<group>"; };
 		8E9F1F52253EE0AD0029E5F3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				6BBAF0892674111B009B69AE /* WordsRememberTest.swift */,
+				6BDF62AD269C516300210F06 /* words.txt */,
 				6B494C3A2572E02F0001864A /* StroopTest.swift */,
 				6B88F429268D09D600F23083 /* StroopTest */,
 				6BD2547026776B4100D061E3 /* mathTest.swift */,
@@ -306,6 +309,7 @@
 				8E9F1F58253EE0AF0029E5F3 /* Preview Assets.xcassets in Resources */,
 				8E9F1F55253EE0AF0029E5F3 /* Assets.xcassets in Resources */,
 				6BD254562675F51A00D061E3 /* timer.json in Resources */,
+				6BDF62AE269C516300210F06 /* words.txt in Resources */,
 				6B68B60A26835F0000E45556 /* results.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
