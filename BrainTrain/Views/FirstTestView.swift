@@ -52,7 +52,19 @@ struct FirstTestView: View {
                             NavigationLink(
                                 destination: mathTest(),
                                 label: {
-                                    TestCard(title: "Ежедневный тест № \(viewModel.day)", subTitle: "Оценка совместной работы полушарий")
+                                    ZStack (alignment: Alignment(horizontal: .trailing, vertical: .center)){
+                                        
+                                        if viewModel.isMathTestFinish {
+                                        Text("Завершен")
+                                            .zIndex(1)
+                                            .padding(5)
+                                            .overlay(Rectangle().stroke())
+                                            .rotationEffect(.degrees(25))
+                                            .padding(.trailing)
+                                        }
+                                        
+                                        TestCard(title: "Ежедневный тест № \(viewModel.day)", subTitle: "")
+                                    }
                                 })
                                 .buttonStyle(FlatLinkStyle())
                                 .padding(.trailing, 10)
@@ -80,7 +92,6 @@ struct FirstTestView: View {
             
            
             TestResultsView()
-            
         }
         .blur(radius: blur)
         .background()
@@ -123,13 +134,13 @@ struct TestCard: View {
             
             Spacer()
             
-            if subTitle == "Оценка совместной работы полушарий" {
+            if subTitle == "" {
                 LottieView(name: "math", loopMode: .loop, animationSpeed: 0.8)
                     .frame(height: 150)
             }
             
         }
-        .frame(width: screenSize.width / 1.2, height: subTitle == "Оценка совместной работы полушарий" ? 170 : 50)
+        .frame(width: screenSize.width / 1.2, height: subTitle == "" ? 170 : 50)
         .foregroundColor(.primary)
         .padding()
         .padding(.vertical, small ? 0 : 15)
