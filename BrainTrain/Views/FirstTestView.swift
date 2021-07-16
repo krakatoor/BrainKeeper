@@ -26,7 +26,7 @@ struct FirstTestView: View {
          
             
             ScrollViewReader { proxy in
-                ScrollView(.horizontal, showsIndicators: false) {
+                ScrollView(viewModel.isStroopTestFinish && viewModel.isWordsTestFinish ? .horizontal : [], showsIndicators: false) {
                     HStack (spacing: 10) {
                         VStack (spacing: 20){
                         
@@ -36,41 +36,44 @@ struct FirstTestView: View {
                                     TestCard(title: "Тест на запоминание слов", subTitle: "Проверим краткосрочную память")
                                         .environmentObject(viewModel)
                                 })
+                                .buttonStyle(FlatLinkStyle())
                             
                             NavigationLink(
                                 destination: StroopTest(),
                                 label: {
                                     TestCard(title: "Тест Струпа", subTitle: "Оценка совместной работы полушарий")
                                 })
-                        
+                                .buttonStyle(FlatLinkStyle())
                         }
                         
                         Spacer()
                         
+                        if viewModel.isStroopTestFinish && viewModel.isWordsTestFinish {
                             NavigationLink(
                                 destination: mathTest(),
                                 label: {
-                                    TestCard(title: "Ежедневный тест", subTitle: "Оценка совместной работы полушарий")
+                                    TestCard(title: "Ежедневный тест № \(viewModel.day)", subTitle: "Оценка совместной работы полушарий")
                                 })
-                                .id(1)
+                                .buttonStyle(FlatLinkStyle())
                                 .padding(.trailing, 10)
-                        
-                            NavigationLink("", destination: EmptyView())
-                       
+                        }
+                            NavigationLink("", destination: EmptyView()) //need to escape from ios 14 navLink bug
+                                .id(blur == 0 ? 2 : 1) //to avoid scroll after view appear
                         
                     }
                     .padding(.leading)
                     .padding(.vertical)
-                    .onAppear{
-                        if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish{
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                withAnimation(.spring()){
-                                proxy.scrollTo(1)
-                                    blur = 0
-                                }
+                    
+                }
+                .onAppear{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                            withAnimation(.spring()){
+                                if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish && !viewModel.startAnimation {
+                            proxy.scrollTo(1)
                             }
-                           
+                                blur = 0
                         }
+                       
                     }
                 }
             }
@@ -120,13 +123,13 @@ struct TestCard: View {
             
             Spacer()
             
-            if title == "Ежедневный тест" {
+            if subTitle == "Оценка совместной работы полушарий" {
                 LottieView(name: "math", loopMode: .loop, animationSpeed: 0.8)
                     .frame(height: 150)
             }
             
         }
-        .frame(width: screenSize.width / 1.2, height: title == "Ежедневный тест" ? 170 : 50)
+        .frame(width: screenSize.width / 1.2, height: subTitle == "Оценка совместной работы полушарий" ? 170 : 50)
         .foregroundColor(.primary)
         .padding()
         .padding(.vertical, small ? 0 : 15)

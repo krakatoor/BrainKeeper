@@ -14,7 +14,7 @@ struct ChartView: View {
     @State private var showTime = 0.0
     @State private var showDetail = false
     @State private var viewHeight: CGFloat = 200
-    @State private var startAnimation = true
+    
      var correctAnswers = ""
 
     var body: some View {
@@ -48,7 +48,7 @@ struct ChartView: View {
                                     Spacer()
                                     Rectangle()
                                         .foregroundColor(chart > 1.0 ? .red : .orange)
-                                        .frame(height: startAnimation ? 0 : CGFloat(chart > 1.0 ? 200 : chart * 210))
+                                        .frame(height: viewModel.startAnimation ? 0 : CGFloat(chart > 1.0 ? 200 : chart * 210))
                                 }
                             )
                     }
@@ -56,7 +56,7 @@ struct ChartView: View {
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             withAnimation(.linear) {
-                                startAnimation = false
+                                viewModel.startAnimation = false
                             }
                         }
                         let sorted = results.sorted{$0 > $1}

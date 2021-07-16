@@ -14,7 +14,7 @@ struct Home: View {
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
-  
+    @State private var showDayCard = true
 
     init() {
         UIScrollView.appearance().showsVerticalScrollIndicator = false
@@ -25,15 +25,15 @@ struct Home: View {
         
         NavigationView {
             ZStack {
-                if viewModel.currentView == .DateCard {
+             
+                if showDayCard {
                     ProgressCard()
                         .zIndex(1)
                         .transition(.move(edge: .leading))
                         .environmentObject(viewModel)
                 }
-  
+                
                     FirstTestView()
-                        .opacity(viewModel.currentView != .MathTest ? 1 : 0)
                         .environmentObject(viewModel)
                 
             }
@@ -57,45 +57,47 @@ struct Home: View {
 
                 
 //                check if tests finish
-                if viewModel.currentView == .DateCard {
-
+                
+               
+                    
                     for result in testResults{
-                            if result.date == today {
-                                if result.testName == "Тест на запоминание слов"{
-                                    if viewModel.wordsTestResult.isEmpty {
-                                        viewModel.wordsTestResult = result.testResult!
-                                        viewModel.isWordsTestFinish = true
-                                    }
+                        
+                        if result.week == String(viewModel.week) {
+                            if result.testName == "Тест на запоминание слов"{
+                                if viewModel.wordsTestResult.isEmpty {
+                                    viewModel.wordsTestResult = result.testResult!
+                                    viewModel.isWordsTestFinish = true
+                                }
                             }
-
-                                if result.testName == "Тест Струпа"{
-                                    if viewModel.stroopTestResult.isEmpty {
-                                        viewModel.stroopTestResult = result.testResult!
-                                        viewModel.isStroopTestFinish = true
-                                    }
+                            
+                            if result.testName == "Тест Струпа"{
+                                if viewModel.stroopTestResult.isEmpty {
+                                    viewModel.stroopTestResult = result.testResult!
+                                    viewModel.isStroopTestFinish = true
                                 }
-
-                                if result.testName == "Ежедневный тест"{
-                                    if viewModel.mathTestResult.isEmpty {
-                                        viewModel.mathTestResult = result.testResult!
-                                        viewModel.isMathTestFinish = true
-                                        
-                                        if today != viewModel.currentDay {
-                                            viewModel.day += 1
-                                        }
-                                    }
-                                    
-                                }
+                            }
                         }
-
+                        
+                        if result.date == today {
+                            if result.testName == "Ежедневный тест"{
+                                if viewModel.mathTestResult.isEmpty {
+                                    viewModel.mathTestResult = result.testResult!
+                                    viewModel.isMathTestFinish = true
+                                    
+                                    if today != viewModel.currentDay {
+                                        viewModel.day += 1
+                                    }
+                                }
+                                
+                            }
+                        }
+                        
                     }
-                }
+                
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                         withAnimation{
-                       
-                            viewModel.currentView = .BrainTests
-                            
+                            showDayCard = false
                         }
                     }
             }

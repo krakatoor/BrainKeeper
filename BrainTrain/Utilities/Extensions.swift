@@ -74,24 +74,14 @@ extension View {
     }
 }
 
-extension View{
-    func singBackground () -> some View {
-        self
-            .frame(width: screenSize.width - 20, height: 250)
-            .background(BlurView(style: .regular).cornerRadius(15))
-            .overlay(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: 0.2))
-    }
-}
 
 struct CustomCorner: Shape {
     var corners: UIRectCorner
     func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width:  15, height: 15))
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: small ? 0 : 22, height: small ? 0 : 22))
         return Path(path.cgPath)
     }
 }
-
-
 
 struct Leading: ViewModifier {
     func body(content: Content) -> some View {

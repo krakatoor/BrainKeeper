@@ -19,24 +19,31 @@ struct TestResultsView: View {
             VStack{
                 if !testResults.isEmpty {
                    
-                    TabView (selection: $currentWeek){
-                                ForEach(1...viewModel.week , id: \.self) { week in
-                                    VStack (spacing: 15) {
-                                            Text("Неделя \(week)")
-                                                .bold()
-                                                .mainFont(size: 22)
-                                        
-                                        ChartsResult(currentWeek: $currentWeek, week: week)
-                                            .environmentObject(viewModel)
-                                    
+                    ScrollViewReader { proxy in
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack{
+                                        ForEach(1...viewModel.week , id: \.self) { week in
+                                            VStack (spacing: 15) {
+                                                    Text("Неделя \(week).  Результаты тестов")
+                                                        .bold()
+                                                        .mainFont(size: 22)
+                                                        .padding(.bottom)
+                                                
+                                                ChartsResult(currentWeek: $currentWeek, week: week)
+                                                    .environmentObject(viewModel)
+                                            
+                                            }
+                                            .id(week)
+                                           
+                                        }
                                     }
-                                    .tag(week)
-                                   
-                                }
+                            .onAppear{
+                                proxy.scrollTo(currentWeek)
                             }
-                    
-                    .frame(width: screenSize.width, height: 450)
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: currentWeek > 1 ? .always : .never))
+                            .frame(width: screenSize.width, height: 450)
+                            .tabViewStyle(PageTabViewStyle(indexDisplayMode: currentWeek > 1 ? .always : .never))
+                        }
+                    }
                             
                     
                 } else {

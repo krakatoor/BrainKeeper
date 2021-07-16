@@ -10,11 +10,7 @@ import Combine
 
 class ViewModel: ObservableObject{
  
-    enum CurrentView{
-        case DateCard, BrainTests, MathTest, Result
-    }
     
-    @Published  var currentView = CurrentView.DateCard
     @AppStorage ("day") var day = 1
     @AppStorage ("isTestFinish") var isTestFinish = false
     @AppStorage ("currentDay") var currentDay = today
@@ -40,6 +36,7 @@ class ViewModel: ObservableObject{
         return current
     }
 
+    @Published var startAnimation = true
   
     //Результаты тестов
     @Published var testsResults: [Result] = []
@@ -63,7 +60,7 @@ class ViewModel: ObservableObject{
     @Published var startTest = false
     @Published var mathTestResultTime = 0.0
     @Published var mathTestResult = ""
-    @Published var totalExample = 50
+    @Published var totalExample = 5
     @Published var examplesCount = 0
     @Published var correctAnswers = 0
     @Published var isMathTestFinish = false
