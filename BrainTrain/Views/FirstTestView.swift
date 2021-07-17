@@ -12,18 +12,19 @@ struct FirstTestView: View {
     @State private var blur: CGFloat = 15
     var body: some View {
         VStack  {
-            if viewModel.day == 1 && !viewModel.isMathTestFinish && !viewModel.isWordsTestFinish && !viewModel.isStroopTestFinish {
-                
+            
+            if viewModel.day == 1 && (!viewModel.isWordsTestFinish && !viewModel.isStroopTestFinish) {
             Text("Неделя \(viewModel.week)")
                 .bold()
                 .mainFont(size: 22)
+               
             
                 Text("Прежде чем начать тренировку, определим с помощью тестов, как сейчас работает ваш мозг.")
                     .mainFont(size: 16)
                     .padding([.horizontal, .bottom])
                     .fixedSize(horizontal: false, vertical: true)
             }
-         
+            
             
             ScrollViewReader { proxy in
                 ScrollView(viewModel.isStroopTestFinish && viewModel.isWordsTestFinish ? .horizontal : [], showsIndicators: false) {
@@ -31,7 +32,7 @@ struct FirstTestView: View {
                         VStack (spacing: 20){
                         
                             NavigationLink(
-                                destination: WordsRememberTest(),
+                                destination: WordsRememberTest().environmentObject(viewModel),
                                 label: {
                                     TestCard(title: "Тест на запоминание слов", subTitle: "Проверим краткосрочную память")
                                         .environmentObject(viewModel)
@@ -50,7 +51,7 @@ struct FirstTestView: View {
                         
                         if viewModel.isStroopTestFinish && viewModel.isWordsTestFinish {
                             NavigationLink(
-                                destination: mathTest(),
+                                destination: mathTest().environmentObject(viewModel),
                                 label: {
                                     ZStack (alignment: Alignment(horizontal: .trailing, vertical: .center)){
                                         
@@ -68,6 +69,14 @@ struct FirstTestView: View {
                                 })
                                 .buttonStyle(FlatLinkStyle())
                                 .padding(.trailing, 10)
+                                .onAppear{
+                                       
+                                            withAnimation(.spring()){
+                                            proxy.scrollTo(2)    
+                                        
+                                       
+                                    }
+                                }
                         }
                             NavigationLink("", destination: EmptyView()) //need to escape from ios 14 navLink bug
                                 .id(blur == 0 ? 2 : 1) //to avoid scroll after view appear
@@ -75,23 +84,30 @@ struct FirstTestView: View {
                     }
                     .padding(.leading)
                     .padding(.vertical)
-                    
                 }
                 .onAppear{
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                             withAnimation(.spring()){
+                                blur = 0
                                 if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish && !viewModel.startAnimation {
                             proxy.scrollTo(1)
                             }
-                                blur = 0
+                               
                         }
                        
                     }
                 }
+                
             }
             
-           
+          Spacer()
+            
             TestResultsView()
+                .frame(height: screenSize.height * 0.38)
+                .padding(.bottom)
+                .environmentObject(viewModel)
+            
+         
         }
         .blur(radius: blur)
         .background()
@@ -140,7 +156,7 @@ struct TestCard: View {
             }
             
         }
-        .frame(width: screenSize.width / 1.2, height: subTitle == "" ? 170 : 50)
+        .frame(width: screenSize.width / 1.2, height: subTitle == "" ? screenSize.height * 0.25 : 50)
         .foregroundColor(.primary)
         .padding()
         .padding(.vertical, small ? 0 : 15)

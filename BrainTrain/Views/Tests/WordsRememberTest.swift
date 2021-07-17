@@ -21,305 +21,302 @@ struct WordsRememberTest: View {
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
-   
+    
     var body: some View {
-        
-      
-                    VStack {
-                        if !startTest && !viewModel.isWordsTestFinish {
-                            VStack {
-                                Text("Тест на запоминание слов")
-                                    .font(.title2)
-                                    .bold()
-                                    .padding(.top, small ? 0 : 20)
-                                
-                                
-                                
-                                LottieView(name: "memory", loopMode: .loop, animationSpeed: 0.6)
-                                    .frame(height: small ? 100 : 200)
-                                    .padding(.top)
-                                
-                                Text("В течении 2х минут постарайтесь запомнить как можно больше слов.")
-                                    .fixedSize(horizontal: false, vertical: true)
-                                    .padding(.bottom, 20)
-                                    .padding(.horizontal)
-                                
-                                
-                                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 3) {
-                                    ForEach(words, id: \.self) {
-                                        Text($0.capitalized)
-                                            .mainFont(size: 22)
-                                            .redacted(reason: !startCount ? .placeholder : [] )
-                                            .onChange(of: startCount, perform: { value in
-                                                if !startCount{
-                                                    withAnimation{
-                                                        startTest = true
-                                                    }
-                                                }
-                                            })
-                                        
-                                    }
-                                }
-                                
-                                Spacer()
-                                timerView(result: .constant(""), startTimer: $startCount, fontSize: small ? 20 : 25, minus: true)
-                                    .padding(.top)
-                                    .environmentObject(viewModel)
-                                
-                                
-                                Button(action: {
-                                    startCount.toggle()
-                                    if !startCount {
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                            viewModel.timeRemaining = 120
+        VStack {
+            
+            if !startTest && viewModel.wordsTestResult.isEmpty {
+                VStack {
+                    Text("Тест на запоминание слов")
+                        .font(.title2)
+                        .bold()
+                        .padding(.top, small ? 0 : 20)
+                    
+                    
+                    LottieView(name: "memory", loopMode: .loop, animationSpeed: 0.6)
+                        .frame(height: small ? 100 : 200)
+                        .padding(.top)
+                    
+                    Text("В течении 2х минут постарайтесь запомнить как можно больше слов.")
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.bottom, 20)
+                        .padding(.horizontal)
+                    
+                    
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 3) {
+                        ForEach(words, id: \.self) {
+                            Text($0.capitalized)
+                                .mainFont(size: 22)
+                                .redacted(reason: !startCount ? .placeholder : [] )
+                                .onChange(of: startCount, perform: { value in
+                                    if !startCount{
+                                        withAnimation{
+                                            startTest = true
                                         }
                                     }
-                                    
-                                },
-                                label: {
-                                    Text( startCount ? "Дальше" :  "Старт")
-                                        .mainButton()
                                 })
-                                .padding(.bottom, 20)
+                            
+                        }
+                    }
+                    
+                    Spacer()
+                    timerView(result: .constant(""), startTimer: $startCount, fontSize: small ? 20 : 25, minus: true)
+                        .padding(.top)
+                        .environmentObject(viewModel)
+                    
+                    
+                    Button(action: {
+                        startCount.toggle()
+                        if !startCount {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                viewModel.timeRemaining = 12
                             }
-                            .padding(.vertical, 20)
-                            
-                        } else {
-                            
-                            VStack{
-                                if !startCount && viewModel.wordsTestResult.isEmpty{
-                                    Text("Постарайтесь вписать как можно больше запомненных слов.")
-                                        .fixedSize(horizontal: false, vertical: true)
-                                        .padding()
-                                        .padding(.top, small ? 0 : 18)
-                                    
-                                }
-                                VStack {
-                                    
-                                    if startCount {
-                                        Text("Слов запомнено: \(viewModel.words.count)")
-                                            .font(.title3)
-                                            .padding(.top)
-                                    }
-                                    
-                                    ZStack {
-                                        Text(error ? "Попробуйте другое слово" : " ")
-                                            .foregroundColor(.red)
-                                        
-                                        Text(wordsAlreadyExist ? "Слово уже добавлено" : " ")
-                                            .foregroundColor(.red)
-                                    }
-                                    
-                                    if viewModel.wordsTestResult.isEmpty {
-                                        
-                                        TextField("Введите слово", text: $word)
-                                            .introspectTextField{ textfield in
-                                                textfield.becomeFirstResponder()
-                                            }
-                                            .keyboardType(.twitter)
-                                            .autocapitalization(.sentences)
-                                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                                            .autocapitalization(.none)
-                                            .padding()
-                                            .disabled(!startCount)
-                                            .contentShape(Rectangle())
-                                            .onChange(of: word, perform: { value in
-                                                if words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) {
-                                                    viewModel.words.append(word)
-                                                    word = ""
-                                                } else if viewModel.words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)){
-                                                    wordsAlreadyExist.toggle()
-                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                                        wordsAlreadyExist.toggle()
-                                                    }
-                                                }
-                                            })
-                                            .onTapGesture {
-                                                startCount = true
-                                                
-                                            }
-                                            .overlay(
-                                                HStack {
-                                                    Spacer()
-                                                    Button(action: {word = ""}, label: {
-                                                        Image(systemName: "xmark.circle.fill")
-                                                            .foregroundColor(.primary)
-                                                            .padding(.trailing, 25)
-                                                            .opacity(word.isEmpty ? 0 : 1)
-                                                    })
-                                                })
-                                    }
-                                    ScrollView {
-                                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 3) {
-                                            ForEach(viewModel.words, id: \.self) {
-                                                Text($0)
-                                                    .mainFont(size: 22)
-                                                
-                                            }
-                                        }
-                                    }
-                                }
-                                
-                                
-                                Spacer()
-                                
-                                if viewModel.wordsTestResult.isEmpty {
-                                    timerView(result: $viewModel.wordsTestResult, startTimer: $startCount, fontSize: 25, minus: true)
-                                        .environmentObject(viewModel)
-                                        .onChange(of: startCount, perform: { value in
-                                            if !value {
-                                                viewModel.isWordsTestFinish = true
-                                                let testResult = TestResult(context: viewContext)
-                                                testResult.date = today
-                                                testResult.week = String(viewModel.week)
-                                                testResult.day = String(viewModel.day)
-                                                testResult.testName = "Тест на запоминание слов"
-                                                testResult.testResult = "Слов запомнено: \(viewModel.words.count)"
-                                                testResult.isMathTest = false
-                                                viewModel.wordsTestResult = "Слов запомнено: \(viewModel.words.count)"
-                                                do {
-                                                    for result in testResults{
-                                                        if result.date == testResult.date {
-                                                            if result.testName == testResult.testName{
-                                                                viewContext.delete(result)
-                                                            }
-                                                        }
-                                                        
-                                                    }
-                                                    
-                                                    try viewContext.save()
-                                                } catch {return}
-                                                print("words test saved")
-                                            }
-                                        })
-                                } else {
-                                    VStack {
-                                        
-                                        LottieView(name: "memory", loopMode: .playOnce, animationSpeed: 0.6)
-                                            .frame(height: 200)
-                                        
-                                        Text("Тест завершён")
-                                            .font(.title)
-                                            .bold()
-                                        
-                                        Text(viewModel.wordsTestResult)
-                                            .font(.title)
-                                            .padding(.bottom)
-                                        
-                                        
-                                    }
-                                }
-                                
-                                HStack {
-                                    
-                                    
-                                    if !viewModel.wordsTestResult.isEmpty {
-                                        
-                                        Button(action: {
-                                            showAlert = true
-                                        }, label: {
-                                            Image(systemName: "arrow.clockwise")
-                                                .font(.title)
-                                        })
-                                        .alert(isPresented: $showAlert) {
-                                            Alert(title: Text("Начать тест заново?"), message: Text("При прохождении теста результаты будут заменены"),
-                                                  primaryButton: .destructive(Text("Да")) {
-                                                    getWords()
-                                                    viewModel.wordsTestResult = ""
-                                                    startTest = false
-                                                    viewModel.isWordsTestFinish = false
-                                                    viewModel.words.removeAll()
-                                                    
-                                                    viewModel.timeRemaining = 120
-                                                  },
-                                                  secondaryButton: .cancel(Text("Нет"))
-                                            )
-                                        }
-                                        
-                                        Spacer()
-                                        
-                                        Button(action: {
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                                                withAnimation() {
-                                                    presentation.wrappedValue.dismiss()
-                                                }
-                                            }
-                                            
-                                        }, label: {
-                                            Text("Назад" )
-                                                .mainButton()
-                                        })
-                                        .padding(.leading, !viewModel.wordsTestResult.isEmpty  ? -20 : 0)
-                                    } else {
-                                        
-                                        Spacer()
-                                        
-                                        Button(action: {
-                                            
-                                            if startCount {
-                                                if words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) {
-                                                    viewModel.words.append(word)
-                                                    word = ""
-                                                } else if viewModel.words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)){
-                                                    wordsAlreadyExist.toggle()
-                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                                        wordsAlreadyExist.toggle()
-                                                    }
-                                                } else {
-                                                    error.toggle()
-                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                                        error.toggle()
-                                                    }
-                                                }
-                                            } else {
-                                                
-                                                startCount = true
-                                            }
-                                            
-                                        },
-                                        label: {
-                                            
-                                            Text(startCount ? "Добавить" : "Старт" )
-                                                .mainButton()
-                                            
-                                        })
-                                        .padding(.leading, !viewModel.wordsTestResult.isEmpty  ? -20 : 0)
-                                    }
-                                    
-                                    Spacer()
-                                }
-                                .padding(.bottom)
-                                .padding(.horizontal, 30)
-                                
-                            }
-                            .padding(.vertical, 20)
-                            .transition(.move(edge: .trailing))
-                            
-                            
                         }
                         
+                    },
+                    label: {
+                        Text( startCount ? "Дальше" :  "Старт")
+                            .mainButton()
+                    })
+                }
+                .padding(.vertical, 20)
+                
+            } else {
+                
+                VStack{
+                    if !startCount && viewModel.wordsTestResult.isEmpty{
+                        Text("Постарайтесь вписать как можно больше запомненных слов.")
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding()
+                            .padding(.top, small ? 0 : 18)
+                        
                     }
-                    .onAppear{
-                        viewModel.timeRemaining = 120
-                    }
-                    .onDisappear{
-                        viewModel.words.removeAll()
-                        if !viewModel.wordsTestResult.isEmpty{
-                            viewModel.isWordsTestFinish = true
+                    VStack {
+                        
+                        if startCount {
+                            Text("Слов запомнено: \(viewModel.words.count)")
+                                .font(.title3)
+                                .padding(.top)
                         }
-                       
+                        
+                        ZStack {
+                            Text(error ? "Попробуйте другое слово" : " ")
+                                .foregroundColor(.red)
+                            
+                            Text(wordsAlreadyExist ? "Слово уже добавлено" : " ")
+                                .foregroundColor(.red)
+                        }
+                        
+                        if viewModel.wordsTestResult.isEmpty {
+                            
+                            TextField("Введите слово", text: $word)
+                                .introspectTextField{ textfield in
+                                    textfield.becomeFirstResponder()
+                                }
+                                .keyboardType(.twitter)
+                                .autocapitalization(.sentences)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .autocapitalization(.none)
+                                .padding()
+                                .disabled(!startCount)
+                                .contentShape(Rectangle())
+                                .onChange(of: word, perform: { value in
+                                    if words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) {
+                                        viewModel.words.append(word)
+                                        word = ""
+                                    } else if viewModel.words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)){
+                                        wordsAlreadyExist.toggle()
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            wordsAlreadyExist.toggle()
+                                        }
+                                    }
+                                })
+                                .onTapGesture {
+                                    startCount = true
+                                    
+                                }
+                                .overlay(
+                                    HStack {
+                                        Spacer()
+                                        Button(action: {word = ""}, label: {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .foregroundColor(.primary)
+                                                .padding(.trailing, 25)
+                                                .opacity(word.isEmpty ? 0 : 1)
+                                        })
+                                    })
+                        }
+                        ScrollView {
+                            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 3) {
+                                ForEach(viewModel.words, id: \.self) {
+                                    Text($0)
+                                        .mainFont(size: 22)
+                                    
+                                }
+                            }
+                        }
                     }
+                    
+                    
+                    Spacer()
+                    
+                    if viewModel.wordsTestResult.isEmpty {
+                        timerView(result: $viewModel.wordsTestResult, startTimer: $startCount, fontSize: 25, minus: true)
+                            .environmentObject(viewModel)
+                            .onChange(of: startCount, perform: { value in
+                                if !value {
+                                    viewModel.isWordsTestFinish = true
+                                    let testResult = TestResult(context: viewContext)
+                                    testResult.date = today
+                                    testResult.week = String(viewModel.week)
+                                    testResult.day = String(viewModel.day)
+                                    testResult.testName = "Тест на запоминание слов"
+                                    testResult.testResult = "Слов запомнено: \(viewModel.words.count)"
+                                    testResult.isMathTest = false
+                                    viewModel.wordsTestResult = "Слов запомнено: \(viewModel.words.count)"
+                                    do {
+                                        for result in testResults{
+                                            if result.date == testResult.date {
+                                                if result.testName == testResult.testName{
+                                                    viewContext.delete(result)
+                                                }
+                                            }
+                                            
+                                        }
+                                        
+                                        try viewContext.save()
+                                    } catch {return}
+                                    print("words test saved")
+                                }
+                            })
+                            .onChange(of: viewModel.words) { value in
+                                if value.count == 20 {
+                                    withAnimation{
+                                    startCount = false
+                                    }
+                                }
+                            }
+                    } else {
+                        VStack {
+                            
+                            LottieView(name: "memory", loopMode: .playOnce, animationSpeed: 0.6)
+                                .frame(height: 200)
+                            
+                            Text("Тест завершён")
+                                .font(.title)
+                                .bold()
+                            
+                            Text(viewModel.wordsTestResult)
+                                .font(.title)
+                                .padding(.bottom)
+                            
+                            
+                        }
+                    }
+                    
+                    HStack {
+                        
+                        
+                        if !viewModel.wordsTestResult.isEmpty {
+                            
+                            Button(action: {
+                                showAlert = true
+                            }, label: {
+                                Image(systemName: "arrow.clockwise")
+                                    .font(.title)
+                            })
+                            .alert(isPresented: $showAlert) {
+                                Alert(title: Text("Начать тест заново?"), message: Text("При прохождении теста результаты будут заменены"),
+                                      primaryButton: .destructive(Text("Да")) {
+                                        getWords()
+                                        viewModel.words.removeAll()
+                                        viewModel.timeRemaining = 12
+                                        withAnimation{
+                                            startTest = false
+                                            viewModel.wordsTestResult = ""
+                                        
+                                        }
+                                      },
+                                      secondaryButton: .cancel(Text("Нет"))
+                                )
+                            }
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                                    withAnimation() {
+                                        presentation.wrappedValue.dismiss()
+                                    }
+                                }
+                                
+                            }, label: {
+                                Text("Назад" )
+                                    .mainButton()
+                            })
+                            .padding(.leading, !viewModel.wordsTestResult.isEmpty  ? -20 : 0)
+                        } else {
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                
+                                if startCount {
+                                    if words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) {
+                                        viewModel.words.append(word)
+                                        word = ""
+                                    } else if viewModel.words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)){
+                                        wordsAlreadyExist.toggle()
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            wordsAlreadyExist.toggle()
+                                        }
+                                    } else {
+                                        error.toggle()
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            error.toggle()
+                                        }
+                                    }
+                                } else {
+                                    
+                                    startCount = true
+                                }
+                                
+                            },
+                            label: {
+                                
+                                Text(startCount ? "Добавить" : "Старт" )
+                                    .mainButton()
+                                
+                            })
+                            .padding(.leading, !viewModel.wordsTestResult.isEmpty  ? -20 : 0)
+                        }
+                        
+                        Spacer()
+                    }
+                    .padding(.horizontal, 30)
+                    
+                }
+                .padding(.vertical, 20)
+                .transition(.move(edge: .trailing))
+                
+            }
+            
+        }
+        .padding(.bottom, -15)
+        .onAppear{
+            viewModel.timeRemaining = 12
+        }
+        
         .navigationBarTitleDisplayMode(.inline)
         .padding(.top, -50)
-                .mainFont(size: 18)
-                .background()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .onAppear{
-                    getWords()
-                }
+        .mainFont(size: 18)
+        .background()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onAppear{
+            getWords()
             
-        
-        
+         
+        }
     }
     
     func getWords() {

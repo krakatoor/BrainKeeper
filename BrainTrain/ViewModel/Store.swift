@@ -35,13 +35,8 @@ class ViewModel: ObservableObject{
         
         return current
     }
-
+ 
     @Published var startAnimation = true
-  
-    //Результаты тестов
-    @Published var testsResults: [Result] = []
-
-    
     @Published var wordsTestTapped = false
     @Published var stroopTestTapped = false
     
@@ -68,9 +63,8 @@ class ViewModel: ObservableObject{
     
     //Результаты
     @Published var results = [0.0, 0.0, 0.0, 0.0, 0.0]
-
-   
     
+   
     func getPermession() {
         notificationCenter.getNotificationSettings { (settings) in
 

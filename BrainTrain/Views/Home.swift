@@ -14,12 +14,12 @@ struct Home: View {
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
+    //
     @State private var showDayCard = true
 
     init() {
-        UIScrollView.appearance().showsVerticalScrollIndicator = false
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
-           UINavigationBar.appearance().shadowImage = UIImage()       
+        UINavigationBar.appearance().shadowImage = UIImage()
     }
     var body: some View {
         
@@ -52,14 +52,9 @@ struct Home: View {
 //                        try viewContext.save()
 //                    } catch {return}
 //                }
-//
-              
 
-                
 //                check if tests finish
                 
-               
-                    
                     for result in testResults{
                         
                         if result.week == String(viewModel.week) {

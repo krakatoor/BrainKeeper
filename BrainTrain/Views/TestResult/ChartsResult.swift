@@ -24,7 +24,7 @@ struct ChartsResult: View {
     var body: some View {
         VStack {
             Rectangle()
-                .fill(Color.blue)
+                .fill(Color(#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)))
                 .frame(width: startAnimation ? 0 : screenSize.width - 30,  height: 25)
                 .leadingView()
                 .overlay(
@@ -35,7 +35,7 @@ struct ChartsResult: View {
                 )
          
             Rectangle()
-                .fill(Color.green)
+                .fill(Color(#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)))
                 .frame(width: startAnimation ? 0 : screenSize.width - 30,  height: 25)
                 .leadingView()
                 .overlay(
@@ -94,6 +94,18 @@ struct ChartsResult: View {
                             startAnimation = false
                         }
                     }
+                }
+                .onChange(of: viewModel.stroopTestResult) { _ in
+                    updateResult()
+                    print("result updated")
+                }
+                .onChange(of: viewModel.wordsTestResult) { _ in
+                    updateResult()
+                    print("result updated")
+                }
+                .onChange(of: viewModel.mathTestResult) { _ in
+                    updateResult()
+                    print("result updated")
                 }
         }
     }

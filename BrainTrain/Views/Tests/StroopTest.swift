@@ -76,7 +76,7 @@ struct StroopTest: View {
                         
                         HStack {
                             
-                            if !viewModel.stroopTestResult.isEmpty  {
+                            if !viewModel.stroopTestResult.isEmpty && stage == .finish {
                                 Button(action: {
                                     showAlert = true
                                 }, label: {
@@ -87,7 +87,6 @@ struct StroopTest: View {
                                     Alert(title: Text("Начать тест заново?"), message: Text("При прохождении теста результаты будут заменены"),
                                           primaryButton: .destructive(Text("Да")) {
                                             viewModel.stroopTestResult = ""
-                                            viewModel.isStroopTestFinish = false
                                             viewModel.timeRemaining = 0
                                             stage = .prepare
                                             buttonTitile = "Дальше"
@@ -96,6 +95,7 @@ struct StroopTest: View {
                                     )
                                 }
                             }
+                            
                             
                             Spacer()
                             
@@ -106,7 +106,7 @@ struct StroopTest: View {
                                 Text(buttonTitile)
                                     .mainButton()
                             })
-                            .padding(.leading,  !viewModel.stroopTestResult.isEmpty  ? -20 : 0)
+                            .padding(.leading , !viewModel.stroopTestResult.isEmpty && stage == .finish ? -25 : 0)
                             
                             Spacer()
                             
@@ -125,6 +125,8 @@ struct StroopTest: View {
                             stage = .finish
                             buttonTitile = "Назад"
                         }
+                        
+                      
                     }
                     .onDisappear{
                         if viewModel.week == 1 {
