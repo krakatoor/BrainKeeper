@@ -181,7 +181,7 @@ struct TestCard: View {
             }
             
         }
-        .frame(width: screenSize.width / 1.2, height: subTitle == "" ? screenSize.height * 0.25 : 50)
+        .frame(width: screenSize.width / 1.2, height: subTitle == "" ? screenSize.height * 0.25 : screenSize.height * 0.077)
         .foregroundColor(.primary)
         .padding()
         .padding(.vertical, small ? 0 : 15)
