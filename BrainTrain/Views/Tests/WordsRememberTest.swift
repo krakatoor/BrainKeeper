@@ -69,7 +69,7 @@ struct WordsRememberTest: View {
                         startCount.toggle()
                         if !startCount {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                viewModel.timeRemaining = 12
+                                viewModel.timeRemaining = 1
                             }
                         }
                         
@@ -174,7 +174,7 @@ struct WordsRememberTest: View {
                                     testResult.testResult = "Слов запомнено: \(viewModel.words.count)"
                                     testResult.isMathTest = false
                                     viewModel.wordsTestResult = "Слов запомнено: \(viewModel.words.count)"
-                                    do {
+                                   
                                         for result in testResults{
                                             if result.date == testResult.date {
                                                 if result.testName == testResult.testName{
@@ -183,9 +183,8 @@ struct WordsRememberTest: View {
                                             }
                                             
                                         }
-                                        
-                                        try viewContext.save()
-                                    } catch {return}
+                                    
+                                    do {try viewContext.save() } catch { return }
                                     print("words test saved")
                                 }
                             })
@@ -230,7 +229,7 @@ struct WordsRememberTest: View {
                                       primaryButton: .destructive(Text("Да")) {
                                         getWords()
                                         viewModel.words.removeAll()
-                                        viewModel.timeRemaining = 12
+                                        viewModel.timeRemaining = 1
                                         withAnimation{
                                             startTest = false
                                             viewModel.wordsTestResult = ""
@@ -304,7 +303,7 @@ struct WordsRememberTest: View {
         }
         .padding(.bottom, -15)
         .onAppear{
-            viewModel.timeRemaining = 12
+            viewModel.timeRemaining = 1
         }
         
         .navigationBarTitleDisplayMode(.inline)
@@ -314,8 +313,6 @@ struct WordsRememberTest: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear{
             getWords()
-            
-         
         }
     }
     

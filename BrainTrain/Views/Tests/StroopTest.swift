@@ -36,7 +36,6 @@ struct StroopTest: View {
                                     viewModel.startStroopTestTimer = false
                                     buttonTitile = "Назад"
                                     colorsViewTag = -1
-                                    viewModel.startStroopTestTimer = false
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                         withAnimation{
                                             stage = .finish
@@ -48,16 +47,17 @@ struct StroopTest: View {
                                         testResult.testName = "Тест Струпа"
                                         testResult.testResult = viewModel.stroopTestResult
                                         testResult.isMathTest = false
-                                        do {
+                                     
                                             for result in testResults{
                                                 if result.date == testResult.date {
                                                     if result.testName == testResult.testName{
                                                         viewContext.delete(result)
+                                                        print("Delete")
                                                     }
                                                 }
                                             }
-                                            try viewContext.save()
-                                        } catch {return}
+                                        
+                                        do {try viewContext.save() } catch { return }
                                         viewModel.isStroopTestFinish = true
                                         print("save stroop")
                                     }

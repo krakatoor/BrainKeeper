@@ -16,7 +16,8 @@ struct Home: View {
     private var testResults: FetchedResults<TestResult>
     //
     @State private var showDayCard = true
-
+    @State private var showAlert = false
+    
     init() {
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         UINavigationBar.appearance().shadowImage = UIImage()
@@ -32,7 +33,7 @@ struct Home: View {
                         .transition(.move(edge: .leading))
                         .environmentObject(viewModel)
                 }
-                
+               
                     FirstTestView()
                         .environmentObject(viewModel)
                 
@@ -40,30 +41,53 @@ struct Home: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background()
             .onAppear{
-                
+       
                 //reset all data
                 
 //                viewModel.day = 1
-//                viewModel.mathTestDay = 1
+//                viewModel.mathTestDay = 0
 //                viewModel.isTestFinish = false
 //                for i in testResults{
 //                    viewContext.delete(i)
 //                    do {try viewContext.save()} catch {return}}
            
+              
                 
-//                check if tests finish
+         
                 
+
+                
+        
+             
+//                if viewModel.startAnimation {
+//                    
+//                    viewModel.currentDay = tomorrow
+//                    
+//                    //                viewModel.currentDay = today
+//                    
+//                    if today != viewModel.currentDay {
+//                        viewModel.day += 1
+//
+//                        if  viewModel.mathTestDay == 4{
+//                            viewModel.mathTestDay = 0
+//                        } else {
+//                            viewModel.mathTestDay += 1
+//                            print("day + 1")
+//                        }
+//                    }
+//                }
+                //                check if tests finish
                 for result in testResults{
                     
                     if result.week == String(viewModel.week) {
-                        if result.testName == "Тест на запоминание слов"{
+                        if result.testName == "Тест на запоминание слов" {
                             if viewModel.wordsTestResult.isEmpty {
                                 viewModel.wordsTestResult = result.testResult!
                                 viewModel.isWordsTestFinish = true
                             }
                         }
                         
-                        if result.testName == "Тест Струпа"{
+                        if result.testName == "Тест Струпа" {
                             if viewModel.stroopTestResult.isEmpty {
                                 viewModel.stroopTestResult = result.testResult!
                                 viewModel.isStroopTestFinish = true
@@ -71,30 +95,27 @@ struct Home: View {
                         }
                     }
                     
-                    if result.date == today {
-                        if result.testName == "Ежедневный тест"{
-                            if viewModel.mathTestResult.isEmpty {
-                                viewModel.mathTestResult = result.testResult!
-                              
-                                
-                                if !viewModel.results.contains(result.result) {
-                                    viewModel.results[Int(result.day!)! - 1] = result.result
-                                           }
-                                
-                                
-                                if today != viewModel.currentDay {
-                                    viewModel.day += 1
-                                }
-                                
-                               
+                 
+                    if result.testName == "Ежедневный тест" {
+                         
+                        for i in 1...viewModel.week{
+                            viewModel.mathTestResult = result.testResult!
+                          
+                            if !viewModel.results.contains(result.result) {
+                                viewModel.results[Int(result.day!)!] = result.result
                             }
                             
+                            if result.day == String(viewModel.mathTestDay) {
+                            viewModel.isMathTestFinish = true
+                            }
                         }
+                              
+                            
+                       
                     }
                     
                 }
                 
-                print("Всего записей", testResults.count)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                         withAnimation{
                             showDayCard = false

@@ -16,7 +16,7 @@ class ViewModel: ObservableObject{
     @AppStorage ("currentDay") var currentDay = today
     @AppStorage ("skipBrainTest") var skipBrainTest = false
     @AppStorage ("currentDate") var currentDate = today
-    @AppStorage ("mathTestDay") var mathTestDay = 1
+    @AppStorage ("mathTestDay") var mathTestDay = 0
     @AppStorage("showNotification") var showNotificationCover = true
     
     let brainTestsDay = Array(1...60).filter {$0.isMultiple(of:5)}
@@ -52,7 +52,7 @@ class ViewModel: ObservableObject{
     @Published var timeRemaining:Double = 20 //in seconds
  
     //Ежедневные примеры
-    @Published var startTest = false
+    @Published var startMathTest = false
     @Published var mathTestResultTime = 0.0
     @Published var mathTestResult = ""
     @Published var totalExample = 5
@@ -63,7 +63,7 @@ class ViewModel: ObservableObject{
     
     //Результаты
     @Published var results = [0.0, 0.0, 0.0, 0.0, 0.0]
-    
+    @Published var mathTestResults: [MathTestResult] = []
    
     func getPermession() {
         notificationCenter.getNotificationSettings { (settings) in
