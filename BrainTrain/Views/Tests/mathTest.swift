@@ -48,7 +48,7 @@ struct mathTest: View {
             }
             
             ZStack (alignment: .center){
-                if showCover  && viewModel.day == 1 && !viewModel.isMathTestFinish{
+                if showCover  && viewModel.day == 1 && viewModel.mathTestResult.isEmpty{
                     MathTestCover(showCover: $showCover)
                         .zIndex(1)
                         .transition(.move(edge: .bottom))
@@ -63,7 +63,7 @@ struct mathTest: View {
                 
                 
                 VStack {
-                    if !viewModel.isMathTestFinish {
+                    if viewModel.mathTestResult.isEmpty {
                         Text("Максмимально быстро решите математические задачи")
                             .mainFont(size: 18)
                             .multilineTextAlignment(.center)
@@ -80,7 +80,7 @@ struct mathTest: View {
                         
                         
                         VStack {
-                            if !viewModel.isMathTestFinish {
+                            if viewModel.mathTestResult.isEmpty {
                                 Text("Примеров осталось: \(viewModel.totalExample - viewModel.examplesCount )")
                                     .mainFont(size: 20)
                             }
@@ -92,16 +92,17 @@ struct mathTest: View {
                         .mainFont(size: 20)
                         
                         
-                        if viewModel.isMathTestFinish {
+                        if !viewModel.mathTestResult.isEmpty {
                             Text(viewModel.mathTestResult)
                                 .font(.title3)
                         } else {
                             timerView(result: $viewModel.mathTestResult, startTimer: $viewModel.startTest, fontSize: 25, isMathTest: true)
+                                .environmentObject(viewModel)
                         }
                         
                         Spacer()
                         
-                        if !viewModel.isMathTestFinish {
+                        if viewModel.mathTestResult.isEmpty {
                             
                             HStack {
                                 Spacer()
@@ -127,6 +128,20 @@ struct mathTest: View {
                                     .opacity(showAnswer ? 1 : 0)
                                 Spacer()
                             }
+                            .onChange(of: viewModel.examplesCount, perform: { _ in
+                                if viewModel.examplesCount == viewModel.totalExample {
+                                    saveResult()
+                                    
+                                    viewModel.isMathTestFinish  = true
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                                        withAnimation{
+                                            testFinishCover = true
+                                        }
+                                       
+                                    }
+                                }
+                            })
                             
                         } else {
                             
@@ -144,6 +159,7 @@ struct mathTest: View {
                             .transition(.move(edge: .bottom))
                         }
                         
+                        //MARK: KEYBOARD
                         if viewModel.startTest{
                             buttons
                                 .padding(.top)
@@ -165,24 +181,26 @@ struct mathTest: View {
                     Spacer()
                     
                     if !viewModel.startTest {
+                        
                         HStack {
                             
-                            if !viewModel.isMathTestFinish {
+                            if !viewModel.mathTestResult.isEmpty {
                                 Button(action: {
                                     showAlert = true
                                 }, label: {
                                     Image(systemName: "arrow.clockwise")
                                         .font(.title)
+                                        .offset(y: 7)
                                 })
                                 .padding(.leading)
                                 .alert(isPresented: $showAlert) {
                                     Alert(title: Text("Начать тест заново?"), message: Text("При прохождении теста результаты будут заменены"),
                                           primaryButton: .destructive(Text("Да")) {
-                                            viewModel.mathTestResult = ""
+                                       
                                             viewModel.timeRemaining = 0
                                             viewModel.examplesCount = 0
                                             withAnimation{
-                                                viewModel.isMathTestFinish = false
+                                                viewModel.mathTestResult = ""
                                             }
                                           },
                                           secondaryButton: .cancel(Text("Нет"))
@@ -193,9 +211,9 @@ struct mathTest: View {
                             Spacer()
                             
                             Button(action:{
-                                if !viewModel.isMathTestFinish {
+                                if viewModel.mathTestResult.isEmpty {
                                     withAnimation{
-                                        viewModel.startTest.toggle()
+                                        viewModel.startTest = true
                                     }
                                     
                                 } else {
@@ -205,7 +223,7 @@ struct mathTest: View {
                                 }
                             }, label:{
                                 
-                                if viewModel.isMathTestFinish {
+                                if !viewModel.mathTestResult.isEmpty {
                                     Text("Назад")
                                         .mainFont(size: 20)
                                         .foregroundColor(.white)
@@ -223,17 +241,14 @@ struct mathTest: View {
                                     
                                 }
                             })
-                            .padding(.leading, !viewModel.mathTestResult.isEmpty  ? -20 : 0)
+                            .padding(.leading, !viewModel.mathTestResult.isEmpty  ? -25 : 0)
                             .padding(.top)
                             
                             Spacer()
                             
                         }
-                        .padding(.bottom, 40)
                     }
                 }
-                .padding(.top, -50)
-                .padding(.bottom, -15)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background()
                 .navigationBarTitle("")
@@ -241,27 +256,8 @@ struct mathTest: View {
                 .onAppear{
                     math()
                     viewModel.timeRemaining = 0
+                    print("Всего записей", testResults.count)
                 }
-                .onChange(of: viewModel.examplesCount, perform: { _ in
-                    if viewModel.examplesCount == viewModel.totalExample {
-                        
-                        withAnimation{
-                            viewModel.startTest.toggle()
-                        }
-                        
-                        saveResult()
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                            withAnimation{
-                                testFinishCover = true
-                            }
-                           
-                        }
-                    }
-                    
-                    
-                })
-
             }
         }
     }
@@ -305,29 +301,43 @@ struct mathTest: View {
     //MARK: Save result
     private func saveResult() {
         
-        let testResult = TestResult(context: viewContext)
-        testResult.date = today
-        testResult.week = String(viewModel.week)
-        testResult.day = String(viewModel.mathTestDay)
-        testResult.testName = "Ежедневный тест"
-        testResult.testResult = viewModel.mathTestResult
-        testResult.isMathTest = true
-        testResult.result = viewModel.mathTestResultTime
-        do {
+        withAnimation{
+            viewModel.startTest = false
+            viewModel.isTestFinish = true
+        
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let testResult = TestResult(context: viewContext)
+            testResult.date = today
+            testResult.week = String(viewModel.week)
+            testResult.day = String(viewModel.mathTestDay)
+            testResult.testName = "Ежедневный тест"
+            testResult.testResult = viewModel.mathTestResult
+            testResult.isMathTest = true
+            testResult.result = viewModel.mathTestResultTime
             
-            for result in testResults{
-                if result.day == testResult.day && result.week == testResult.week{
-                    if result.testName == testResult.testName{
+            print("Всего записей", testResults.count)
+            
+            if viewModel.isMathTestFinish{
+                for result in testResults.filter({$0.isMathTest && $0.day == String(viewModel.mathTestDay - 1) && $0.week == testResult.week}) {
+
                         viewContext.delete(result)
-                    }
+                    print("Запись удалена")
+                        viewModel.mathTestDay -= 1
+                        testResult.day = String(viewModel.mathTestDay)
+                        testResult.result = viewModel.mathTestResultTime
+                 
                 }
             }
+                //remove notification if test fineshed early
+                notificationCenter.removePendingNotificationRequests(withIdentifiers: ["timeToTrain"])
+                notificationCenter.removeDeliveredNotifications(withIdentifiers: ["timeToTrain"])
+               
+            viewModel.results[Int(testResult.day!)! - 1] = testResult.result
             
-            //remove notification if test fineshed early
-            notificationCenter.removePendingNotificationRequests(withIdentifiers: ["timeToTrain"])
-            notificationCenter.removeDeliveredNotifications(withIdentifiers: ["timeToTrain"])
-           
-            try viewContext.save()
+            do {try viewContext.save() } catch { return }
+            
             
             if  viewModel.mathTestDay == 5{
                 viewModel.mathTestDay = 1
@@ -336,9 +346,9 @@ struct mathTest: View {
             }
           
             viewModel.currentDay = today
-            viewModel.isTestFinish = true
             
-        } catch { return }
+            print("Save math test")
+        }
     }
     
     private var buttons: some View {

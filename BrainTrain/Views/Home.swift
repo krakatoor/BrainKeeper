@@ -9,7 +9,7 @@ import SwiftUI
 import UserNotifications
 
 struct Home: View {
-    @EnvironmentObject var viewModel: ViewModel
+    @StateObject private var viewModel = ViewModel()
     //coreData
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
@@ -48,53 +48,61 @@ struct Home: View {
 //                viewModel.isTestFinish = false
 //                for i in testResults{
 //                    viewContext.delete(i)
-//                    do {
-//                        try viewContext.save()
-//                    } catch {return}
-//                }
-
+//                    do {try viewContext.save()} catch {return}}
+           
+                
 //                check if tests finish
                 
-                    for result in testResults{
-                        
-                        if result.week == String(viewModel.week) {
-                            if result.testName == "Тест на запоминание слов"{
-                                if viewModel.wordsTestResult.isEmpty {
-                                    viewModel.wordsTestResult = result.testResult!
-                                    viewModel.isWordsTestFinish = true
-                                }
-                            }
-                            
-                            if result.testName == "Тест Струпа"{
-                                if viewModel.stroopTestResult.isEmpty {
-                                    viewModel.stroopTestResult = result.testResult!
-                                    viewModel.isStroopTestFinish = true
-                                }
+                for result in testResults{
+                    
+                    if result.week == String(viewModel.week) {
+                        if result.testName == "Тест на запоминание слов"{
+                            if viewModel.wordsTestResult.isEmpty {
+                                viewModel.wordsTestResult = result.testResult!
+                                viewModel.isWordsTestFinish = true
                             }
                         }
                         
-                        if result.date == today {
-                            if result.testName == "Ежедневный тест"{
-                                if viewModel.mathTestResult.isEmpty {
-                                    viewModel.mathTestResult = result.testResult!
-                                    viewModel.isMathTestFinish = true
-                                    
-                                    if today != viewModel.currentDay {
-                                        viewModel.day += 1
-                                    }
+                        if result.testName == "Тест Струпа"{
+                            if viewModel.stroopTestResult.isEmpty {
+                                viewModel.stroopTestResult = result.testResult!
+                                viewModel.isStroopTestFinish = true
+                            }
+                        }
+                    }
+                    
+                    if result.date == today {
+                        if result.testName == "Ежедневный тест"{
+                            if viewModel.mathTestResult.isEmpty {
+                                viewModel.mathTestResult = result.testResult!
+                              
+                                
+                                if !viewModel.results.contains(result.result) {
+                                    viewModel.results[Int(result.day!)! - 1] = result.result
+                                           }
+                                
+                                
+                                if today != viewModel.currentDay {
+                                    viewModel.day += 1
                                 }
                                 
+                               
                             }
+                            
                         }
-                        
                     }
+                    
+                }
                 
-                
+                print("Всего записей", testResults.count)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                         withAnimation{
                             showDayCard = false
+                            viewModel.startAnimation = false
                         }
                     }
+                
+                
             }
             .padding(.top, -50)
     }

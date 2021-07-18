@@ -40,7 +40,7 @@ struct FirstTestView: View {
                                 .buttonStyle(FlatLinkStyle())
                             
                             NavigationLink(
-                                destination: StroopTest(),
+                                destination: StroopTest().environmentObject(viewModel),
                                 label: {
                                     TestCard(title: "Тест Струпа", subTitle: "Оценка совместной работы полушарий")
                                 })
@@ -55,7 +55,7 @@ struct FirstTestView: View {
                                 label: {
                                     ZStack (alignment: Alignment(horizontal: .trailing, vertical: .center)){
                                         
-                                        if viewModel.isMathTestFinish {
+                                        if !viewModel.mathTestResult.isEmpty {
                                         Text("Завершен")
                                             .zIndex(1)
                                             .padding(5)
@@ -78,7 +78,9 @@ struct FirstTestView: View {
                                     }
                                 }
                         }
-                            NavigationLink("", destination: EmptyView()) //need to escape from ios 14 navLink bug
+                        NavigationLink(destination: EmptyView()) {
+                            EmptyView()
+                        }//need to escape from ios 14 navLink bug
                                 .id(blur == 0 ? 2 : 1) //to avoid scroll after view appear
                         
                     }

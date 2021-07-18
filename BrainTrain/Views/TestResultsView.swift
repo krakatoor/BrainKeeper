@@ -54,32 +54,16 @@ struct TestResultsView: View {
                         .bold()
                         .mainFont(size: 20)
                         .offset(y: -50)
-                    
-                  
-                    
                 }
                 
             }
             
         }
-                    .onChange(of: viewModel.isWordsTestFinish) { _ in
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                                currentWeek = viewModel.week
-                        }
-                    }
-                    .onChange(of: viewModel.isWordsTestFinish) { _ in
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                                currentWeek = viewModel.week
-                        }
-                    }
-                    .onChange(of: viewModel.isMathTestFinish) { _ in
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                                currentWeek = viewModel.week
-                        }
-                    }
-        
         .onAppear{
+           
             UIScrollView.appearance().bounces = false
+     
+        
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 if viewModel.mathTestDay == 1 && viewModel.isTestFinish{
                     currentWeek = viewModel.week - 1
@@ -90,7 +74,7 @@ struct TestResultsView: View {
             }
             
         }
-        
+       
     }
 }
 

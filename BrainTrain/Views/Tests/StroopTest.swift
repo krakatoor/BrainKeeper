@@ -28,7 +28,6 @@ struct StroopTest: View {
                             .background()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .transition(.slide)
-                            .environmentObject(viewModel)
                             .onChange(of: colorsViewTag, perform: { value in
                                 if value == 4 {
                                     buttonTitile = "Стоп"
@@ -59,8 +58,8 @@ struct StroopTest: View {
                                             }
                                             try viewContext.save()
                                         } catch {return}
-                                        print("save stroop")
                                         viewModel.isStroopTestFinish = true
+                                        print("save stroop")
                                     }
                                 }
                             })
@@ -172,9 +171,11 @@ struct StroopTest: View {
         case .prepare:
             StroopTestPreparing()
                 .frame(height: screenSize.height * 0.7)
+                .environmentObject(viewModel)
         case .test:
             StroopTesting(colorsViewTag: $colorsViewTag)
                 .frame(height: screenSize.height * 0.7)
+                .environmentObject(viewModel)
         case .finish:
             StroopFinish()
                 .frame(height: screenSize.height * 0.7)

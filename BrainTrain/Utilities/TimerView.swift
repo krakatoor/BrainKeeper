@@ -25,7 +25,7 @@ struct timerView: View {
                         result = "Правильных ответов: \(viewModel.correctAnswers)"
                         viewModel.mathTestResultTime = viewModel.timeRemaining / 150
                     } else {
-                        result = "время теста: \(timeString(time: viewModel.timeRemaining))"
+                        result = timeString(time: viewModel.timeRemaining)
                     }
                 }
             })
