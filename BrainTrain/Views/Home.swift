@@ -96,24 +96,35 @@ struct Home: View {
                     }
                     
                  
+//                    if result.testName == "Ежедневный тест" {
+//
+//                        for i in 1...viewModel.week{
+//                            viewModel.mathTestResult = result.testResult!
+//
+//                            if !viewModel.results.contains(result.result) {
+//                                viewModel.results[Int(result.day!)!] = result.result
+//                            }
+//
+//                            if result.day == String(viewModel.mathTestDay) {
+//                            viewModel.isMathTestFinish = true
+//                            }
+//                        }
+//
+//
+//
+//                    }
+                    
+                    
                     if result.testName == "Ежедневный тест" {
                          
-                        for i in 1...viewModel.week{
-                            viewModel.mathTestResult = result.testResult!
-                          
-                            if !viewModel.results.contains(result.result) {
-                                viewModel.results[Int(result.day!)!] = result.result
-                            }
-                            
-                            if result.day == String(viewModel.mathTestDay) {
-                            viewModel.isMathTestFinish = true
-                            }
+                      
+                        if result.day == String(viewModel.mathTestDay) {
+                        viewModel.isMathTestFinish = true
                         }
                               
                             
                        
                     }
-                    
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {

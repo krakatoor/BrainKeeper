@@ -63,7 +63,6 @@ class ViewModel: ObservableObject{
     
     //Результаты
     @Published var results = [0.0, 0.0, 0.0, 0.0, 0.0]
-    @Published var mathTestResults: [MathTestResult] = []
    
     func getPermession() {
         notificationCenter.getNotificationSettings { (settings) in

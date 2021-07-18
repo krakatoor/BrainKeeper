@@ -12,7 +12,6 @@ struct TestResultsView: View {
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
     @EnvironmentObject var viewModel: ViewModel
-    @State private var currentWeek = 1
     
     var body: some View {
         
@@ -22,26 +21,29 @@ struct TestResultsView: View {
                 ScrollViewReader { proxy in
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack{
-                            ForEach(1...viewModel.week , id: \.self) { week in
+                            ForEach(1...viewModel.week, id: \.self) { week in
+                           
                                 VStack (spacing: 15) {
                                     Text("Неделя \(week).  Результаты тестов")
                                         .bold()
                                         .mainFont(size: 22)
                                         .padding(.bottom)
-                                    
-                                    ChartsResult(currentWeek: $currentWeek, week: week)
+
+                                    ChartsResult(week: week)
                                         .environmentObject(viewModel)
-                                    
+
                                 }
+                                .frame(width: screenSize.width, height: 450)
                                 .id(week)
                                 
                             }
                         }
                         .onAppear{
-                            proxy.scrollTo(currentWeek)
+                            proxy.scrollTo(viewModel.week)
+                          
                         }
-                        .frame(width: screenSize.width, height: 450)
-                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: currentWeek > 1 ? .always : .never))
+                       
+                       
                     }
                 }
                 
@@ -62,15 +64,8 @@ struct TestResultsView: View {
         .onAppear{
            
             UIScrollView.appearance().bounces = false
-     
-        
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                if viewModel.mathTestDay == 1 && viewModel.isTestFinish{
-                    currentWeek = viewModel.week - 1
-                } else {
-                    
-                    currentWeek = viewModel.week
-                }
+              
             }
             
         }

@@ -12,9 +12,12 @@ struct ChartView: View {
     @State private var showTime = 0.0
     @State private var showDetail = false
     @State private var viewHeight: CGFloat = 200
-  
+    @Environment(\.managedObjectContext) private var  viewContext
+    @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
+    private var testResults: FetchedResults<TestResult>
+    var week: Int
     var body: some View {
-        
+        let results = testResults.filter({$0.isMathTest && $0.week == String(week)})
         ZStack (alignment: .top){
             
             if showDetail{
@@ -34,7 +37,7 @@ struct ChartView: View {
             }
             
             HStack (spacing: 15){
-                ForEach(viewModel.results, id: \.self) { chart in
+                ForEach(results, id: \.self) { chart in
                     VStack {
                         Rectangle()
                             .foregroundColor(.clear)
@@ -43,18 +46,18 @@ struct ChartView: View {
                                 VStack{
                                     Spacer()
                                     Rectangle()
-                                        .foregroundColor(chart > 1.0 ? .red : .orange)
-                                        .frame(height: viewModel.startAnimation ? 0 : CGFloat(chart > 1.0 ? 200 : chart * 210))
+                                        .foregroundColor(chart.result > 1.0 ? .red : .orange)
+                                        .frame(height: viewModel.startAnimation ? 0 : CGFloat(chart.result > 1.0 ? 200 : chart.result * 210))
                                 }
                             )
                     }
                     .frame(height: viewHeight < 210 ? 210 : viewHeight * 210)
                     .onAppear {
-                        let sorted = viewModel.results.sorted{$0 > $1}
+                        let sorted = results.map{$0.result}.sorted{$0 > $1}
                         viewHeight = CGFloat( sorted[0])
                     }
                     .onTapGesture {
-                        showTime = chart
+                        showTime = chart.result
                         showDetail.toggle()
                     }
                 }
@@ -73,7 +76,7 @@ struct ChartView: View {
 
 struct ChartView_Previews: PreviewProvider {
     static var previews: some View {
-        ChartView()
+        ChartView(week: 1)
             .environmentObject(ViewModel())
     }
 }

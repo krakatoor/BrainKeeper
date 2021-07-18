@@ -13,17 +13,19 @@ struct ChartsResult: View {
     private var testResults: FetchedResults<TestResult>
     @EnvironmentObject var viewModel: ViewModel
     let days = ["1","2","3","4","5"]
-    @Binding var currentWeek: Int
     var week: Int
-    
+    @State private var wordsTestResult = ""
+    @State private var stroopTestResult = "Тест не пройден"
+        
     var body: some View {
+        let results = testResults.filter({$0.week == String(week)})
         VStack {
             Rectangle()
                 .fill(Color(#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)))
                 .frame(width: viewModel.startAnimation ? 0 : screenSize.width - 30,  height: 25)
                 .leadingView()
                 .overlay(
-                    Text(viewModel.wordsTestResult)
+                    Text(wordsTestResult)
                     .foregroundColor(.black)
                     .leadingView()
                     .padding(.leading, 10)
@@ -34,12 +36,13 @@ struct ChartsResult: View {
                 .frame(width: viewModel.startAnimation ? 0 : screenSize.width - 30,  height: 25)
                 .leadingView()
                 .overlay(
-                    Text("Тест Струпа: " + viewModel.stroopTestResult)
+                    Text("Тест Струпа: " + stroopTestResult)
                         .foregroundColor(.black)
                     .leadingView()
                     .padding(.leading, 10)
                 )
-         
+            
+        
             
                 VStack {
                     ZStack (alignment: .bottomLeading){
@@ -48,8 +51,9 @@ struct ChartsResult: View {
                             .offset(x: 40,y: -50)
                             .rotationEffect(.degrees(270))
                         
-                        ChartView()
+                        ChartView(week: week)
                             .environmentObject(viewModel)
+                            .frame(minWidth: 200, minHeight: 200)
                           
                         
                     }
@@ -75,10 +79,21 @@ struct ChartsResult: View {
                         }
                     }
                     
-                    Spacer()
+             
                 }
                 .padding()
-
+            Spacer()
+        }
+        .onAppear{
+            for result in results {
+                if result.testName == "Тест на запоминание слов" {
+                    wordsTestResult = result.testResult!
+                }
+                
+                if result.testName == "Тест Струпа" {
+                    stroopTestResult = result.testResult!
+                }
+            }
         }
     }
 
@@ -87,7 +102,7 @@ struct ChartsResult: View {
 
 struct ChartsResult_Previews: PreviewProvider {
     static var previews: some View {
-        ChartsResult(currentWeek: .constant(1), week: 1)
+        ChartsResult(week: 1)
             .environmentObject(ViewModel())
     }
 }
