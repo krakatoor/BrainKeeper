@@ -49,7 +49,7 @@ struct ChartsResult: View {
                             .offset(x: 40,y: -60)
                             .rotationEffect(.degrees(270))
                         
-                        ChartView(week: week)
+                        ChartView()
                             .environmentObject(viewModel)
                     }
                     

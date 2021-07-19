@@ -12,18 +12,15 @@ struct ChartView: View {
     @State private var showTime = 0.0
     @State private var showDetail = false
     @State private var viewHeight: CGFloat = 200
-    @Environment(\.managedObjectContext) private var  viewContext
-    @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
-    private var testResults: FetchedResults<TestResult>
-    var week: Int
+  
     var body: some View {
-        let results = testResults.filter({$0.isMathTest && $0.week == String(week)})
+        
         ZStack (alignment: .top){
             
             if showDetail{
-                
+
                 VStack (spacing: 5){
-                    Text("Время теста: " + timeString(time: showTime * 150)) 
+                    Text("Время теста: " + timeString(time: showTime * 150))
                     Text(viewModel.mathTestResult + "/\(viewModel.totalExample)")
                     
                 }
@@ -33,12 +30,11 @@ struct ChartView: View {
                 .zIndex(1)
                 .onTapGesture {
                     showDetail.toggle()
-                }
-                
+            }
             }
             
             HStack (spacing: 15){
-                ForEach(results, id: \.self) { chart in
+                ForEach(viewModel.results, id: \.self) { chart in
                     VStack {
                         Rectangle()
                             .foregroundColor(.clear)
@@ -47,21 +43,22 @@ struct ChartView: View {
                                 VStack{
                                     Spacer()
                                     Rectangle()
-                                        .foregroundColor(chart.result > 1.0 ? .red : .orange)
-                                        .frame(height: viewModel.startAnimation ? 0 : CGFloat(chart.result > 1.0 ? 200 : chart.result * 210))
+                                        .foregroundColor(chart > 1.0 ? .red : .orange)
+                                        .frame(height: viewModel.startAnimation ? 0 : CGFloat(chart > 1.0 ? 200 : chart * 210))
                                 }
                             )
                     }
-                    
-                    .frame(height: 200)
-                    
+                    .frame(height: viewHeight < 210 ? 210 : viewHeight * 210)
+                    .onAppear {
+                        let sorted = viewModel.results.sorted{$0 > $1}
+                        viewHeight = CGFloat( sorted[0])
+                    }
                     .onTapGesture {
-                        showTime = chart.result
+                        showTime = chart
                         showDetail.toggle()
                     }
                 }
             }
-          
         }
         
         
@@ -76,7 +73,8 @@ struct ChartView: View {
 
 struct ChartView_Previews: PreviewProvider {
     static var previews: some View {
-        ChartView(week: 1)
+        ChartView()
             .environmentObject(ViewModel())
     }
 }
+
