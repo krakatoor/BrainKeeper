@@ -50,21 +50,14 @@ struct Home: View {
 //                for i in testResults{
 //                    viewContext.delete(i)
 //                    do {try viewContext.save()} catch {return}}
-           
-              
-                
-         
-                
-
-                
-        
+ 
              
 //                if viewModel.startAnimation {
-//                    
+//
 //                    viewModel.currentDay = tomorrow
-//                    
+//
 //                    //                viewModel.currentDay = today
-//                    
+//
 //                    if today != viewModel.currentDay {
 //                        viewModel.day += 1
 //
@@ -96,35 +89,24 @@ struct Home: View {
                     }
                     
                  
-//                    if result.testName == "Ежедневный тест" {
-//
-//                        for i in 1...viewModel.week{
-//                            viewModel.mathTestResult = result.testResult!
-//
-//                            if !viewModel.results.contains(result.result) {
-//                                viewModel.results[Int(result.day!)!] = result.result
-//                            }
-//
-//                            if result.day == String(viewModel.mathTestDay) {
-//                            viewModel.isMathTestFinish = true
-//                            }
-//                        }
-//
-//
-//
-//                    }
-                    
-                    
                     if result.testName == "Ежедневный тест" {
-                         
-                      
-                        if result.day == String(viewModel.mathTestDay) {
-                        viewModel.isMathTestFinish = true
-                        }
-                              
-                            
-                       
+
+                     
+                            viewModel.mathTestResult = result.testResult!
+
+                            if !viewModel.results.contains(result.result) {
+                                viewModel.results[Int(result.day!)!] = result.result
+                            }
+
+                            if result.day == String(viewModel.mathTestDay) {
+                            viewModel.isMathTestFinish = true
+                            }
+                        
+
+
+
                     }
+                 
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {

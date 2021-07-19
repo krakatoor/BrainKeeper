@@ -21,7 +21,7 @@ struct ChartView: View {
         ZStack (alignment: .top){
             
             if showDetail{
-
+                
                 VStack (spacing: 5){
                     Text("Время теста: " + timeString(time: showTime * 150)) 
                     Text(viewModel.mathTestResult + "/\(viewModel.totalExample)")
@@ -33,7 +33,8 @@ struct ChartView: View {
                 .zIndex(1)
                 .onTapGesture {
                     showDetail.toggle()
-            }
+                }
+                
             }
             
             HStack (spacing: 15){
@@ -51,17 +52,16 @@ struct ChartView: View {
                                 }
                             )
                     }
-                    .frame(height: viewHeight < 210 ? 210 : viewHeight * 210)
-                    .onAppear {
-                        let sorted = results.map{$0.result}.sorted{$0 > $1}
-                        viewHeight = CGFloat( sorted[0])
-                    }
+                    
+                    .frame(height: 200)
+                    
                     .onTapGesture {
                         showTime = chart.result
                         showDetail.toggle()
                     }
                 }
             }
+          
         }
         
         

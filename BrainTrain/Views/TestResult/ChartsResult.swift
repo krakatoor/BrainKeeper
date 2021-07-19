@@ -14,18 +14,17 @@ struct ChartsResult: View {
     @EnvironmentObject var viewModel: ViewModel
     let days = ["1","2","3","4","5"]
     var week: Int
-    @State private var wordsTestResult = ""
-    @State private var stroopTestResult = "Тест не пройден"
+ 
         
     var body: some View {
-        let results = testResults.filter({$0.week == String(week)})
+        
         VStack {
             Rectangle()
                 .fill(Color(#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)))
                 .frame(width: viewModel.startAnimation ? 0 : screenSize.width - 30,  height: 25)
                 .leadingView()
                 .overlay(
-                    Text(wordsTestResult)
+                    Text(viewModel.wordsTestResult)
                     .foregroundColor(.black)
                     .leadingView()
                     .padding(.leading, 10)
@@ -36,27 +35,24 @@ struct ChartsResult: View {
                 .frame(width: viewModel.startAnimation ? 0 : screenSize.width - 30,  height: 25)
                 .leadingView()
                 .overlay(
-                    Text("Тест Струпа: " + stroopTestResult)
+                    Text(viewModel.stroopTestResult)
                         .foregroundColor(.black)
                     .leadingView()
                     .padding(.leading, 10)
                 )
             
-        
             
                 VStack {
                     ZStack (alignment: .bottomLeading){
                         Text("Время")
                             .font(.caption2)
-                            .offset(x: 40,y: -50)
+                            .offset(x: 40,y: -60)
                             .rotationEffect(.degrees(270))
                         
                         ChartView(week: week)
                             .environmentObject(viewModel)
-                            .frame(minWidth: 200, minHeight: 200)
-                          
-                        
                     }
+                    
                     
                     ZStack (alignment: .trailing){
                         Text("2мин.")
@@ -84,17 +80,7 @@ struct ChartsResult: View {
                 .padding()
             Spacer()
         }
-        .onAppear{
-            for result in results {
-                if result.testName == "Тест на запоминание слов" {
-                    wordsTestResult = result.testResult!
-                }
-                
-                if result.testName == "Тест Струпа" {
-                    stroopTestResult = result.testResult!
-                }
-            }
-        }
+
     }
 
     

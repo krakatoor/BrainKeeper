@@ -261,6 +261,7 @@ struct mathTest: View {
                     math()
                     viewModel.startMathTest = false
                     print(testResults.count)
+                    print(viewModel.mathTestDay)
                 }
                
             }

@@ -128,7 +128,7 @@ struct FirstTestView: View {
             Spacer()
             
             TestResultsView()
-                .frame(height: screenSize.height * 0.38)
+                .frame(height: screenSize.height *  (viewModel.day == 1 && (!viewModel.isWordsTestFinish && !viewModel.isStroopTestFinish) ? 0.30 : 0.38))
                 .padding(.bottom)
                 .environmentObject(viewModel)
             
