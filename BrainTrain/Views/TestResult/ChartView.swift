@@ -18,7 +18,6 @@ struct ChartView: View {
         ZStack (alignment: .top){
             
             if showDetail{
-
                 VStack (spacing: 5){
                     Text("Время теста: " + timeString(time: showTime * 150))
                     Text(viewModel.mathTestResult + "/\(viewModel.totalExample)")
