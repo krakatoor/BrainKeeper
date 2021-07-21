@@ -11,12 +11,46 @@ import SwiftUI
 struct BrainTrainApp: App {
     let persistenceController = PersistenceController.shared
     @Environment(\.scenePhase) var scenePhase
+    @StateObject private var viewModel = ViewModel()
+  
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(viewModel)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .onChange(of: scenePhase) { _ in
+                    
                     persistenceController.save()
+                    
+                    if scenePhase == .background {
+                        
+                        if viewModel.currentDay != today {
+                            
+                            viewModel.day += 1
+                                viewModel.showDayCard = true
+                                viewModel.startAnimation = true
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                    withAnimation{
+                                        viewModel.showDayCard = false
+                                        viewModel.startAnimation = false
+                                    }
+                                }
+                       
+                            if  viewModel.mathTestDay == 4 {
+                                viewModel.mathTestDay = 0
+                                withAnimation{
+                                    viewModel.weekChange = true
+                                }
+                                
+                            } else {
+                                viewModel.mathTestDay += 1
+                                print("day + 1")
+                            }
+                        }
+                  
+               
+                    }
                 }
         }
         

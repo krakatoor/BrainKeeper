@@ -69,7 +69,7 @@ struct WordsRememberTest: View {
                         startCount.toggle()
                         if !startCount {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                viewModel.timeRemaining = 1
+                                viewModel.timeRemaining = 12
                             }
                         }
                         
@@ -169,7 +169,7 @@ struct WordsRememberTest: View {
                                     let testResult = TestResult(context: viewContext)
                                     testResult.date = today
                                     testResult.week = String(viewModel.week)
-                                    testResult.day = String(viewModel.day)
+                                    testResult.day = Double(viewModel.day)
                                     testResult.testName = "Тест на запоминание слов"
                                     testResult.testResult = "Слов запомнено: \(viewModel.words.count)"
                                     testResult.isMathTest = false
@@ -229,7 +229,7 @@ struct WordsRememberTest: View {
                                       primaryButton: .destructive(Text("Да")) {
                                         getWords()
                                         viewModel.words.removeAll()
-                                        viewModel.timeRemaining = 1
+                                        viewModel.timeRemaining = 12
                                         withAnimation{
                                             startTest = false
                                             viewModel.wordsTestResult = ""
@@ -303,7 +303,7 @@ struct WordsRememberTest: View {
         }
         .padding(.bottom, -15)
         .onAppear{
-            viewModel.timeRemaining = 1
+            viewModel.timeRemaining = 12
         }
         
         .navigationBarTitleDisplayMode(.inline)

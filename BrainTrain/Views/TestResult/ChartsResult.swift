@@ -13,9 +13,9 @@ struct ChartsResult: View {
     private var testResults: FetchedResults<TestResult>
     @EnvironmentObject var viewModel: ViewModel
     let days = ["1","2","3","4","5"]
+    
     var week: Int
  
-        
     var body: some View {
         
         VStack {
@@ -24,7 +24,7 @@ struct ChartsResult: View {
                 .frame(width: viewModel.startAnimation ? 0 : screenSize.width - 30,  height: 25)
                 .leadingView()
                 .overlay(
-                    Text(viewModel.wordsTestResult)
+                    Text(viewModel.wordsTestResult.isEmpty ? "Тест не пройден" : viewModel.wordsTestResult)
                     .foregroundColor(.black)
                     .leadingView()
                     .padding(.leading, 10)
@@ -35,7 +35,7 @@ struct ChartsResult: View {
                 .frame(width: viewModel.startAnimation ? 0 : screenSize.width - 30,  height: 25)
                 .leadingView()
                 .overlay(
-                    Text(viewModel.stroopTestResult)
+                    Text(viewModel.stroopTestResult.isEmpty ? "Тест не пройден" : "Тест Струпа: " + viewModel.stroopTestResult)
                         .foregroundColor(.black)
                     .leadingView()
                     .padding(.leading, 10)
@@ -43,14 +43,16 @@ struct ChartsResult: View {
             
             
                 VStack {
+                    
                     ZStack (alignment: .bottomLeading){
                         Text("Время")
                             .font(.caption2)
-                            .offset(x: 40,y: -60)
+                            .offset(x: 40,y:  -70)
                             .rotationEffect(.degrees(270))
                         
-                        ChartView()
+                        ChartView(week: week)
                             .environmentObject(viewModel)
+                    
                     }
                     
                     

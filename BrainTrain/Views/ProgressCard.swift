@@ -16,12 +16,21 @@ struct ProgressCard: View {
                     
                     Spacer()
                     
+                    if viewModel.day < 6 {
                     RingView(width: 70, heihgt: 70, percent: CGFloat((viewModel.day * 100 / 60)))
                         .padding()
+                }
                 }
             }
             
             Spacer()
+            
+            if viewModel.weekChange {
+                Text("Новая неделя!")
+                    .bold()
+                    .font(.title)
+                    .foregroundColor(.red)
+            }
             
             Text("День \(viewModel.day)")
                 .font(.system(size: 40, weight: .black, design: .serif))
@@ -34,7 +43,7 @@ struct ProgressCard: View {
                 .scaledToFit()
         }
         .background(BlurView(style: .regular).cornerRadius(20).shadow(radius: 10))
-        .frame(width: screenSize.width - 50, height: screenSize.height * 0.5)
+        .frame(width: screenSize.width - 30, height: screenSize.height * 0.7)
         .overlay(RoundedRectangle(cornerRadius: 20).stroke(lineWidth: 0.3))
         
     }

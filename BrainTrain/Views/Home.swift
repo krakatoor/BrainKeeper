@@ -9,14 +9,15 @@ import SwiftUI
 import UserNotifications
 
 struct Home: View {
-    @StateObject private var viewModel = ViewModel()
+    @EnvironmentObject var viewModel: ViewModel
     //coreData
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
     //
-    @State private var showDayCard = true
+   
     @State private var showAlert = false
+  
     
     init() {
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
@@ -27,7 +28,7 @@ struct Home: View {
         NavigationView {
             ZStack {
              
-                if showDayCard {
+                if viewModel.showDayCard {
                     ProgressCard()
                         .zIndex(1)
                         .transition(.move(edge: .leading))
@@ -44,31 +45,37 @@ struct Home: View {
        
                 //reset all data
                 
-//                viewModel.day = 1
+                viewModel.day = 1
 //                viewModel.mathTestDay = 0
 //                viewModel.isTestFinish = false
 //                for i in testResults{
 //                    viewContext.delete(i)
 //                    do {try viewContext.save()} catch {return}}
  
-             
-//                if viewModel.startAnimation {
-//
+           
+                
+                if viewModel.startAnimation {
+
 //                    viewModel.currentDay = tomorrow
-//
-//                    //                viewModel.currentDay = today
-//
-//                    if today != viewModel.currentDay {
-//                        viewModel.day += 1
-//
-//                        if  viewModel.mathTestDay == 4{
-//                            viewModel.mathTestDay = 0
-//                        } else {
-//                            viewModel.mathTestDay += 1
-//                            print("day + 1")
-//                        }
-//                    }
-//                }
+
+                    //                viewModel.currentDay = today
+
+                    if viewModel.currentDay != today {
+                        viewModel.day += 1
+
+                        if  viewModel.mathTestDay == 4{
+                            viewModel.mathTestDay = 0
+                            withAnimation{
+                                viewModel.weekChange = true
+                            }
+                        } else {
+                            viewModel.mathTestDay += 1
+                            print("day + 1")
+                        }
+                    }
+                }
+                
+                
                 //                check if tests finish
                 for result in testResults{
                     
@@ -90,28 +97,22 @@ struct Home: View {
                     
                  
                     if result.testName == "Ежедневный тест" {
-
-                     
+                        if result.week == String(viewModel.week){
+                                viewModel.results[Int(result.day)] = result.result
                             viewModel.mathTestResult = result.testResult!
+                        }
 
-                            if !viewModel.results.contains(result.result) {
-                                viewModel.results[Int(result.day!)!] = result.result
-                            }
-
-                            if result.day == String(viewModel.mathTestDay) {
+                            if result.day == Double(viewModel.mathTestDay) {
                             viewModel.isMathTestFinish = true
                             }
                         
-
-
-
                     }
                  
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                         withAnimation{
-                            showDayCard = false
+                            viewModel.showDayCard = false
                             viewModel.startAnimation = false
                         }
                     }

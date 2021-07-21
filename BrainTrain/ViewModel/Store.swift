@@ -35,7 +35,11 @@ class ViewModel: ObservableObject{
         
         return current
     }
- 
+    
+    @Published var checkDay = false
+    
+    @Published var weekChange = false
+    @Published var showDayCard = true
     @Published var startAnimation = true
     @Published var wordsTestTapped = false
     @Published var stroopTestTapped = false

@@ -21,6 +21,8 @@ struct StroopTest: View {
     @State private var colorsViewTag = -1
     @State private var stage: StroopTestStages = .prepare
     @State private var showAlert = false
+    @State private var disableButton = false
+
     var body: some View {
         
                     VStack {
@@ -43,7 +45,7 @@ struct StroopTest: View {
                                         let testResult = TestResult(context: viewContext)
                                         testResult.date = today
                                         testResult.week = String(viewModel.week)
-                                        testResult.day = String(viewModel.day)
+                                        testResult.day = Double(viewModel.day)
                                         testResult.testName = "Тест Струпа"
                                         testResult.testResult = viewModel.stroopTestResult
                                         testResult.isMathTest = false
@@ -103,9 +105,15 @@ struct StroopTest: View {
                                 testAction()
                             }, label: {
                                 Text(buttonTitile)
-                                    .mainButton()
+                                    .mainFont(size: small ? 18 : 20)
+                                    .foregroundColor(.white)
+                                    .frame(width: 150)
+                                    .padding(10)
+                                    .background(stage == .test && disableButton ? Color.gray.cornerRadius(15) : Color.blue.cornerRadius(15))
                             })
                             .padding(.leading , !viewModel.stroopTestResult.isEmpty && stage == .finish ? -25 : 0)
+                            .disabled(stage == .test && disableButton)
+                            .padding(.bottom, small ? 10 : 0)
                             
                             Spacer()
                             
@@ -151,9 +159,17 @@ struct StroopTest: View {
                 viewModel.startStroopTestTimer = true
                 colorsViewTag = 0
                 buttonTitile = "Дальше"
+                disableButton = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    disableButton = false
+                }
             } else if colorsViewTag < 5 {
                 withAnimation{
                     colorsViewTag += 1
+                    disableButton = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        disableButton = false
+                    }
                 }
             }
         case .finish:

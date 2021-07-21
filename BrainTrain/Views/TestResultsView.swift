@@ -27,7 +27,7 @@ struct TestResultsView: View {
                                     Text("Неделя \(week).  Результаты тестов")
                                         .bold()
                                         .mainFont(size: 22)
-                                        .padding(.bottom)
+                                        .padding(.bottom, small ? 0 : 10)
 
                                     ChartsResult(week: week)
                                         .environmentObject(viewModel)
@@ -39,8 +39,11 @@ struct TestResultsView: View {
                             }
                         }
                         .onAppear{
+                            if viewModel.startAnimation{
+                            withAnimation{
                             proxy.scrollTo(viewModel.week)
-                          
+                            }
+                            }
                         }
                        
                        

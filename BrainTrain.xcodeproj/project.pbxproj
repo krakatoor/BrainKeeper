@@ -15,6 +15,7 @@
 		6B2CD0692690626E00217B22 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2CD0682690626E00217B22 /* ChartView.swift */; };
 		6B494C3B2572E02F0001864A /* StroopTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B494C3A2572E02F0001864A /* StroopTest.swift */; };
 		6B68B60A26835F0000E45556 /* results.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B68B60926835F0000E45556 /* results.json */; };
+		6B80D58E26A80F2500B1EEB3 /* ApplePay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B80D58D26A80F2500B1EEB3 /* ApplePay.swift */; };
 		6B88F431268E3BEA00F23083 /* MathTestCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B88F430268E3BEA00F23083 /* MathTestCover.swift */; };
 		6B88F433268E460100F23083 /* MathTestFinish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B88F432268E460100F23083 /* MathTestFinish.swift */; };
 		6B88F435268E479D00F23083 /* MathFinish.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B88F434268E479D00F23083 /* MathFinish.json */; };
@@ -23,7 +24,6 @@
 		6BBAF0872673A3A4009B69AE /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBAF0862673A3A4009B69AE /* Store.swift */; };
 		6BBAF08A2674111B009B69AE /* WordsRememberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBAF0892674111B009B69AE /* WordsRememberTest.swift */; };
 		6BD254542675F47400D061E3 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD254532675F47400D061E3 /* Lottie */; };
-		6BD254562675F51A00D061E3 /* timer.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD254552675F51A00D061E3 /* timer.json */; };
 		6BD254592675F56100D061E3 /* Lottie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD254582675F56100D061E3 /* Lottie.swift */; };
 		6BD2545E2675F68500D061E3 /* memory.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD2545D2675F68500D061E3 /* memory.json */; };
 		6BD254622675F7AB00D061E3 /* stroop.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD254612675F7AB00D061E3 /* stroop.json */; };
@@ -36,6 +36,7 @@
 		6BD25488267CD15C00D061E3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6BD2548A267CD15C00D061E3 /* Localizable.strings */; };
 		6BDF62632695A0EE00210F06 /* ProgressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDF62622695A0EE00210F06 /* ProgressCard.swift */; };
 		6BDF62AE269C516300210F06 /* words.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6BDF62AD269C516300210F06 /* words.txt */; };
+		6BF6EDE826A6CCC400D60EBE /* finish.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BF6EDE726A6CCC400D60EBE /* finish.json */; };
 		8E9F1F51253EE0AD0029E5F3 /* BrainTrainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F1F50253EE0AD0029E5F3 /* BrainTrainApp.swift */; };
 		8E9F1F53253EE0AD0029E5F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F1F52253EE0AD0029E5F3 /* ContentView.swift */; };
 		8E9F1F55253EE0AF0029E5F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E9F1F54253EE0AF0029E5F3 /* Assets.xcassets */; };
@@ -51,6 +52,7 @@
 		6B2CD0682690626E00217B22 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		6B494C3A2572E02F0001864A /* StroopTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StroopTest.swift; sourceTree = "<group>"; };
 		6B68B60926835F0000E45556 /* results.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = results.json; sourceTree = "<group>"; };
+		6B80D58D26A80F2500B1EEB3 /* ApplePay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePay.swift; sourceTree = "<group>"; };
 		6B88F430268E3BEA00F23083 /* MathTestCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathTestCover.swift; sourceTree = "<group>"; };
 		6B88F432268E460100F23083 /* MathTestFinish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathTestFinish.swift; sourceTree = "<group>"; };
 		6B88F434268E479D00F23083 /* MathFinish.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MathFinish.json; sourceTree = "<group>"; };
@@ -58,7 +60,6 @@
 		6BBAF08126739098009B69AE /* FirstTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTestView.swift; sourceTree = "<group>"; };
 		6BBAF0862673A3A4009B69AE /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		6BBAF0892674111B009B69AE /* WordsRememberTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsRememberTest.swift; sourceTree = "<group>"; };
-		6BD254552675F51A00D061E3 /* timer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timer.json; sourceTree = "<group>"; };
 		6BD254582675F56100D061E3 /* Lottie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lottie.swift; sourceTree = "<group>"; };
 		6BD2545D2675F68500D061E3 /* memory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = memory.json; sourceTree = "<group>"; };
 		6BD254612675F7AB00D061E3 /* stroop.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stroop.json; sourceTree = "<group>"; };
@@ -71,6 +72,7 @@
 		6BD25489267CD15C00D061E3 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6BDF62622695A0EE00210F06 /* ProgressCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressCard.swift; sourceTree = "<group>"; };
 		6BDF62AD269C516300210F06 /* words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.txt; sourceTree = "<group>"; };
+		6BF6EDE726A6CCC400D60EBE /* finish.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = finish.json; sourceTree = "<group>"; };
 		8E9F1F4D253EE0AD0029E5F3 /* BrainTrain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BrainTrain.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E9F1F50253EE0AD0029E5F3 /* BrainTrainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainTrainApp.swift; sourceTree = "<group>"; };
 		8E9F1F52253EE0AD0029E5F3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -149,10 +151,11 @@
 		6BD254572675F53D00D061E3 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				6B0F19802639FAC400480B91 /* Extensions.swift */,
 				8E9F1F59253EE0AF0029E5F3 /* Persistence.swift */,
 				6BD2548A267CD15C00D061E3 /* Localizable.strings */,
 				6BBAF07F2673903E009B69AE /* TimerView.swift */,
-				6B0F19802639FAC400480B91 /* Extensions.swift */,
+				6B80D58D26A80F2500B1EEB3 /* ApplePay.swift */,
 				6BD254582675F56100D061E3 /* Lottie.swift */,
 				6BD2545A2675F60700D061E3 /* LottieJSON */,
 			);
@@ -162,11 +165,11 @@
 		6BD2545A2675F60700D061E3 /* LottieJSON */ = {
 			isa = PBXGroup;
 			children = (
+				6BF6EDE726A6CCC400D60EBE /* finish.json */,
 				6B88F434268E479D00F23083 /* MathFinish.json */,
 				6B68B60926835F0000E45556 /* results.json */,
 				6BD254612675F7AB00D061E3 /* stroop.json */,
 				6BD2545D2675F68500D061E3 /* memory.json */,
-				6BD254552675F51A00D061E3 /* timer.json */,
 				6BD254722677F85100D061E3 /* math.json */,
 			);
 			path = LottieJSON;
@@ -295,6 +298,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BF6EDE826A6CCC400D60EBE /* finish.json in Resources */,
 				6BD254732677F85100D061E3 /* math.json in Resources */,
 				6B88F435268E479D00F23083 /* MathFinish.json in Resources */,
 				6BD254622675F7AB00D061E3 /* stroop.json in Resources */,
@@ -302,7 +306,6 @@
 				6BD2545E2675F68500D061E3 /* memory.json in Resources */,
 				8E9F1F58253EE0AF0029E5F3 /* Preview Assets.xcassets in Resources */,
 				8E9F1F55253EE0AF0029E5F3 /* Assets.xcassets in Resources */,
-				6BD254562675F51A00D061E3 /* timer.json in Resources */,
 				6BDF62AE269C516300210F06 /* words.txt in Resources */,
 				6B68B60A26835F0000E45556 /* results.json in Resources */,
 			);
@@ -337,6 +340,7 @@
 				6B88F431268E3BEA00F23083 /* MathTestCover.swift in Sources */,
 				6B2CD065268F837300217B22 /* ChartsResult.swift in Sources */,
 				6B2CD0692690626E00217B22 /* ChartView.swift in Sources */,
+				6B80D58E26A80F2500B1EEB3 /* ApplePay.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,6 +11,9 @@ import CoreData
 let screenSize = UIScreen.main.bounds
 let small = UIScreen.main.bounds.height < 750
 let notificationCenter = UNUserNotificationCenter.current()
+let showAppStoreCoverDay = 6
+let showFinishCoverDay = 60
+let showDonatCoverDay = 1
 
 var today: String {
     let date = Date()
