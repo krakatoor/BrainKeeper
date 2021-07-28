@@ -42,7 +42,7 @@ struct WordsRememberTest: View {
                         .padding(.bottom, 20)
                         .padding(.horizontal)
                     
-                    
+             
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 3) {
                         ForEach(words, id: \.self) {
                             Text($0.capitalized)
@@ -94,16 +94,19 @@ struct WordsRememberTest: View {
                     VStack {
                         
                         if startCount {
-                            Text("Слов запомнено: \(viewModel.words.count)")
+                            HStack{
+                            Text("Слов запомнено:")
+                                Text("\(viewModel.words.count)")
+                            }
                                 .font(.title3)
                                 .padding(.top)
                         }
                         
                         ZStack {
-                            Text(error ? "Попробуйте другое слово" : " ")
+                            Text(error ? "Попробуйте другое слово".localized : " ")
                                 .foregroundColor(.red)
                             
-                            Text(wordsAlreadyExist ? "Слово уже добавлено" : " ")
+                            Text(wordsAlreadyExist ? "Слово уже добавлено".localized : " ")
                                 .foregroundColor(.red)
                         }
                         
@@ -121,11 +124,12 @@ struct WordsRememberTest: View {
                                 .disabled(!startCount)
                                 .contentShape(Rectangle())
                                 .onChange(of: word, perform: { value in
-                                    if words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) {
-                                        viewModel.words.append(word)
+                                    if words.contains(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)) {
+                                        viewModel.words.append(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines))
                                         word = ""
-                                    } else if viewModel.words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)){
+                                    } else if viewModel.words.contains(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)){
                                         wordsAlreadyExist.toggle()
+                                        word = ""
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                             wordsAlreadyExist.toggle()
                                         }
@@ -146,6 +150,9 @@ struct WordsRememberTest: View {
                                         })
                                     })
                         }
+                        
+                        
+                        if viewModel.wordsTestResult.isEmpty {
                         ScrollView {
                             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 3) {
                                 ForEach(viewModel.words, id: \.self) {
@@ -156,7 +163,7 @@ struct WordsRememberTest: View {
                             }
                         }
                     }
-                    
+                    }
                     
                     Spacer()
                     
@@ -171,9 +178,9 @@ struct WordsRememberTest: View {
                                     testResult.week = String(viewModel.week)
                                     testResult.day = Double(viewModel.day)
                                     testResult.testName = "Тест на запоминание слов"
-                                    testResult.testResult = "Слов запомнено: \(viewModel.words.count)"
+                                    testResult.testResult = "\(viewModel.words.count)"
                                     testResult.isMathTest = false
-                                    viewModel.wordsTestResult = "Слов запомнено: \(viewModel.words.count)"
+                                    viewModel.wordsTestResult = "\(viewModel.words.count)"
                                    
                                         for result in testResults{
                                             if result.date == testResult.date {
@@ -205,7 +212,7 @@ struct WordsRememberTest: View {
                                 .font(.title)
                                 .bold()
                             
-                            Text(viewModel.wordsTestResult)
+                            Text("Слов запомнено:".localized + " " + viewModel.wordsTestResult)
                                 .font(.title)
                                 .padding(.bottom)
                             
@@ -261,11 +268,12 @@ struct WordsRememberTest: View {
                             Button(action: {
                                 
                                 if startCount {
-                                    if words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)) {
-                                        viewModel.words.append(word)
+                                    if words.contains(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)) {
+                                        viewModel.words.append(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines))
                                         word = ""
-                                    } else if viewModel.words.contains(word.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)){
+                                    } else if viewModel.words.contains(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)){
                                         wordsAlreadyExist.toggle()
+                                        word = ""
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                             wordsAlreadyExist.toggle()
                                         }
@@ -287,12 +295,24 @@ struct WordsRememberTest: View {
                                     .mainButton()
                                 
                             })
-                            .padding(.leading, !viewModel.wordsTestResult.isEmpty  ? -20 : 0)
+                            .padding(.leading, !viewModel.wordsTestResult.isEmpty  ? -20 : viewModel.timeRemaining < 60 && viewModel.timeRemaining != 0 ? 35 : 0)
                         }
                         
                         Spacer()
+                        
+                        if viewModel.wordsTestResult.isEmpty && viewModel.timeRemaining < 60 {
+                            Button(action: {withAnimation{ viewModel.timeRemaining = 0 }}, label: {
+                            Image(systemName: "exclamationmark.arrow.circlepath")
+                                .font(.title)
+                                .foregroundColor(.red)
+                        })
+                            .transition(.move(edge: .bottom))
+                       
+
+                        }
                     }
                     .padding(.horizontal, 30)
+                    .padding(.top, 5)
                     
                 }
                 .padding(.vertical, 20)
@@ -322,8 +342,8 @@ struct WordsRememberTest: View {
                 let newWords =  word.components(separatedBy: "\n")
                 while words.count != 20 {
                     if let randomWord = newWords.randomElement() {
-                        if !words.contains(randomWord){
-                            words.append(randomWord)
+                        if !words.contains(randomWord.firstUppercased){
+                            words.append(randomWord.firstUppercased)
                         }
                     }
                 }

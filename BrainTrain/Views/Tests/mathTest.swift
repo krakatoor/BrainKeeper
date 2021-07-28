@@ -24,7 +24,6 @@ struct mathTest: View {
     @State private var showCover = true
     @State private var results = ""
     @State private var showAlert = false
-    @Namespace var animation
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
@@ -32,7 +31,7 @@ struct mathTest: View {
     
     var body: some View {
         
-        
+        ZStack (alignment: .bottom) {
         ZStack (alignment: .center){
             if showCover  && viewModel.day == 1 && viewModel.results[viewModel.mathTestDay] == 0.0 {
                 MathTestCover(showCover: $showCover)
@@ -41,7 +40,7 @@ struct mathTest: View {
             }
             
             if testFinishCover && viewModel.showNotificationCover {
-                MathTestFinish(hideCover: $testFinishCover, animation: animation)
+                MathTestFinish(hideCover: $testFinishCover)
                     .zIndex(1)
                     .environmentObject(viewModel)
                     .transition(.move(edge: .bottom))
@@ -50,7 +49,7 @@ struct mathTest: View {
             
             VStack {
                 if viewModel.results[viewModel.mathTestDay] == 0.0  {
-                    Text("Максмимально быстро решите математические задачи")
+                    Text("Максимально быстро решите математические задачи")
                         .mainFont(size: 18)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
@@ -67,19 +66,28 @@ struct mathTest: View {
                     
                     VStack {
                         if viewModel.results[viewModel.mathTestDay] == 0.0  {
-                            Text("Примеров осталось: \(viewModel.totalExample - viewModel.examplesCount )")
-                                .mainFont(size: 20)
+                            HStack {
+                            Text("Примеров осталось:")
+                                Text(" \(viewModel.totalExample - viewModel.examplesCount )")
+                            }
+                            .mainFont(size: 20)
                         }
                         
-                        Text(viewModel.results[viewModel.mathTestDay] != 0.0 ? results : "Правильных ответов: \(viewModel.correctAnswers)")
-                        
+          
+                            if viewModel.results[viewModel.mathTestDay] != 0.0 {
+                                Text(results)
+                            } else {
+                            
+                                Text("Правильных ответов:".localized + " " + " \(viewModel.correctAnswers)")
+                            }
+                       
                         
                     }
                     .mainFont(size: 20)
                     
                     
                     if viewModel.results[viewModel.mathTestDay] != 0.0 {
-                        Text(viewModel.mathTestResult)
+                        Text("Правильных ответов:".localized + " " + viewModel.mathTestResult)
                             .font(.title3)
                     } else {
                         timerView(result: $viewModel.mathTestResult, startTimer: $viewModel.startMathTest, fontSize: 25, isMathTest: true)
@@ -99,14 +107,14 @@ struct mathTest: View {
                                     .transition(.move(edge: .bottom))
                                     .mainFont(size: small ? 35 : 40)
                                     .redacted(reason: viewModel.examplesCount == viewModel.totalExample ? .placeholder : [])
-                            } else {
-                                Text("X + Y =")
+                                
+                                
+                                Text(totalSumText)
+                                    .mainFont(size: small ? 35 : 40)
+                                    .frame(width: viewModel.startMathTest ?  60 : 40, height: viewModel.startMathTest ? 45 : 35)
+                                    .overlay(Rectangle().stroke().frame(width: viewModel.startMathTest ?  60 : 40, height: viewModel.startMathTest ? 45 : 35))
+                                
                             }
-                            
-                            Text(totalSumText)
-                                .mainFont(size: small ? 35 : 40)
-                                .frame(width: viewModel.startMathTest ?  60 : 40, height: viewModel.startMathTest ? 45 : 35)
-                                .overlay(Rectangle().stroke().frame(width: viewModel.startMathTest ?  60 : 40, height: viewModel.startMathTest ? 45 : 35))
                             
                             Image(systemName: totalSumText != String(totalSum) ?  "checkmark.circle.fill" : "xmark.circle.fill")
                                 .foregroundColor(prevAnswerColor)
@@ -125,7 +133,7 @@ struct mathTest: View {
                         }
                         .onChange(of: viewModel.examplesCount, perform: { _ in
                             if viewModel.examplesCount == viewModel.totalExample {
-                                
+                                print(viewModel.examplesCount)
                                 withAnimation{
                                     testFinishCover = true
                                     viewModel.isTestFinish = true
@@ -144,7 +152,7 @@ struct mathTest: View {
                                 .bold()
                                 .padding(.top)
                             
-                            Text("Каждый раз старайтесь улучшать предыдуший результат. Когда вам удатся решать все примеры за 2 минуты, можно будет сказать, что у вас получилось. Если же вы стправитесь за минуту, считайте, что получилили золотую медаль.")
+                            Text("Каждый раз старайтесь улучшать предыдущий результат. Когда вам удаться решать все примеры за 2 минуты, можно будет сказать, что у вас получилось. Если же вы справитесь за минуту, считайте, что получили золотую медаль.")
                                 .mainFont(size: 18)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding()
@@ -236,97 +244,171 @@ struct mathTest: View {
                         
                     }
                 }
-                
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background()
             .navigationBarTitle("")
             .mainFont(size: 30)
-            .onAppear{
-                math()
-                viewModel.timeRemaining = 0
-                viewModel.startMathTest = false
-                print(testResults.count)
-                print(viewModel.mathTestDay)
-                if viewModel.isMathTestFinish {
-                    for result in testResults{
-                        
-                        if result.isMathTest {
-                            if result.week == String(viewModel.week){
-                                    viewModel.results[Int(result.day)] = result.result
-                                viewModel.mathTestResult = result.testResult!
-                            }
-
-                                if result.day == Double(viewModel.mathTestDay) {
-                                viewModel.isMathTestFinish = true
-                                }
-                            
+        }
+       
+            Settings()
+                .offset(y: viewModel.showSettings ? small ? 0 : 50 : 450)
+                .offset(y:  viewModel.viewState)
+                .gesture(
+                    DragGesture().onChanged{ value in
+                        if value.translation.height > 35 {
+                            viewModel.viewState = value.translation.height
                         }
-                     
                     }
+                    .onEnded{ value in
+                        if value.translation.height > 120 {
+                            withAnimation(.linear) {
+                                viewModel.showSettings = false
+                            }
+                        } else { viewModel.viewState = .zero }})
+        }
+        .onAppear{
+            math()
+            viewModel.timeRemaining = 0
+            viewModel.startMathTest = false
+            print(viewModel.mathTestDay)
+            if viewModel.isMathTestFinish {
+                for result in testResults{
+                    
+                    if result.isMathTest {
+                        if result.week == String(viewModel.week){
+                            viewModel.results[Int(result.day)] = result.result
+                            viewModel.mathTestResult = result.testResult!
+                        }
+                        
+                        if result.day == Double(viewModel.mathTestDay) {
+                            viewModel.isMathTestFinish = true
+                        }
+                    }
+                    
                 }
             }
-            
         }
         .onDisappear{
-            viewModel.startMathTest = false
-            totalSumText = "?"
-            if viewModel.results[viewModel.mathTestDay] == 0.0 {
-                viewModel.timeRemaining = 0
-                viewModel.correctAnswers = 0
-                viewModel.examplesCount = 0
+            if viewModel.startMathTest {
+                viewModel.startMathTest = false
+                totalSumText = "?"
+                if viewModel.results[viewModel.mathTestDay] == 0.0 {
+                    viewModel.timeRemaining = 0
+                    viewModel.correctAnswers = 0
+                    viewModel.examplesCount = 0
+                }
             }
         }
-        .navigationBarItems(trailing: Group{
-            if !viewModel.showNotificationCover {
-                Image(systemName: "deskclock")
-                    .font(.title2)
-                    .matchedGeometryEffect(id: "deskclock", in: animation)
-                    .onTapGesture {
-                        withAnimation{
-                            viewModel.showNotificationCover.toggle()
-                        }
-                    }
-            }
-        }
-        )
-        
-        
+        .navigationBarItems(trailing: settingButton().environmentObject(viewModel))
     }
     
     
     private func math() {
         operator1 = ["+", "-", "×", "÷"].randomElement()!
-        if operator1 == "+" {
-            number1 = Int.random(in: 2..<10)
-            number2 = Int.random(in: 2..<10)
-            totalSum = Int(number1 + number2)
-        }
-        if operator1 == "-" {
-            number1 = Int.random(in: 2..<20)
-            number2 = Int.random(in: 1..<number1)
-            
-            totalSum = Int(number1 - number2)
-            
-            
-        }
-        if operator1 == "×" {
-            number1 = Int.random(in: 2..<10)
-            number2 = Int.random(in: 2..<10)
-            totalSum = Int(number1 * number2)
-        }
         
-        if operator1 == "÷" {
-            number1 = (Int.random(in: 10..<30))
-            number2 = Int.random(in: 2..<10)
-            
-            while(number1 %  number2 != 0 ){
-                number1 = (Int.random(in: 10..<30))
-                number2 = Int.random(in: 2..<10)
+        switch viewModel.difficult {
+        
+        case .easy:
+            if operator1 == "+" {
+                number1 = Int.random(in: 2..<5)
+                number2 = Int.random(in: 2..<5)
+                totalSum = Int(number1 + number2)
             }
             
-            totalSum = Int(number1 / number2)
+            if operator1 == "-" {
+                number1 = Int.random(in: 2..<10)
+                number2 = Int.random(in: 1..<number1)
+                
+                totalSum = Int(number1 - number2)
+            }
+            
+            if operator1 == "×" {
+                number1 = Int.random(in: 1..<5)
+                number2 = Int.random(in: 1..<5)
+                totalSum = Int(number1 * number2)
+            }
+            
+            if operator1 == "÷" {
+                number1 = (Int.random(in: 10..<20))
+                number2 = Int.random(in: 2..<5)
+                
+                while(number1 %  number2 != 0 ){
+                    number1 = (Int.random(in: 10..<20))
+                    number2 = Int.random(in: 2..<5)
+                }
+                
+                totalSum = Int(number1 / number2)
+            }
+            
+        case .normal:
+            if operator1 == "+" {
+                number1 = Int.random(in: 2..<10)
+                number2 = Int.random(in: 2..<10)
+                totalSum = Int(number1 + number2)
+            }
+            
+            if operator1 == "-" {
+                number1 = Int.random(in: 2..<20)
+                number2 = Int.random(in: 1..<number1)
+                
+                totalSum = Int(number1 - number2)
+            }
+            
+            if operator1 == "×" {
+                number1 = Int.random(in: 2..<10)
+                number2 = Int.random(in: 2..<10)
+                totalSum = Int(number1 * number2)
+            }
+            
+            if operator1 == "÷" {
+                number1 = (Int.random(in: 10..<30))
+                number2 = Int.random(in: 2..<10)
+                
+                while(number1 %  number2 != 0 ){
+                    number1 = (Int.random(in: 10..<30))
+                    number2 = Int.random(in: 2..<10)
+                }
+                
+                totalSum = Int(number1 / number2)
+            }
+            
+        case .hard:
+            if operator1 == "+" {
+                number1 = Int.random(in: 5..<20)
+                number2 = Int.random(in: 5..<20)
+                totalSum = Int(number1 + number2)
+            }
+            
+            if operator1 == "-" {
+                number1 = Int.random(in: 5..<40)
+                number2 = Int.random(in: 1..<number1)
+                
+                totalSum = Int(number1 - number2)
+            }
+            
+            if operator1 == "×" {
+                number1 = Int.random(in: 5..<20)
+                number2 = Int.random(in: 5..<20)
+                totalSum = Int(number1 * number2)
+            }
+            
+            if operator1 == "÷" {
+                number1 = (Int.random(in: 20..<50))
+                number2 = Int.random(in: 4..<20)
+                
+                while(number1 %  number2 != 0 ){
+                    number1 = (Int.random(in: 20..<50))
+                    number2 = Int.random(in: 4..<20)
+                }
+                
+                totalSum = Int(number1 / number2)
+            }
         }
+        
+     
+        
+   
         
     }
     
@@ -359,8 +441,8 @@ struct mathTest: View {
             testResult.result = viewModel.mathTestResultTime
             
             //remove notification if test fineshed early
-            notificationCenter.removePendingNotificationRequests(withIdentifiers: ["timeToTrain"])
-            notificationCenter.removeDeliveredNotifications(withIdentifiers: ["timeToTrain"])
+            notificationCenter.removeAllPendingNotificationRequests()
+            notificationCenter.removeAllDeliveredNotifications()
             
             withAnimation{
                 viewModel.results[viewModel.mathTestDay] = testResult.result
@@ -422,7 +504,6 @@ struct mathTest: View {
                             .frame(width: buttonWidth, height: small ? 50 : 70)
                             .background(Color("back").shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0))
                     })
-                    
                 }
             }
             
@@ -476,11 +557,8 @@ struct mathTest: View {
                         .padding()
                         .frame(width: buttonWidth, height: small ? 50 : 70)
                         .background(Color.blue.clipShape(CustomCorner(corners: small ? [] : .bottomRight)).shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0).shadow(color: Color.primary.opacity(0.3), radius: 1, x: -1, y: 0))
-                    
                 })
-                
             }
-            
         }
         .background()
         .accentColor(.primary)
@@ -489,7 +567,6 @@ struct mathTest: View {
                 totalSumText.removeLast()
             }
         })
-        
     }
 }
 

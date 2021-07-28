@@ -24,10 +24,18 @@ struct TestResultsView: View {
                             ForEach(1...viewModel.week, id: \.self) { week in
                            
                                 VStack (spacing: 15) {
-                                    Text("Неделя \(week).  Результаты тестов")
+                                    HStack{
+                                    Text("Неделя")
                                         .bold()
-                                        .mainFont(size: 22)
-                                        .padding(.bottom, small ? 0 : 10)
+                                    
+                                        Text("\(week).")
+                                            .bold()
+                                        
+                                        Text(" Результаты тестов")
+                                            .bold()
+                                    }
+                                    .mainFont(size: 22)
+                                    .padding(.bottom, small ? 0 : 10)
 
                                     ChartsResult(week: week)
                                         .environmentObject(viewModel)

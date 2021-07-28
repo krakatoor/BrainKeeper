@@ -29,7 +29,7 @@ struct StroopTestPreparing: View {
             }
             HStack  {
             
-            Text("Называйте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись назовите цвет еще раз.")
+                Text("Называйте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись, назовите цвет еще раз.".localized)
                 .mainFont(size: 18)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, small ? 5 : 10)
@@ -56,7 +56,7 @@ struct StroopTestPreparing: View {
             
             VStack (spacing: 10){
                 ForEach(0..<colorsName.count, id: \.self) { index in
-                    Text(colorsName.reversed()[index])
+                    Text(colorsName.reversed()[index].localized)
                         .mainFont(size: 22)
                         .foregroundColor(colors[index])
                 }

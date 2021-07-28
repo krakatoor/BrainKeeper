@@ -25,8 +25,8 @@ struct ChartView: View {
             if showDetail{
                 
                 VStack (spacing: 5){
-                    Text("Время теста: " + timeString(time: showTime * 150)) 
-                    Text(correctAnswers + "/\(viewModel.totalExample)")
+                    Text("Время теста:".localized + " " + timeString(time: showTime * 150)) 
+                    Text("Правильных ответов:".localized + " " + correctAnswers + "/\(viewModel.totalExample)")
                     
                 }
                 .mainFont(size: 15)

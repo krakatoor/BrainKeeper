@@ -24,7 +24,7 @@ struct ChartsResult: View {
                 .frame(width: viewModel.startAnimation ? 0 : screenSize.width - 30,  height: 25)
                 .leadingView()
                 .overlay(
-                    Text(viewModel.wordsTestResult.isEmpty ? "Тест не пройден" : viewModel.wordsTestResult)
+                    Text(viewModel.wordsTestResult.isEmpty ? "Тест не пройден".localized : "Слов запомнено:".localized + viewModel.wordsTestResult)
                     .foregroundColor(.black)
                     .leadingView()
                     .padding(.leading, 10)
@@ -35,7 +35,7 @@ struct ChartsResult: View {
                 .frame(width: viewModel.startAnimation ? 0 : screenSize.width - 30,  height: 25)
                 .leadingView()
                 .overlay(
-                    Text(viewModel.stroopTestResult.isEmpty ? "Тест не пройден" : "Тест Струпа: " + viewModel.stroopTestResult)
+                    Text(viewModel.stroopTestResult.isEmpty ? "Тест не пройден".localized : "Тест Струпа: ".localized + viewModel.stroopTestResult)
                         .foregroundColor(.black)
                     .leadingView()
                     .padding(.leading, 10)

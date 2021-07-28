@@ -1,0 +1,38 @@
+{
+  "identifier" : "41D4A6B2",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "748CA072",
+      "localizations" : [
+        {
+          "description" : "This is an optional purchase",
+          "displayName" : "Treat me coffee",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Необязательная покупка",
+          "displayName" : "Угостить меня кофе",
+          "locale" : "ru"
+        }
+      ],
+      "productID" : "com.oknablitz.BrainTrain.Tea",
+      "referenceName" : "Buy a tea for developer",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 1
+  }
+}

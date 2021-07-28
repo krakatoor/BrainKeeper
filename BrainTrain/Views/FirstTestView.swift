@@ -6,71 +6,21 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct FirstTestView: View {
     @EnvironmentObject var viewModel: ViewModel
     @State private var blur: CGFloat = 15
-    @State private var showAppStoreCover = false
     @State private var showFinishCover = false
     @State private var showAlert = false
-    @State private var showDonatCover = false
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
     
     var body: some View {
-        let applePay = ApplePayManager(countryCode: "US", currencyCode: "USD", itemCost: 1, shippingCost: 0)
+     
         
         ZStack{
-            
-            
-            if viewModel.day == showDonatCoverDay && showDonatCover {
-                
-                ZStack (alignment: Alignment(horizontal: .trailing, vertical: .top)){
-                    
-                    Image(systemName: "xmark.circle")
-                        .font(.title)
-                        .zIndex(1)
-                        .padding(.top, 3)
-                        .padding(.trailing, 3)
-                        .onTapGesture {
-                            withAnimation{
-                                showDonatCover = false
-                            blur = 0
-                            }
-                        }
-                
-                VStack (spacing: 10){
-                    
-                    Text("Понравилось приложение - угостите кофем разработчика)")
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.bottom)
-                        .padding(.top, 40)
-                        .font(.system(size: 16))
-                    
-                    Button(action: {
-                        applePay.buyBtnTapped()
-                    }, label: {
-                        Text("PAY WITH  APPLE")
-                            .foregroundColor(Color("back"))
-                            .font(.title3)
-                            .padding(5)
-                            .background(Color.primary.cornerRadius(10).shadow(radius: 10))
-                    })
-                  
-                }
-                .padding()
-            }
-                .background()
-                .cornerRadius(15)
-                .overlay(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: 0.6))
-                .frame(width: screenSize.width - 30, height: screenSize.height * 0.4)
-                .padding(.bottom)
-                .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
-                .zIndex(1)
-            }
-            
-            
             if viewModel.day == showFinishCoverDay && showFinishCover {
                 
                 VStack (spacing: 10){
@@ -81,7 +31,7 @@ struct FirstTestView: View {
                         .font(.title2)
                         .bold()
                     
-                    Text("Вы прошли первый курс тренировки мозга! Вы по-прежнему можете проходить тесты и они будут усложнены, либо сбросить результаты и начать сначала. Выбор за вами...")
+                    Text("Вы прошли курс тренировки мозга! Вы по-прежнему можете проходить тесты, либо сбросить результаты и начать сначала. Выбор за вами...")
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.top, 3)
                     
@@ -103,12 +53,22 @@ struct FirstTestView: View {
                             .alert(isPresented: $showAlert) {
                                 Alert(title: Text("Начать тесты заново?"), message: Text("Все результаты будут сброшены!"),
                                       primaryButton: .destructive(Text("Да")) {
-                                     
+                                        viewModel.day = 1
+                                        viewModel.mathTestDay = 0
+                                        viewModel.isTestFinish = false
+                                        viewModel.isWordsTestFinish = false
+                                        viewModel.isStroopTestFinish = false
+                                        viewModel.mathTestResult = ""
+                                        viewModel.wordsTestResult = ""
+                                        viewModel.stroopTestResult = ""
+                                        for i in testResults{
+                                            viewContext.delete(i)
+                                            do {try viewContext.save()} catch {return}}
                                       },
                                       secondaryButton: .cancel(Text("Нет"))
                                 )
                             }
-                       
+                  
                         Spacer()
                         
                         Button(action: {
@@ -138,60 +98,27 @@ struct FirstTestView: View {
                 .zIndex(1)
                 .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
             }
-            
-            
-            if viewModel.day == showAppStoreCoverDay && showAppStoreCover {
-                
-                ZStack (alignment: Alignment(horizontal: .trailing, vertical: .top)){
-                    
-                    Image(systemName: "xmark.circle")
-                        .font(.title)
-                        .zIndex(1)
-                        .onTapGesture {
-                            withAnimation{
-                            showAppStoreCover = false
-                            blur = 0
-                            }
-                        }
-                    
-                    VStack (spacing: 10){
-                        
-                        Text("Понравилось приложение?")
-                            .font(.title2)
-                            .bold()
-                            .padding(.top, 50)
-                        
-                        Text("Пожалуйста, поставьте свою оценку в AppStore и напишите отзыв. Помогите разаботчику сделать его лучше.")
-                            .fixedSize(horizontal: false, vertical: true)
-                            .padding(.top, 3)
-                            .padding(.bottom)
-                        
-                        
-                        Link("В AppStore", destination: URL(string: "https://apps.apple.com/mv/developer/kamil-suleimanov/id1530811067")!)
-                            .mainButton()
-                    }
-                }
-                .zIndex(1)
-                .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
-                .padding()
-                .background()
-                .cornerRadius(15)
-                .overlay(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: 0.5))
-                .frame(width: screenSize.width - 30, height: screenSize.height * 0.5)
-            }
+           
             
             VStack  {
                 let firstDay = viewModel.day == 1 && (!viewModel.isWordsTestFinish && !viewModel.isStroopTestFinish)
                 
                 if firstDay {
-                    Text("Неделя \(viewModel.week)")
-                        .bold()
-                        .mainFont(size: 22)
-                        .padding(.top, 20)
+                    HStack{
+                        Text("Неделя")
+                            .bold()
+                            .mainFont(size: 22)
+                            .padding(.top, 20)
+                        
+                        Text("\(viewModel.week)")
+                            .bold()
+                            .mainFont(size: 22)
+                            .padding(.top, 20)
+                    }
                     
                     Text("Прежде чем начать тренировку, определим с помощью тестов, как сейчас работает ваш мозг.")
                         .mainFont(size: 16)
-                        .padding([.horizontal, .bottom])
+                        .padding()
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 
@@ -204,8 +131,8 @@ struct FirstTestView: View {
                                 NavigationLink(
                                     destination: WordsRememberTest().environmentObject(viewModel),
                                     label: {
-                                        ZStack (alignment: Alignment(horizontal: .trailing, vertical: .bottom)){
-                                            TestCard(title: "Тест на запоминание слов", subTitle: "Проверим краткосрочную память")
+                                        ZStack (alignment: Alignment(horizontal: .trailing, vertical: .top)){
+                                            TestCard(title: "Тест на запоминание слов".localized, subTitle: "Проверим краткосрочную память".localized)
                                                 .environmentObject(viewModel)
                                             
                                             if viewModel.isWordsTestFinish {
@@ -213,7 +140,7 @@ struct FirstTestView: View {
                                                     .font(.title2)
                                                     .foregroundColor(.green)
                                                     .padding(.trailing, 5)
-                                                    .padding(.bottom, 5)
+                                                    .padding(.top, 5)
                                             }
                                         }
                                     })
@@ -223,7 +150,7 @@ struct FirstTestView: View {
                                     destination: StroopTest().environmentObject(viewModel),
                                     label: {
                                         ZStack (alignment: Alignment(horizontal: .trailing, vertical: .top)){
-                                            TestCard(title: "Тест Струпа", subTitle: "Оценка совместной работы полушарий")
+                                            TestCard(title: "Тест Струпа".localized, subTitle: "Оценка совместной работы полушарий".localized)
                                             
                                             if viewModel.isStroopTestFinish {
                                                 Image(systemName: "checkmark.seal")
@@ -256,7 +183,7 @@ struct FirstTestView: View {
                                                     .padding(.trailing)
                                             }
                                             
-                                            TestCard(title: "Ежедневный тест № \(viewModel.day)", subTitle: "")
+                                            TestCard(title: "Ежедневный тест № ".localized, subTitle: "")
                                         }
                                     })
                                     .buttonStyle(FlatLinkStyle())
@@ -281,7 +208,7 @@ struct FirstTestView: View {
                         if viewModel.startAnimation {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                 withAnimation(.spring()){
-                                    if viewModel.day != showAppStoreCoverDay && viewModel.day != showFinishCoverDay && viewModel.day != showDonatCoverDay {
+                                    if viewModel.day != showFinishCoverDay {
                                     blur = 0
                                     
                                     if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish && !viewModel.startAnimation {
@@ -291,11 +218,13 @@ struct FirstTestView: View {
                                 }
                             }
                             
-                            if viewModel.day == showAppStoreCoverDay && viewModel.startAnimation{
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.65) {
+                            if  showAppStoreCoverDay.contains(viewModel.day) && viewModel.startAnimation{
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.7) {
                                     withAnimation{
-                                        showAppStoreCover = true
-                                        viewModel.startAnimation = false
+                                        if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+                                            SKStoreReviewController.requestReview(in: scene)
+                                            
+                                        }
                                     }
                                 }
                             }
@@ -309,14 +238,6 @@ struct FirstTestView: View {
                                 }
                             }
                             
-                            if viewModel.day == showDonatCoverDay && viewModel.startAnimation{
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.65) {
-                                    withAnimation{
-                                        showDonatCover = true
-                                        viewModel.startAnimation = false
-                                    }
-                                }
-                            }
                         }
                     }
                 }
@@ -355,7 +276,7 @@ struct TestCard: View {
     var body: some View {
         VStack (spacing: 5) {
             
-            Text(title)
+            Text(subTitle == "" ? title + "\(viewModel.day)" : title)
                 .font(.title2)
                 .bold()
                 .padding(.top, 20)
@@ -365,7 +286,7 @@ struct TestCard: View {
                 Text(subTitle)
                     .foregroundColor(.secondary)
                     .mainFont(size: 14)
-                    .fixedSize()
+                    .fixedSize(horizontal: false, vertical: true)
                 
                 Spacer()
             }

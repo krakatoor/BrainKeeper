@@ -11,9 +11,8 @@ import CoreData
 let screenSize = UIScreen.main.bounds
 let small = UIScreen.main.bounds.height < 750
 let notificationCenter = UNUserNotificationCenter.current()
-let showAppStoreCoverDay = 6
+let showAppStoreCoverDay = [6, 24]
 let showFinishCoverDay = 60
-let showDonatCoverDay = 1
 
 var today: String {
     let date = Date()
@@ -107,10 +106,10 @@ extension View {
 struct Center: ViewModifier {
     func body(content: Content) -> some View {
         HStack {
+            Spacer()
             content
             Spacer()
         }
-        .padding(.leading)
     }
 }
 
@@ -130,32 +129,14 @@ struct FlatLinkStyle: ButtonStyle {
     }
 }
 
-
-// Keyboard Responder
-final class KeyboardResponder: ObservableObject {
-    private var notificationCenter: NotificationCenter
-    @Published private(set) var currentHeight: CGFloat = 0
-    @Published private(set) var keyboardShows = false
-
-    init(center: NotificationCenter = .default) {
-        notificationCenter = center
-        notificationCenter.addObserver(self, selector: #selector(keyBoardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(keyBoardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+extension String {
+    var localized: String {
+        return NSLocalizedString(self, comment: "")
     }
+}
 
-    deinit {
-        notificationCenter.removeObserver(self)
-    }
 
-    @objc func keyBoardWillShow(notification: Notification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            currentHeight = keyboardSize.height
-            keyboardShows = true
-        }
-    }
-
-    @objc func keyBoardWillHide(notification: Notification) {
-        currentHeight = 0
-        keyboardShows = false
-    }
+extension StringProtocol {
+    var firstUppercased: String { return prefix(1).uppercased() + dropFirst() }
+    var firstCapitalized: String { return prefix(1).capitalized + dropFirst() }
 }

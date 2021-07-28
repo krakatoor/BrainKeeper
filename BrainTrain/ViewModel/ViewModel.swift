@@ -1,5 +1,5 @@
 //
-//  Store.swift
+//  ViewModel.swift
 //  BrainTrain
 //
 //  Created by Камиль Сулейманов on 11.06.2021.
@@ -8,9 +8,13 @@
 import SwiftUI
 import Combine
 
+enum Difficult: String, Equatable, CaseIterable  {
+    case easy, normal, hard
+}
+
 class ViewModel: ObservableObject{
- 
-    
+
+    @AppStorage ("difficult") var difficult = Difficult.normal
     @AppStorage ("day") var day = 1
     @AppStorage ("isTestFinish") var isTestFinish = false
     @AppStorage ("currentDay") var currentDay = today
@@ -36,8 +40,8 @@ class ViewModel: ObservableObject{
         return current
     }
     
-    @Published var checkDay = false
-    
+    @Published var viewState: CGFloat = .zero
+    @Published var showSettings = false
     @Published var weekChange = false
     @Published var showDayCard = true
     @Published var startAnimation = true
@@ -73,38 +77,38 @@ class ViewModel: ObservableObject{
 
             if(settings.authorizationStatus == .authorized) {
                 print("Push notification is enabled")
+               
+               
             } else {
                 notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
                     if success {
                         print("Push notification set")
+                       
                     } else if let error = error {
                         print(error.localizedDescription)
+                        
                     }
                 }
             }
         }
     }
-    
-    @Published var notificationTime: Double = 86400 //86400
-    
+   
     func sendNotification() {
         getPermession()
         let content = UNMutableNotificationContent()
         content.title = "Пришло время размять мозги"
         content.subtitle = "Вы не тренировались уже 24 часа"
         content.sound = UNNotificationSound.default
+        content.badge = 1
 
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: notificationTime, repeats: false)
-
-        let request = UNNotificationRequest(identifier: "timeToTrain", content: content, trigger: trigger)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 3000 , repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 
         notificationCenter.add(request)
     }
   
  
 }
-
-
 
 
 

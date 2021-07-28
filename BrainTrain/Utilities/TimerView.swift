@@ -17,12 +17,25 @@ struct timerView: View {
     let timer = Timer.publish(every: 0.10, on: .main, in: .common).autoconnect()
  
     var body: some View {
-        Text(minus ? "Осталось: \(timeString(time: viewModel.timeRemaining))" : "Время теста: \(timeString(time: viewModel.timeRemaining))")
+        Group{
+        if minus {
+            HStack{
+            Text("Осталось:")
+                Text("\(timeString(time: viewModel.timeRemaining))")
+            }
             .font(.system(size: fontSize))
+        } else {
+            HStack{
+            Text("Время теста:")
+                Text("\(timeString(time: viewModel.timeRemaining))")
+            }
+            .font(.system(size: fontSize))
+        }
+        }
             .onChange(of: startTimer, perform: { value in
                 if !value{
                     if isMathTest{
-                        result = "Правильных ответов: \(viewModel.correctAnswers)"
+                        result = "\(viewModel.correctAnswers)"
                         viewModel.mathTestResultTime = viewModel.timeRemaining / 150
                     } else {
                         result = timeString(time: viewModel.timeRemaining)

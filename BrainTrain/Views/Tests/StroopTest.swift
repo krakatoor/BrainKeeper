@@ -17,7 +17,7 @@ struct StroopTest: View {
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
-    @State private var buttonTitile = "Дальше"
+    @State private var buttonTitile = "Дальше".localized
     @State private var colorsViewTag = -1
     @State private var stage: StroopTestStages = .prepare
     @State private var showAlert = false
@@ -32,11 +32,11 @@ struct StroopTest: View {
                             .transition(.slide)
                             .onChange(of: colorsViewTag, perform: { value in
                                 if value == 4 {
-                                    buttonTitile = "Стоп"
+                                    buttonTitile = "Стоп".localized
                                 }
                                 if value == 5 {
                                     viewModel.startStroopTestTimer = false
-                                    buttonTitile = "Назад"
+                                    buttonTitile = "Назад".localized
                                     colorsViewTag = -1
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                         withAnimation{
@@ -90,7 +90,7 @@ struct StroopTest: View {
                                             viewModel.stroopTestResult = ""
                                             viewModel.timeRemaining = 0
                                             stage = .prepare
-                                            buttonTitile = "Дальше"
+                                            buttonTitile = "Дальше".localized
                                           },
                                           secondaryButton: .cancel(Text("Нет"))
                                     )
@@ -130,7 +130,7 @@ struct StroopTest: View {
                             stage = .test
                         } else if !viewModel.stroopTestResult.isEmpty {
                             stage = .finish
-                            buttonTitile = "Назад"
+                            buttonTitile = "Назад".localized
                         }
                         
                       
@@ -150,24 +150,25 @@ struct StroopTest: View {
     }
     
     func testAction(){
+        
         switch stage {
         case .prepare:
-            buttonTitile = "Начать"
+            buttonTitile = "Старт".localized
             stage = .test
         case .test:
             if colorsViewTag == -1 {
                 viewModel.startStroopTestTimer = true
                 colorsViewTag = 0
-                buttonTitile = "Дальше"
+                buttonTitile = "Дальше".localized
                 disableButton = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     disableButton = false
                 }
             } else if colorsViewTag < 5 {
                 withAnimation{
                     colorsViewTag += 1
                     disableButton = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         disableButton = false
                     }
                 }

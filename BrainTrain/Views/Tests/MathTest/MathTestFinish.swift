@@ -9,8 +9,6 @@ import SwiftUI
 
 struct MathTestFinish: View {
     @Binding var hideCover: Bool
-    @State private var showNotificationToggle = false
-    var animation: Namespace.ID
     @EnvironmentObject var viewModel: ViewModel
     
         var body: some View {
@@ -25,11 +23,11 @@ struct MathTestFinish: View {
                     .bold()
                     Spacer()
                 }
-                Text("Следующй тест будет доступен завтра")
+                Text("Следующй тест будет доступен завтра".localized)
                     .multilineTextAlignment(.leading)
                 
               
-                    Text("Создать напоминание,чтобы не пропустить следующую тренировку?")
+                Text("Создать напоминание, чтобы не пропустить следующую тренировку?".localized)
                         .fixedSize(horizontal: false, vertical: true)
                         .multilineTextAlignment(.leading)
                
@@ -41,6 +39,7 @@ struct MathTestFinish: View {
                     Button(action: {
                         withAnimation{
                             hideCover.toggle()
+                            viewModel.showNotificationCover = false
                         }
                         
                     }, label: {
@@ -53,6 +52,7 @@ struct MathTestFinish: View {
                 })
                     
                     Button(action: {
+                        viewModel.showNotificationCover = true
                         viewModel.sendNotification()
                         withAnimation{
                             hideCover.toggle()
@@ -81,13 +81,11 @@ struct MathTestFinish: View {
                             .overlay(Rectangle().stroke(lineWidth: 0.5)).foregroundColor(.primary)
                            
                         
-                        if showNotificationToggle{
+                        if !viewModel.showNotificationCover {
                         Image(systemName: "checkmark")
-                            .matchedGeometryEffect(id: "deskclock", in: animation)
                         }
                     }
                     .onTapGesture {
-                        showNotificationToggle.toggle()
                         withAnimation(){
                         viewModel.showNotificationCover.toggle()
                         }
@@ -110,7 +108,7 @@ struct MathTestFinish: View {
 struct MathTestFinish_Previews: PreviewProvider {
     @Namespace static var namespace
     static var previews: some View {
-        MathTestFinish(hideCover: .constant(false), animation: namespace)
+        MathTestFinish(hideCover: .constant(false))
             .environmentObject(ViewModel())
     }
 }

@@ -32,11 +32,10 @@ struct ProgressCard: View {
                     .foregroundColor(.red)
             }
             
-            Text("День \(viewModel.day)")
-                .font(.system(size: 40, weight: .black, design: .serif))
-                .foregroundColor(.primary)
-                .transition(.scale)
-        
+            Text("День" + " " + " \(viewModel.day)")
+            .font(.system(size: 40, weight: .black, design: .serif))
+            .foregroundColor(.primary)
+           
             Spacer()
             Image("puzzle")
                 .resizable()

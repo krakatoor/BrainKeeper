@@ -12,19 +12,18 @@ struct BrainTrainApp: App {
     let persistenceController = PersistenceController.shared
     @Environment(\.scenePhase) var scenePhase
     @StateObject private var viewModel = ViewModel()
-  
+    @StateObject private var store = StoreKit()
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(viewModel)
+                .environmentObject(store)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .onChange(of: scenePhase) { _ in
-                    
                     persistenceController.save()
                     
                     if scenePhase == .background {
-                        
-                        if viewModel.currentDay != today {
+                        if viewModel.startAnimation && viewModel.isMathTestFinish{
                             
                             viewModel.day += 1
                                 viewModel.showDayCard = true
