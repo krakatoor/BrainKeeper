@@ -27,10 +27,10 @@ struct Settings: View {
                 .offset(y: -15)
             
       
-            Text("Сложность ежедневных тестов:")
+            Text("Сложность ежедневных тестов:".localized)
                 .padding(.top)
             
-            Picker("Please choose a color", selection: $viewModel.difficult) {
+            Picker("", selection: $viewModel.difficult) {
                 ForEach(Difficult.allCases, id: \.self) {
                     Text($0.rawValue.localized)
                            }
@@ -40,17 +40,19 @@ struct Settings: View {
             
             
             if viewModel.day != 1 || viewModel.isMathTestFinish {
-            Toggle(notificationToggleText.localized, isOn: $viewModel.showNotificationCover)
+            Toggle(notificationToggleText.localized, isOn: $viewModel.showNotification)
                 .font(.headline)
                 .padding()
-                .onAppear{ notificationToggleText = viewModel.showNotificationCover ? "Уведомления включены" : "Уведомления отключены"}
-                .onChange(of: viewModel.showNotificationCover) { value in
+                .onAppear{ notificationToggleText = viewModel.showNotification ? "Уведомления включены".localized : "Уведомления отключены".localized}
+                .onChange(of: viewModel.showNotification) { value in
                         if value {
                                     notificationCenter.getNotificationSettings { (settings) in
                                         if(settings.authorizationStatus == .authorized) {
                                             withAnimation{
                                                 DispatchQueue.main.async {
-                                                    viewModel.showNotificationCover = true
+                                                    viewModel.saveChoice = false
+                                                    viewModel.hideFinishCover = false
+                                                    viewModel.showNotification = true
                                                     notificationToggleText = "Уведомления включены"
                                                 }
                                             }
@@ -60,7 +62,9 @@ struct Settings: View {
                                     }
                         } else {
                             DispatchQueue.main.async{
-                                viewModel.showNotificationCover = false
+                                viewModel.saveChoice = false
+                                viewModel.hideFinishCover = true
+                                viewModel.showNotification = false
                                 notificationToggleText = "Уведомления отключены".localized
                             }
                             //remove notification if test fineshed early
@@ -69,15 +73,15 @@ struct Settings: View {
                     
                 }
                 .alert(isPresented: $showNotificationAlert) {
-                    Alert(title: Text("Включить уведомления?".localized), message: Text("У вас отключены уведомления. Перейти в настройки, чтобы включить их?"),
-                          primaryButton: .destructive(Text("Да")) {
+                    Alert(title: Text("Включить уведомления?".localized), message: Text("У вас отключены уведомления. Перейти в настройки, чтобы включить их?".localized),
+                          primaryButton: .destructive(Text("Да".localized)) {
                             if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
                                 DispatchQueue.main.async {
                                     UIApplication.shared.open(settingsUrl)
                                 }
                             }
                           },
-                          secondaryButton: .cancel(Text("Нет"))
+                          secondaryButton: .cancel(Text("Нет".localized))
                     )
                 }
             } else {
@@ -89,8 +93,8 @@ struct Settings: View {
                     .foregroundColor(.red)
             })
             .alert(isPresented: $showAlert) {
-                Alert(title: Text("Начать тесты заново?"), message: Text("Все результаты будут сброшены!"),
-                      primaryButton: .destructive(Text("Да")) {
+                Alert(title: Text("Начать тесты заново?".localized), message: Text("Все результаты будут сброшены!".localized),
+                      primaryButton: .destructive(Text("Да".localized)) {
                         viewModel.day = 1
                         viewModel.mathTestDay = 0
                         viewModel.isTestFinish = false
@@ -99,12 +103,13 @@ struct Settings: View {
                         viewModel.mathTestResult = ""
                         viewModel.wordsTestResult = ""
                         viewModel.stroopTestResult = ""
+                        viewModel.results =  [0.0, 0.0, 0.0, 0.0, 0.0]
                         for i in testResults{
                             viewContext.delete(i)
                             do {try viewContext.save()} catch {return}}
                         viewModel.showSettings = false
                       },
-                      secondaryButton: .cancel(Text("Нет"))
+                      secondaryButton: .cancel(Text("Нет".localized))
                 )
             }
             .padding(.top)

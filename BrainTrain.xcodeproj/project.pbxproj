@@ -18,6 +18,7 @@
 		6B6D920726ADFFE7000CA038 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6D920626ADFFE7000CA038 /* Settings.swift */; };
 		6B6D920C26AE15CF000CA038 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6B6D920E26AE15CF000CA038 /* Localizable.strings */; };
 		6B6D921026B07BC7000CA038 /* StoreKitConfig.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 6B80D59026ABFE4000B1EEB3 /* StoreKitConfig.storekit */; };
+		6B6D921426B1DF10000CA038 /* wordsEng.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6B6D921326B1DF10000CA038 /* wordsEng.txt */; };
 		6B80D59226AC3D9300B1EEB3 /* StoreKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B80D59126AC3D9300B1EEB3 /* StoreKit.swift */; };
 		6B80D59426AC43B700B1EEB3 /* storeKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B80D59326AC43B700B1EEB3 /* storeKitView.swift */; };
 		6B80D59626ACBA1400B1EEB3 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B80D59526ACBA1400B1EEB3 /* Recipe.swift */; };
@@ -61,6 +62,7 @@
 		6B6D920626ADFFE7000CA038 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		6B6D920D26AE15CF000CA038 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6B6D920F26AE15D6000CA038 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6B6D921326B1DF10000CA038 /* wordsEng.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wordsEng.txt; sourceTree = "<group>"; };
 		6B80D58F26AAB53800B1EEB3 /* BrainTrain.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrainTrain.entitlements; sourceTree = "<group>"; };
 		6B80D59026ABFE4000B1EEB3 /* StoreKitConfig.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = StoreKitConfig.storekit; sourceTree = "<group>"; };
 		6B80D59126AC3D9300B1EEB3 /* StoreKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKit.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 			children = (
 				6BBAF0892674111B009B69AE /* WordsRememberTest.swift */,
 				6BDF62AD269C516300210F06 /* words.txt */,
+				6B6D921326B1DF10000CA038 /* wordsEng.txt */,
 				6B494C3A2572E02F0001864A /* StroopTest.swift */,
 				6B88F429268D09D600F23083 /* StroopTest */,
 				6BD2547026776B4100D061E3 /* mathTest.swift */,
@@ -340,6 +343,7 @@
 				6B6D921026B07BC7000CA038 /* StoreKitConfig.storekit in Resources */,
 				6BDF62AE269C516300210F06 /* words.txt in Resources */,
 				6B68B60A26835F0000E45556 /* results.json in Resources */,
+				6B6D921426B1DF10000CA038 /* wordsEng.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,7 +530,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.oknablitz.BrainTrain;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oknablitz.BrainKeeper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -549,7 +553,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.oknablitz.BrainTrain;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oknablitz.BrainKeeper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

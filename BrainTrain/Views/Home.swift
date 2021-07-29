@@ -44,7 +44,7 @@ struct Home: View {
                 .background()
                 .navigationBarItems(trailing: settingButton().environmentObject(viewModel))
                 .onAppear{
-           
+                    print(viewModel.currentDay)
                     UIApplication.shared.applicationIconBadgeNumber = 0
                     //reset all data
                     
@@ -55,9 +55,12 @@ struct Home: View {
     //                    viewContext.delete(i)
     //                    do {try viewContext.save()} catch {return}}
      
-               
-   
                     
+                    //                    viewModel.currentDay = tomorrow
+                    
+                    //                     viewModel.currentDay = today
+   
+                 
                     // check if tests finish
                     for result in testResults{
                         
@@ -86,32 +89,30 @@ struct Home: View {
 
                                 if result.day == Double(viewModel.mathTestDay) {
                                 viewModel.isMathTestFinish = true
+                                    if viewModel.isMathTestFinish {
+         
+                                        if viewModel.currentDay != today {
+                                            viewModel.day += 1
+                                            viewModel.currentDay = today
+                    
+                                            if  viewModel.mathTestDay == 4{
+                                                viewModel.mathTestDay = 0
+                                                withAnimation{
+                                                    viewModel.weekChange = true
+                                                }
+                                            } else {
+                                                viewModel.mathTestDay += 1
+                                                print("day + 1")
+                                            }
+                                        }
+                                    }
                                 }
                             
                         }
                      
                     }
                     
-                    if viewModel.startAnimation && viewModel.isMathTestFinish{
-    
-    //                    viewModel.currentDay = tomorrow
-    
-    //                     viewModel.currentDay = today
-    
-                        if viewModel.currentDay != today {
-                            viewModel.day += 1
-    
-                            if  viewModel.mathTestDay == 4{
-                                viewModel.mathTestDay = 0
-                                withAnimation{
-                                    viewModel.weekChange = true
-                                }
-                            } else {
-                                viewModel.mathTestDay += 1
-                                print("day + 1")
-                            }
-                        }
-                    }
+        
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                             withAnimation{

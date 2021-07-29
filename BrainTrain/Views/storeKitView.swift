@@ -45,7 +45,7 @@ struct RecipeRow: View {
                     action()
                 }
             } else {
-                Text("Спасибо за поддержку")
+                Text("Спасибо за поддержку".localized)
                     .font(.subheadline)
                     .padding()
                     .onAppear{
@@ -68,7 +68,7 @@ struct storeKitView: View {
     var body: some View {
         VStack (alignment: .leading){
             
-            Text("Нравится приложение?")
+            Text("Нравится приложение?".localized)
                 .font(.callout)
                 .padding(.leading)
         

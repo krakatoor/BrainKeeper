@@ -85,14 +85,14 @@ struct StroopTest: View {
                                         .font(.title)
                                 })
                                 .alert(isPresented: $showAlert) {
-                                    Alert(title: Text("Начать тест заново?"), message: Text("При прохождении теста результаты будут заменены"),
+                                    Alert(title: Text("Начать тест заново?".localized), message: Text("При прохождении теста результаты будут заменены".localized),
                                           primaryButton: .destructive(Text("Да")) {
                                             viewModel.stroopTestResult = ""
                                             viewModel.timeRemaining = 0
                                             stage = .prepare
                                             buttonTitile = "Дальше".localized
                                           },
-                                          secondaryButton: .cancel(Text("Нет"))
+                                          secondaryButton: .cancel(Text("Нет".localized))
                                     )
                                 }
                             }
@@ -161,14 +161,14 @@ struct StroopTest: View {
                 colorsViewTag = 0
                 buttonTitile = "Дальше".localized
                 disableButton = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                     disableButton = false
                 }
             } else if colorsViewTag < 5 {
                 withAnimation{
                     colorsViewTag += 1
                     disableButton = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                         disableButton = false
                     }
                 }

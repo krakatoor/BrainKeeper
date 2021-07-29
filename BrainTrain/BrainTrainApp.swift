@@ -23,12 +23,30 @@ struct BrainTrainApp: App {
                     persistenceController.save()
                     
                     if scenePhase == .background {
-                        if viewModel.startAnimation && viewModel.isMathTestFinish{
-                            
+                        print("background")
+                        
+                        UIApplication.shared.applicationIconBadgeNumber = 0
+                        
+                        if  viewModel.isMathTestFinish{
+                            if viewModel.currentDay != today {
                             viewModel.day += 1
-                                viewModel.showDayCard = true
-                                viewModel.startAnimation = true
-                            
+                                print("day + 1")
+                                viewModel.currentDay = today
+                                DispatchQueue.main.async {
+                                    viewModel.showDayCard = true
+                                    viewModel.startAnimation = true
+                                    viewModel.results =  [0.0, 0.0, 0.0, 0.0, 0.0]
+                                    viewModel.isMathTestFinish = false
+                                    viewModel.correctAnswers = 0
+                                    viewModel.examplesCount = 0
+                                    viewModel.isTestFinish = false
+                                    if viewModel.weekChange {
+                                        viewModel.isWordsTestFinish = false
+                                        viewModel.wordsTestResult = ""
+                                        viewModel.isStroopTestFinish = false
+                                        viewModel.stroopTestResult = ""
+                                    }
+                                }
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                     withAnimation{
                                         viewModel.showDayCard = false
@@ -44,10 +62,10 @@ struct BrainTrainApp: App {
                                 
                             } else {
                                 viewModel.mathTestDay += 1
-                                print("day + 1")
+                                print("mathTestDay + 1")
                             }
                         }
-                  
+                        }
                
                     }
                 }

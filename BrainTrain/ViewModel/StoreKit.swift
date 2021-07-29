@@ -15,7 +15,7 @@ class StoreKit: NSObject, ObservableObject {
     @Published var allRecipes: [Recipe] = []
     
     private let identifiers = Set([
-       "com.oknablitz.BrainTrain.Tea"
+       "com.oknablitz.BrainKeeper.coffee"
     ])
     
     private var completedPurchares:[String] = [] {

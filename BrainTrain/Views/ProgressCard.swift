@@ -16,7 +16,7 @@ struct ProgressCard: View {
                     
                     Spacer()
                     
-                    if viewModel.day < 6 {
+                    if viewModel.day < 60 {
                     RingView(width: 70, heihgt: 70, percent: CGFloat((viewModel.day * 100 / 60)))
                         .padding()
                 }
@@ -26,13 +26,13 @@ struct ProgressCard: View {
             Spacer()
             
             if viewModel.weekChange {
-                Text("Новая неделя!")
+                Text("Новая неделя!".localized)
                     .bold()
                     .font(.title)
                     .foregroundColor(.red)
             }
             
-            Text("День" + " " + " \(viewModel.day)")
+            Text("День".localized + " " + " \(viewModel.day)")
             .font(.system(size: 40, weight: .black, design: .serif))
             .foregroundColor(.primary)
            

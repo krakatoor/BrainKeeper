@@ -45,7 +45,7 @@ struct ChartsResult: View {
                 VStack {
                     
                     ZStack (alignment: .bottomLeading){
-                        Text("Время")
+                        Text("Время".localized)
                             .font(.caption2)
                             .offset(x: 40,y:  -70)
                             .rotationEffect(.degrees(270))
@@ -57,15 +57,15 @@ struct ChartsResult: View {
                     
                     
                     ZStack (alignment: .trailing){
-                        Text("2мин.")
+                        Text("2мин.".localized)
                             .offset(x: 60, y: -200)
                             .font(.caption2)
-                        Text("1мин.")
+                        Text("1мин.".localized)
                             .offset(x: 60, y: -100)
                             .font(.caption2)
                         
                         ZStack (alignment: .leading){
-                            Text("Дни")
+                            Text("Дни".localized)
                                 .font(.caption2)
                                 .offset(x: -50, y: -20)
                             HStack (spacing: 35){

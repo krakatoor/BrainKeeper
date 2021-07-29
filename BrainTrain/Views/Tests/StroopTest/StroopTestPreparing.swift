@@ -9,18 +9,18 @@ import SwiftUI
 
 struct StroopTestPreparing: View {
     let colors = [Color(#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)),Color(#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)),Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),Color(#colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)),Color(#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1))]
-    let colorsName = ["Синий","Красный","Зелёный","Жёлтый", "Серый"]
+    let colorsName = ["Синий".localized,"Красный".localized,"Зелёный".localized,"Жёлтый".localized, "Серый".localized]
     
     var body: some View {
         VStack  {
-            Text("Тест Струпа")
+            Text("Тест Струпа".localized)
                 .font(.title2)
                 .bold()
             
             HStack  {
                 Spacer()
 
-            Text("Перед началом тестирования пройдите подготовку к нему.")
+            Text("Перед началом тестирования пройдите подготовку к нему.".localized)
                 .mainFont(size: 20)
                 .padding(.top, small ? 5 : 10)
                 
@@ -39,7 +39,7 @@ struct StroopTestPreparing: View {
             }
             
             HStack {
-                Text("(Пример: если написано")
+                Text("(Пример: если написано".localized)
                     .mainFont(size: 18)
                 Text("Красный,")
                     .foregroundColor(.blue)
@@ -49,7 +49,7 @@ struct StroopTestPreparing: View {
             .fixedSize(horizontal: false, vertical: true)
             
             HStack {
-                Text("говорите Синий.)")
+                Text("говорите Синий.)".localized)
                     .mainFont(size: 18)
                 Spacer()
             }
@@ -63,7 +63,7 @@ struct StroopTestPreparing: View {
             }
             .padding(.vertical, small ? 10 : 20)
             
-            Text("Вы дали правильные ответы: синий, серый, красный, зелёный, жёлтый?\n\nТеперь приступайте к упражнению.")
+            Text("Вы дали правильные ответы: синий, серый, красный, зелёный, жёлтый?\n\nТеперь приступайте к упражнению.".localized)
                 .mainFont(size: 18)
                 .fixedSize(horizontal: false, vertical: true)
             

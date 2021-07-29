@@ -21,8 +21,9 @@ class ViewModel: ObservableObject{
     @AppStorage ("skipBrainTest") var skipBrainTest = false
     @AppStorage ("currentDate") var currentDate = today
     @AppStorage ("mathTestDay") var mathTestDay = 0
-    @AppStorage("showNotification") var showNotificationCover = true
-    
+    @AppStorage("showNotification") var showNotification = true
+    @AppStorage("hideFinishCover") var hideFinishCover = false
+    @AppStorage("saveChoice") var saveChoice = false
     let brainTestsDay = Array(1...60).filter {$0.isMultiple(of:5)}
 //    or stride(from: 1, to: 60, by: 6)
     
@@ -63,7 +64,7 @@ class ViewModel: ObservableObject{
     @Published var startMathTest = false
     @Published var mathTestResultTime = 0.0
     @Published var mathTestResult = ""
-    @Published var totalExample = 5
+    @Published var totalExample = 1
     @Published var examplesCount = 0
     @Published var correctAnswers = 0
     @Published var isMathTestFinish = false
@@ -100,8 +101,8 @@ class ViewModel: ObservableObject{
         content.subtitle = "Вы не тренировались уже 24 часа"
         content.sound = UNNotificationSound.default
         content.badge = 1
-
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 3000 , repeats: false)
+//86400
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 43200 , repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 
         notificationCenter.add(request)

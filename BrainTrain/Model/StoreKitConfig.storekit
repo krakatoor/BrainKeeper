@@ -20,7 +20,7 @@
           "locale" : "ru"
         }
       ],
-      "productID" : "com.oknablitz.BrainTrain.Tea",
+      "productID" : "com.oknablitz.BrainKeeper.coffee",
       "referenceName" : "Buy a tea for developer",
       "type" : "NonConsumable"
     }

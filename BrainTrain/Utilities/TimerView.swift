@@ -20,13 +20,13 @@ struct timerView: View {
         Group{
         if minus {
             HStack{
-            Text("Осталось:")
+            Text("Осталось:".localized)
                 Text("\(timeString(time: viewModel.timeRemaining))")
             }
             .font(.system(size: fontSize))
         } else {
             HStack{
-            Text("Время теста:")
+            Text("Время теста:".localized)
                 Text("\(timeString(time: viewModel.timeRemaining))")
             }
             .font(.system(size: fontSize))

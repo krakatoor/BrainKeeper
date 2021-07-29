@@ -9,6 +9,7 @@ import SwiftUI
 import Introspect
 
 struct WordsRememberTest: View {
+    @Environment (\.locale) var locale
     @EnvironmentObject var viewModel: ViewModel
     @Environment (\.presentationMode) private var presentation
     @State private var startCount = false
@@ -27,7 +28,7 @@ struct WordsRememberTest: View {
             
             if !startTest && viewModel.wordsTestResult.isEmpty {
                 VStack {
-                    Text("Тест на запоминание слов")
+                    Text("Тест на запоминание слов".localized)
                         .font(.title2)
                         .bold()
                         .padding(.top, small ? 0 : 20)
@@ -37,7 +38,7 @@ struct WordsRememberTest: View {
                         .frame(height: small ? 100 : 200)
                         .padding(.top)
                     
-                    Text("В течении 2х минут постарайтесь запомнить как можно больше слов.")
+                    Text("В течении 2х минут постарайтесь запомнить как можно больше слов.".localized)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.bottom, 20)
                         .padding(.horizontal)
@@ -75,7 +76,7 @@ struct WordsRememberTest: View {
                         
                     },
                     label: {
-                        Text( startCount ? "Дальше" :  "Старт")
+                        Text( startCount ? "Дальше".localized :  "Старт".localized)
                             .mainButton()
                     })
                 }
@@ -85,7 +86,7 @@ struct WordsRememberTest: View {
                 
                 VStack{
                     if !startCount && viewModel.wordsTestResult.isEmpty{
-                        Text("Постарайтесь вписать как можно больше запомненных слов.")
+                        Text("Постарайтесь вписать как можно больше запомненных слов.".localized)
                             .fixedSize(horizontal: false, vertical: true)
                             .padding()
                             .padding(.top, small ? 0 : 18)
@@ -95,7 +96,7 @@ struct WordsRememberTest: View {
                         
                         if startCount {
                             HStack{
-                            Text("Слов запомнено:")
+                            Text("Слов запомнено:".localized)
                                 Text("\(viewModel.words.count)")
                             }
                                 .font(.title3)
@@ -112,7 +113,7 @@ struct WordsRememberTest: View {
                         
                         if viewModel.wordsTestResult.isEmpty {
                             
-                            TextField("Введите слово", text: $word)
+                            TextField("Введите слово".localized, text: $word)
                                 .introspectTextField{ textfield in
                                     textfield.becomeFirstResponder()
                                 }
@@ -208,7 +209,7 @@ struct WordsRememberTest: View {
                             LottieView(name: "memory", loopMode: .playOnce, animationSpeed: 0.6)
                                 .frame(height: 200)
                             
-                            Text("Тест завершён")
+                            Text("Тест завершён".localized)
                                 .font(.title)
                                 .bold()
                             
@@ -232,7 +233,7 @@ struct WordsRememberTest: View {
                                     .font(.title)
                             })
                             .alert(isPresented: $showAlert) {
-                                Alert(title: Text("Начать тест заново?"), message: Text("При прохождении теста результаты будут заменены"),
+                                Alert(title: Text("Начать тест заново?".localized), message: Text("При прохождении теста результаты будут заменены".localized),
                                       primaryButton: .destructive(Text("Да")) {
                                         getWords()
                                         viewModel.words.removeAll()
@@ -243,7 +244,7 @@ struct WordsRememberTest: View {
                                         
                                         }
                                       },
-                                      secondaryButton: .cancel(Text("Нет"))
+                                      secondaryButton: .cancel(Text("Нет".localized))
                                 )
                             }
                             
@@ -291,7 +292,7 @@ struct WordsRememberTest: View {
                             },
                             label: {
                                 
-                                Text(startCount ? "Добавить" : "Старт" )
+                                Text(startCount ? "Добавить".localized : "Старт".localized)
                                     .mainButton()
                                 
                             })
@@ -302,7 +303,7 @@ struct WordsRememberTest: View {
                         
                         if viewModel.wordsTestResult.isEmpty && viewModel.timeRemaining < 60 {
                             Button(action: {withAnimation{ viewModel.timeRemaining = 0 }}, label: {
-                            Image(systemName: "exclamationmark.arrow.circlepath")
+                            Image(systemName: "exclamationmark.arrow.circlepath".localized)
                                 .font(.title)
                                 .foregroundColor(.red)
                         })
@@ -337,7 +338,7 @@ struct WordsRememberTest: View {
     }
     
     func getWords() {
-        if let fileWithWords = Bundle.main.url(forResource: "words", withExtension: "txt") {
+        if let fileWithWords = Bundle.main.url(forResource: locale.identifier ==  "en" ? "wordsEng" : "words", withExtension: "txt") {
             if let word = try? String(contentsOf: fileWithWords) {
                 let newWords =  word.components(separatedBy: "\n")
                 while words.count != 20 {

@@ -39,7 +39,7 @@ struct mathTest: View {
                     .transition(.move(edge: .bottom))
             }
             
-            if testFinishCover && viewModel.showNotificationCover {
+            if testFinishCover && viewModel.showNotification && !viewModel.hideFinishCover {
                 MathTestFinish(hideCover: $testFinishCover)
                     .zIndex(1)
                     .environmentObject(viewModel)
@@ -49,7 +49,7 @@ struct mathTest: View {
             
             VStack {
                 if viewModel.results[viewModel.mathTestDay] == 0.0  {
-                    Text("Максимально быстро решите математические задачи")
+                    Text("Максимально быстро решите математические задачи".localized)
                         .mainFont(size: 18)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
@@ -67,7 +67,7 @@ struct mathTest: View {
                     VStack {
                         if viewModel.results[viewModel.mathTestDay] == 0.0  {
                             HStack {
-                            Text("Примеров осталось:")
+                            Text("Примеров осталось:".localized)
                                 Text(" \(viewModel.totalExample - viewModel.examplesCount )")
                             }
                             .mainFont(size: 20)
@@ -152,7 +152,7 @@ struct mathTest: View {
                                 .bold()
                                 .padding(.top)
                             
-                            Text("Каждый раз старайтесь улучшать предыдущий результат. Когда вам удаться решать все примеры за 2 минуты, можно будет сказать, что у вас получилось. Если же вы справитесь за минуту, считайте, что получили золотую медаль.")
+                            Text("Каждый раз старайтесь улучшать предыдущий результат. Когда вам удаться решать все примеры за 2 минуты, можно будет сказать, что у вас получилось. Если же вы справитесь за минуту, считайте, что получили золотую медаль.".localized)
                                 .mainFont(size: 18)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding()
@@ -186,7 +186,7 @@ struct mathTest: View {
                             })
                             .padding(.leading)
                             .alert(isPresented: $showAlert) {
-                                Alert(title: Text("Начать тест заново?"), message: Text("При прохождении теста результаты будут заменены"),
+                                Alert(title: Text("Начать тест заново?".localized), message: Text("При прохождении теста результаты будут заменены".localized),
                                       primaryButton: .destructive(Text("Да")) {
                                         totalSumText = "?"
                                         viewModel.timeRemaining = 0
@@ -197,7 +197,7 @@ struct mathTest: View {
                                             viewModel.results[viewModel.mathTestDay] = 0.0
                                         }
                                       },
-                                      secondaryButton: .cancel(Text("Нет"))
+                                      secondaryButton: .cancel(Text("Нет".localized))
                                 )
                             }
                         }
@@ -219,7 +219,7 @@ struct mathTest: View {
                         }, label:{
                             
                             if viewModel.results[viewModel.mathTestDay] != 0.0 {
-                                Text("Назад")
+                                Text("Назад".localized)
                                     .mainFont(size: 20)
                                     .foregroundColor(.white)
                                     .frame(width: 250)
@@ -227,7 +227,7 @@ struct mathTest: View {
                                     .background(Color.blue.cornerRadius(15))
                                 
                             } else if viewModel.examplesCount < viewModel.totalExample {
-                                Text(!viewModel.startMathTest ? "Начать тест" : "Дальше")
+                                Text(!viewModel.startMathTest ? "Начать тест".localized : "Дальше".localized)
                                     .mainFont(size: 20)
                                     .foregroundColor(.white)
                                     .frame(width: 250)
@@ -405,11 +405,6 @@ struct mathTest: View {
                 totalSum = Int(number1 / number2)
             }
         }
-        
-     
-        
-   
-        
     }
     
     //MARK: Save result
@@ -450,8 +445,12 @@ struct mathTest: View {
             
             do {try viewContext.save() } catch { return }
             
+            if viewModel.saveChoice && viewModel.showNotification {
+                viewModel.sendNotification()
+            }
             
             viewModel.currentDay = today
+            viewModel.currentDay = tomorrow //delete
             
             print("Save math test")
             

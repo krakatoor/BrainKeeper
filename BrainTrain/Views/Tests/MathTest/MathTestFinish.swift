@@ -18,7 +18,7 @@ struct MathTestFinish: View {
                 
                 HStack {
                     Spacer()
-                Text("Тест пройден!")
+                Text("Тест пройден!".localized)
                     .font(.title2)
                     .bold()
                     Spacer()
@@ -39,11 +39,14 @@ struct MathTestFinish: View {
                     Button(action: {
                         withAnimation{
                             hideCover.toggle()
-                            viewModel.showNotificationCover = false
+                            if viewModel.saveChoice {
+                                viewModel.hideFinishCover = true
+                                viewModel.showNotification = false
+                            }
                         }
                         
                     }, label: {
-                        Text("Нет")
+                        Text("Нет".localized)
                             .mainFont(size: small ? 18 : 20)
                             .foregroundColor(.white)
                             .frame(width: 120)
@@ -52,14 +55,17 @@ struct MathTestFinish: View {
                 })
                     
                     Button(action: {
-                        viewModel.showNotificationCover = true
+                        viewModel.showNotification = true
                         viewModel.sendNotification()
                         withAnimation{
                             hideCover.toggle()
+                            if viewModel.saveChoice {
+                                viewModel.hideFinishCover = true
+                            }
                         }
                         
                     }, label: {
-                        Text("Да")
+                        Text("Да".localized)
                             .mainFont(size: small ? 18 : 20)
                             .foregroundColor(.white)
                             .frame(width: 120)
@@ -72,7 +78,7 @@ struct MathTestFinish: View {
                 HStack {
                     Spacer()
 
-                    Text("Больше не показывать")
+                    Text("Запомнить выбор".localized)
                     
                     ZStack {
                         Rectangle()
@@ -81,13 +87,13 @@ struct MathTestFinish: View {
                             .overlay(Rectangle().stroke(lineWidth: 0.5)).foregroundColor(.primary)
                            
                         
-                        if !viewModel.showNotificationCover {
+                        if viewModel.saveChoice {
                         Image(systemName: "checkmark")
                         }
                     }
                     .onTapGesture {
                         withAnimation(){
-                        viewModel.showNotificationCover.toggle()
+                            viewModel.saveChoice.toggle()
                         }
                     }
                     

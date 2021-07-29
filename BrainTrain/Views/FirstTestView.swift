@@ -27,11 +27,11 @@ struct FirstTestView: View {
                     
                     Spacer()
                     
-                    Text("Поздравляем!!!")
+                    Text("Поздравляем!!!".localized)
                         .font(.title2)
                         .bold()
                     
-                    Text("Вы прошли курс тренировки мозга! Вы по-прежнему можете проходить тесты, либо сбросить результаты и начать сначала. Выбор за вами...")
+                    Text("Вы прошли курс тренировки мозга! Вы по-прежнему можете проходить тесты, либо сбросить результаты и начать сначала. Выбор за вами...".localized)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.top, 3)
                     
@@ -51,7 +51,7 @@ struct FirstTestView: View {
                                     .font(.title)
                             })
                             .alert(isPresented: $showAlert) {
-                                Alert(title: Text("Начать тесты заново?"), message: Text("Все результаты будут сброшены!"),
+                                Alert(title: Text("Начать тесты заново?".localized), message: Text("Все результаты будут сброшены!".localized),
                                       primaryButton: .destructive(Text("Да")) {
                                         viewModel.day = 1
                                         viewModel.mathTestDay = 0
@@ -61,11 +61,12 @@ struct FirstTestView: View {
                                         viewModel.mathTestResult = ""
                                         viewModel.wordsTestResult = ""
                                         viewModel.stroopTestResult = ""
+                                        viewModel.results =  [0.0, 0.0, 0.0, 0.0, 0.0]
                                         for i in testResults{
                                             viewContext.delete(i)
                                             do {try viewContext.save()} catch {return}}
                                       },
-                                      secondaryButton: .cancel(Text("Нет"))
+                                      secondaryButton: .cancel(Text("Нет".localized))
                                 )
                             }
                   
@@ -74,7 +75,7 @@ struct FirstTestView: View {
                         Button(action: {
                          
                         }, label: {
-                            Text("Продолжить")
+                            Text("Продолжить".localized)
                                 .mainButton()
                         })
                         .padding(.leading, -15)
@@ -105,7 +106,7 @@ struct FirstTestView: View {
                 
                 if firstDay {
                     HStack{
-                        Text("Неделя")
+                        Text("Неделя".localized)
                             .bold()
                             .mainFont(size: 22)
                             .padding(.top, 20)
@@ -116,7 +117,7 @@ struct FirstTestView: View {
                             .padding(.top, 20)
                     }
                     
-                    Text("Прежде чем начать тренировку, определим с помощью тестов, как сейчас работает ваш мозг.")
+                    Text("Прежде чем начать тренировку, определим с помощью тестов, как сейчас работает ваш мозг.".localized)
                         .mainFont(size: 16)
                         .padding()
                         .fixedSize(horizontal: false, vertical: true)
@@ -175,7 +176,7 @@ struct FirstTestView: View {
                                         ZStack (alignment: Alignment(horizontal: .trailing, vertical: .center)){
                                             
                                             if viewModel.results[viewModel.mathTestDay] != 0.0 {
-                                                Text("Завершен")
+                                                Text("Завершен".localized)
                                                     .zIndex(1)
                                                     .padding(5)
                                                     .overlay(Rectangle().stroke())
