@@ -31,7 +31,8 @@ struct ChartView: View {
                 }
                 .mainFont(size: 15)
                 .padding(8)
-                .background(BlurView(style: .regular).cornerRadius(10).shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0))
+                .background(BlurView(style: .regular).cornerRadius(10))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 0.3))
                 .zIndex(1)
                 .onTapGesture {
                     showDetail.toggle()
@@ -90,12 +91,7 @@ struct ChartView: View {
         }
         
     }
-    func timeString(time: Double) -> String {
-        let minutes   = Int(time) / 60
-        let seconds = Int(time) - Int(minutes) * 60
-        
-        return String(format:"%02i:%02i", minutes, seconds)
-    }
+   
 }
 
 struct ChartView_Previews: PreviewProvider {

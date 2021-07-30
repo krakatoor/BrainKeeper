@@ -64,7 +64,7 @@ class ViewModel: ObservableObject{
     @Published var startMathTest = false
     @Published var mathTestResultTime = 0.0
     @Published var mathTestResult = ""
-    @Published var totalExample = 1
+    @Published var totalExample = 5
     @Published var examplesCount = 0
     @Published var correctAnswers = 0
     @Published var isMathTestFinish = false
@@ -78,7 +78,6 @@ class ViewModel: ObservableObject{
 
             if(settings.authorizationStatus == .authorized) {
                 print("Push notification is enabled")
-               
                
             } else {
                 notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
@@ -101,14 +100,12 @@ class ViewModel: ObservableObject{
         content.subtitle = "Вы не тренировались уже 24 часа"
         content.sound = UNNotificationSound.default
         content.badge = 1
-//86400
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 43200 , repeats: false)
+//        60 * 60 * 24
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60 * 60 * 24 , repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 
         notificationCenter.add(request)
     }
-  
- 
 }
 
 

@@ -22,7 +22,6 @@ struct mathTest: View {
     @State private var showAnswer = false
     @State private var testFinishCover = false
     @State private var showCover = true
-    @State private var results = ""
     @State private var showAlert = false
     @Environment(\.managedObjectContext) private var  viewContext
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
@@ -30,227 +29,227 @@ struct mathTest: View {
     let buttonWidth = screenSize.width / 3 - 5
     
     var body: some View {
-        
         ZStack (alignment: .bottom) {
-        ZStack (alignment: .center){
-            if showCover  && viewModel.day == 1 && viewModel.results[viewModel.mathTestDay] == 0.0 {
-                MathTestCover(showCover: $showCover)
-                    .zIndex(1)
-                    .transition(.move(edge: .bottom))
-            }
-            
-            if testFinishCover && viewModel.showNotification && !viewModel.hideFinishCover {
-                MathTestFinish(hideCover: $testFinishCover)
-                    .zIndex(1)
-                    .environmentObject(viewModel)
-                    .transition(.move(edge: .bottom))
-            }
-            
-            
-            VStack {
-                if viewModel.results[viewModel.mathTestDay] == 0.0  {
-                    Text("Максимально быстро решите математические задачи".localized)
-                        .mainFont(size: 18)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding()
+            ZStack (alignment: .center){
+                if showCover  && viewModel.day == 1 && viewModel.results[viewModel.mathTestDay] == 0.0 {
+                    MathTestCover(showCover: $showCover)
+                        .zIndex(1)
+                        .transition(.move(edge: .bottom))
+                }
+                
+                if testFinishCover && viewModel.showNotification && !viewModel.hideFinishCover {
+                    MathTestFinish(hideCover: $testFinishCover)
+                        .zIndex(1)
+                        .environmentObject(viewModel)
+                        .transition(.move(edge: .bottom))
                 }
                 
                 
-                VStack (alignment: .center, spacing: 10){
+                VStack {
+                    if viewModel.results[viewModel.mathTestDay] == 0.0  {
+                        Text("Максимально быстро решите математические задачи".localized)
+                            .mainFont(size: 18)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding()
+                    }
                     
                     
-                    LottieView(name: "math", loopMode: .loop, animationSpeed: 0.8)
-                        .frame(height: viewModel.startMathTest ? (small ? 80 : 150) : (small ? 150 : 250))
-                    
-                    
-                    VStack {
-                        if viewModel.results[viewModel.mathTestDay] == 0.0  {
-                            HStack {
-                            Text("Примеров осталось:".localized)
-                                Text(" \(viewModel.totalExample - viewModel.examplesCount )")
+                    VStack (alignment: .center, spacing: 10){
+                        
+                        
+                        LottieView(name: "math", loopMode: .loop, animationSpeed: 0.8)
+                            .frame(height: viewModel.startMathTest ? (small ? 80 : 150) : (small ? 150 : 250))
+                        
+                        if viewModel.startMathTest || viewModel.results[viewModel.mathTestDay] != 0.0 {
+                            VStack {
+                                if viewModel.results[viewModel.mathTestDay] == 0.0  {
+                                    HStack {
+                                        Text("Примеров осталось:".localized)
+                                        Text(" \(viewModel.totalExample - viewModel.examplesCount )")
+                                    }
+                                    .mainFont(size: 20)
+                                }
+                                
+                                
+                                if viewModel.results[viewModel.mathTestDay] != 0.0 {
+                                    Text("Время теста:".localized + " " + timeString(time: viewModel.mathTestResultTime  * 150))
+                                } else {
+                                    
+                                    Text("Правильных ответов:".localized + " " + " \(viewModel.correctAnswers)")
+                                }
                             }
                             .mainFont(size: 20)
-                        }
-                        
-          
-                            if viewModel.results[viewModel.mathTestDay] != 0.0 {
-                                Text(results)
-                            } else {
                             
-                                Text("Правильных ответов:".localized + " " + " \(viewModel.correctAnswers)")
+                            
+                            if viewModel.results[viewModel.mathTestDay] != 0.0 {
+                                Text("Правильных ответов:".localized + " " + viewModel.mathTestResult)
+                                    .font(.title3)
+                            } else {
+                                timerView(result: $viewModel.mathTestResult, startTimer: $viewModel.startMathTest, fontSize: 25, isMathTest: true)
+                                    .environmentObject(viewModel)
                             }
-                       
-                        
+                            
+                            Spacer()
+                            
+                            if viewModel.results[viewModel.mathTestDay] == 0.0  {
+                                
+                                HStack {
+                                    
+                                    Spacer()
+                                    
+                                    if viewModel.startMathTest {
+                                        Text("\(number1) \(operator1) \(number2) =")
+                                            .transition(.move(edge: .bottom))
+                                            .mainFont(size: small ? 35 : 40)
+                                            .redacted(reason: viewModel.examplesCount == viewModel.totalExample ? .placeholder : [])
+                                        
+                                        
+                                        Text(totalSumText)
+                                            .mainFont(size: small ? 35 : 40)
+                                            .frame(width: viewModel.startMathTest ?  60 : 40, height: viewModel.startMathTest ? 45 : 35)
+                                            .overlay(Rectangle().stroke().frame(width: viewModel.startMathTest ?  60 : 40, height: viewModel.startMathTest ? 45 : 35))
+                                        
+                                    }
+                                    
+                                    Image(systemName: totalSumText != String(totalSum) ?  "checkmark.circle.fill" : "xmark.circle.fill")
+                                        .foregroundColor(prevAnswerColor)
+                                        .offset(x: 20)
+                                        .opacity(showAnswer ? 1 : 0)
+                                    
+                                    Spacer()
+                                }
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    if viewModel.examplesCount != viewModel.totalExample{
+                                        withAnimation{
+                                            viewModel.startMathTest = true
+                                        }
+                                    }
+                                }
+                                .onChange(of: viewModel.examplesCount, perform: { _ in
+                                    if viewModel.examplesCount == viewModel.totalExample {
+                                        DispatchQueue.main.async {
+                                            withAnimation{
+                                                testFinishCover = true
+                                                viewModel.isTestFinish = true
+                                                saveResult()
+                                                viewModel.startMathTest = false
+                                            }
+                                        }
+                                      
+                                    }
+                                    
+                                })
+                                
+                            } else {
+                                
+                                VStack{
+                                    Text("Тест завершён")
+                                        .font(.title)
+                                        .bold()
+                                        .padding(.top)
+                                    
+                                    Text("Каждый раз старайтесь улучшать предыдущий результат. Когда вам удаться решать все примеры за 2 минуты, можно будет сказать, что у вас получилось. Если же вы справитесь за минуту, считайте, что получили золотую медаль.".localized)
+                                        .mainFont(size: 18)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                        .padding()
+                                }
+                                .transition(.move(edge: .bottom))
+                            }
+                            
+                            //MARK: KEYBOARD
+                            if viewModel.startMathTest{
+                                buttons
+                                    .padding(.top)
+                                    .transition(.move(edge: .bottom))
+                                    .disabled(viewModel.examplesCount == viewModel.totalExample)
+                            }
+                            
+                            
+                        }
                     }
-                    .mainFont(size: 20)
-                    
-                    
-                    if viewModel.results[viewModel.mathTestDay] != 0.0 {
-                        Text("Правильных ответов:".localized + " " + viewModel.mathTestResult)
-                            .font(.title3)
-                    } else {
-                        timerView(result: $viewModel.mathTestResult, startTimer: $viewModel.startMathTest, fontSize: 25, isMathTest: true)
-                            .environmentObject(viewModel)
-                    }
-                    
                     Spacer()
                     
-                    if viewModel.results[viewModel.mathTestDay] == 0.0  {
+                    if !viewModel.startMathTest {
                         
                         HStack {
                             
-                            Spacer()
-                            
-                            if viewModel.startMathTest {
-                                Text("\(number1) \(operator1) \(number2) =")
-                                    .transition(.move(edge: .bottom))
-                                    .mainFont(size: small ? 35 : 40)
-                                    .redacted(reason: viewModel.examplesCount == viewModel.totalExample ? .placeholder : [])
-                                
-                                
-                                Text(totalSumText)
-                                    .mainFont(size: small ? 35 : 40)
-                                    .frame(width: viewModel.startMathTest ?  60 : 40, height: viewModel.startMathTest ? 45 : 35)
-                                    .overlay(Rectangle().stroke().frame(width: viewModel.startMathTest ?  60 : 40, height: viewModel.startMathTest ? 45 : 35))
-                                
-                            }
-                            
-                            Image(systemName: totalSumText != String(totalSum) ?  "checkmark.circle.fill" : "xmark.circle.fill")
-                                .foregroundColor(prevAnswerColor)
-                                .offset(x: 20)
-                                .opacity(showAnswer ? 1 : 0)
-                            
-                            Spacer()
-                        }
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            if viewModel.examplesCount != viewModel.totalExample{
-                                withAnimation{
-                                    viewModel.startMathTest = true
-                                }
-                            }
-                        }
-                        .onChange(of: viewModel.examplesCount, perform: { _ in
-                            if viewModel.examplesCount == viewModel.totalExample {
-                                print(viewModel.examplesCount)
-                                withAnimation{
-                                    testFinishCover = true
-                                    viewModel.isTestFinish = true
-                                    saveResult()
-                                    viewModel.startMathTest = false
-                                }
-                            }
-                            
-                        })
-                        
-                    } else {
-                        
-                        VStack{
-                            Text("Тест завершён")
-                                .font(.title)
-                                .bold()
-                                .padding(.top)
-                            
-                            Text("Каждый раз старайтесь улучшать предыдущий результат. Когда вам удаться решать все примеры за 2 минуты, можно будет сказать, что у вас получилось. Если же вы справитесь за минуту, считайте, что получили золотую медаль.".localized)
-                                .mainFont(size: 18)
-                                .fixedSize(horizontal: false, vertical: true)
-                                .padding()
-                        }
-                        .transition(.move(edge: .bottom))
-                    }
-                    
-                    //MARK: KEYBOARD
-                    if viewModel.startMathTest{
-                        buttons
-                            .padding(.top)
-                            .transition(.move(edge: .bottom))
-                            .disabled(viewModel.examplesCount == viewModel.totalExample)
-                    }
-                    
-                }
-                
-                Spacer()
-                
-                if !viewModel.startMathTest {
-                    
-                    HStack {
-                        
-                        if viewModel.results[viewModel.mathTestDay] != 0.0 {
-                            Button(action: {
-                                showAlert = true
-                            }, label: {
-                                Image(systemName: "arrow.clockwise")
-                                    .font(.title)
-                                    .offset(y: small ? 5 : 7)
-                            })
-                            .padding(.leading)
-                            .alert(isPresented: $showAlert) {
-                                Alert(title: Text("Начать тест заново?".localized), message: Text("При прохождении теста результаты будут заменены".localized),
-                                      primaryButton: .destructive(Text("Да")) {
-                                        totalSumText = "?"
-                                        viewModel.timeRemaining = 0
-                                        viewModel.correctAnswers = 0
-                                        viewModel.examplesCount = 0
-                                        showCover = false
-                                        withAnimation{
-                                            viewModel.results[viewModel.mathTestDay] = 0.0
-                                        }
-                                      },
-                                      secondaryButton: .cancel(Text("Нет".localized))
-                                )
-                            }
-                        }
-                        
-                        Spacer()
-                        
-                        Button(action:{
-                            if viewModel.results[viewModel.mathTestDay] == 0.0  {
-                                withAnimation{
-                                    viewModel.startMathTest = true
-                                    totalSumText = ""
-                                }
-                                
-                            } else {
-                                withAnimation{
-                                    presentation.wrappedValue.dismiss()
-                                }
-                            }
-                        }, label:{
-                            
                             if viewModel.results[viewModel.mathTestDay] != 0.0 {
-                                Text("Назад".localized)
-                                    .mainFont(size: 20)
-                                    .foregroundColor(.white)
-                                    .frame(width: 250)
-                                    .padding(10)
-                                    .background(Color.blue.cornerRadius(15))
-                                
-                            } else if viewModel.examplesCount < viewModel.totalExample {
-                                Text(!viewModel.startMathTest ? "Начать тест".localized : "Дальше".localized)
-                                    .mainFont(size: 20)
-                                    .foregroundColor(.white)
-                                    .frame(width: 250)
-                                    .padding(10)
-                                    .background(Color.blue.cornerRadius(15))
-                                
+                                Button(action: {
+                                    showAlert = true
+                                }, label: {
+                                    Image(systemName: "arrow.clockwise")
+                                        .font(.title)
+                                        .offset(y: small ? 5 : 7)
+                                })
+                                .padding(.leading)
+                                .alert(isPresented: $showAlert) {
+                                    Alert(title: Text("Начать тест заново?".localized), message: Text("При прохождении теста результаты будут заменены".localized),
+                                          primaryButton: .destructive(Text("Да")) {
+                                            totalSumText = "?"
+                                            viewModel.timeRemaining = 0
+                                            viewModel.correctAnswers = 0
+                                            viewModel.examplesCount = 0
+                                            showCover = false
+                                            withAnimation{
+                                                viewModel.results[viewModel.mathTestDay] = 0.0
+                                            }
+                                          },
+                                          secondaryButton: .cancel(Text("Нет".localized))
+                                    )
+                                }
                             }
-                        })
-                        .padding(.leading, viewModel.results[viewModel.mathTestDay] != 0.0  ? -25 : 0)
-                        .padding(.top)
-                        .padding(.bottom, small ? 10 : 0)
-                        .opacity(showCover && viewModel.day == 1 && viewModel.results[viewModel.mathTestDay] == 0.0  ? 0 : 1)
-                        Spacer()
-                        
+                            
+                            Spacer()
+                            
+                            Button(action:{
+                                if viewModel.results[viewModel.mathTestDay] == 0.0  {
+                                    withAnimation{
+                                        viewModel.startMathTest = true
+                                        totalSumText = ""
+                                    }
+                                    
+                                } else {
+                                    withAnimation{
+                                        presentation.wrappedValue.dismiss()
+                                    }
+                                }
+                            }, label:{
+                                
+                                if viewModel.results[viewModel.mathTestDay] != 0.0 {
+                                    Text("Назад".localized)
+                                        .mainFont(size: 20)
+                                        .foregroundColor(.white)
+                                        .frame(width: 250)
+                                        .padding(10)
+                                        .background(Color.blue.cornerRadius(15))
+                                    
+                                } else if viewModel.examplesCount < viewModel.totalExample {
+                                    Text(!viewModel.startMathTest ? "Начать тест".localized : "Дальше".localized)
+                                        .mainFont(size: 20)
+                                        .foregroundColor(.white)
+                                        .frame(width: 250)
+                                        .padding(10)
+                                        .background(Color.blue.cornerRadius(15))
+                                    
+                                }
+                            })
+                            .padding(.leading, viewModel.results[viewModel.mathTestDay] != 0.0  ? -25 : 0)
+                            .padding(.top)
+                            .padding(.bottom, small ? 10 : 0)
+                            
+                            Spacer()
+                            
+                        }
                     }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background()
+                .navigationBarTitle("")
+                .mainFont(size: 30)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background()
-            .navigationBarTitle("")
-            .mainFont(size: 30)
-        }
-       
+            
             Settings()
                 .offset(y: viewModel.showSettings ? small ? 0 : 50 : 450)
                 .offset(y:  viewModel.viewState)
@@ -302,111 +301,6 @@ struct mathTest: View {
         }
         .navigationBarItems(trailing: settingButton().environmentObject(viewModel))
     }
-    
-    
-    private func math() {
-        operator1 = ["+", "-", "×", "÷"].randomElement()!
-        
-        switch viewModel.difficult {
-        
-        case .easy:
-            if operator1 == "+" {
-                number1 = Int.random(in: 2..<5)
-                number2 = Int.random(in: 2..<5)
-                totalSum = Int(number1 + number2)
-            }
-            
-            if operator1 == "-" {
-                number1 = Int.random(in: 2..<10)
-                number2 = Int.random(in: 1..<number1)
-                
-                totalSum = Int(number1 - number2)
-            }
-            
-            if operator1 == "×" {
-                number1 = Int.random(in: 1..<5)
-                number2 = Int.random(in: 1..<5)
-                totalSum = Int(number1 * number2)
-            }
-            
-            if operator1 == "÷" {
-                number1 = (Int.random(in: 10..<20))
-                number2 = Int.random(in: 2..<5)
-                
-                while(number1 %  number2 != 0 ){
-                    number1 = (Int.random(in: 10..<20))
-                    number2 = Int.random(in: 2..<5)
-                }
-                
-                totalSum = Int(number1 / number2)
-            }
-            
-        case .normal:
-            if operator1 == "+" {
-                number1 = Int.random(in: 2..<10)
-                number2 = Int.random(in: 2..<10)
-                totalSum = Int(number1 + number2)
-            }
-            
-            if operator1 == "-" {
-                number1 = Int.random(in: 2..<20)
-                number2 = Int.random(in: 1..<number1)
-                
-                totalSum = Int(number1 - number2)
-            }
-            
-            if operator1 == "×" {
-                number1 = Int.random(in: 2..<10)
-                number2 = Int.random(in: 2..<10)
-                totalSum = Int(number1 * number2)
-            }
-            
-            if operator1 == "÷" {
-                number1 = (Int.random(in: 10..<30))
-                number2 = Int.random(in: 2..<10)
-                
-                while(number1 %  number2 != 0 ){
-                    number1 = (Int.random(in: 10..<30))
-                    number2 = Int.random(in: 2..<10)
-                }
-                
-                totalSum = Int(number1 / number2)
-            }
-            
-        case .hard:
-            if operator1 == "+" {
-                number1 = Int.random(in: 5..<20)
-                number2 = Int.random(in: 5..<20)
-                totalSum = Int(number1 + number2)
-            }
-            
-            if operator1 == "-" {
-                number1 = Int.random(in: 5..<40)
-                number2 = Int.random(in: 1..<number1)
-                
-                totalSum = Int(number1 - number2)
-            }
-            
-            if operator1 == "×" {
-                number1 = Int.random(in: 5..<20)
-                number2 = Int.random(in: 5..<20)
-                totalSum = Int(number1 * number2)
-            }
-            
-            if operator1 == "÷" {
-                number1 = (Int.random(in: 20..<50))
-                number2 = Int.random(in: 4..<20)
-                
-                while(number1 %  number2 != 0 ){
-                    number1 = (Int.random(in: 20..<50))
-                    number2 = Int.random(in: 4..<20)
-                }
-                
-                totalSum = Int(number1 / number2)
-            }
-        }
-    }
-    
     //MARK: Save result
     private func saveResult() {
         
@@ -450,17 +344,21 @@ struct mathTest: View {
             }
             
             viewModel.currentDay = today
-            viewModel.currentDay = tomorrow //delete
             
             print("Save math test")
             
-            viewModel.isMathTestFinish  = true
+            DispatchQueue.main.async {
+                viewModel.isMathTestFinish  = true
+            }
+            
+            
+            print("isMathTestFinish", viewModel.isMathTestFinish)
             
         }
     }
     
     private var buttons: some View {
-        VStack (spacing: 3){
+        VStack(spacing: 3) {
             
             HStack(spacing: 3){
                 ForEach(1...3, id: \.self) { text in
@@ -567,6 +465,110 @@ struct mathTest: View {
             }
         })
     }
+    
+    private func math() {
+        operator1 = ["+", "-", "×", "÷"].randomElement()!
+        
+        switch viewModel.difficult {
+        
+        case .easy:
+            if operator1 == "+" {
+                number1 = Int.random(in: 2..<5)
+                number2 = Int.random(in: 2..<5)
+                totalSum = Int(number1 + number2)
+            }
+            
+            if operator1 == "-" {
+                number1 = Int.random(in: 2..<10)
+                number2 = Int.random(in: 1..<number1)
+                
+                totalSum = Int(number1 - number2)
+            }
+            
+            if operator1 == "×" {
+                number1 = Int.random(in: 1..<5)
+                number2 = Int.random(in: 1..<5)
+                totalSum = Int(number1 * number2)
+            }
+            
+            if operator1 == "÷" {
+                number1 = (Int.random(in: 10..<20))
+                number2 = Int.random(in: 2..<5)
+                
+                while(number1 %  number2 != 0 ){
+                    number1 = (Int.random(in: 10..<20))
+                    number2 = Int.random(in: 2..<5)
+                }
+                
+                totalSum = Int(number1 / number2)
+            }
+            
+        case .normal:
+            if operator1 == "+" {
+                number1 = Int.random(in: 2..<15)
+                number2 = Int.random(in: 2..<15)
+                totalSum = Int(number1 + number2)
+            }
+            
+            if operator1 == "-" {
+                number1 = Int.random(in: 2..<30)
+                number2 = Int.random(in: 1..<number1)
+                
+                totalSum = Int(number1 - number2)
+            }
+            
+            if operator1 == "×" {
+                number1 = Int.random(in: 2..<20)
+                number2 = Int.random(in: 2..<10)
+                totalSum = Int(number1 * number2)
+            }
+            
+            if operator1 == "÷" {
+                number1 = (Int.random(in: 10..<30))
+                number2 = Int.random(in: 2..<10)
+                
+                while(number1 %  number2 != 0 ){
+                    number1 = (Int.random(in: 10..<30))
+                    number2 = Int.random(in: 2..<10)
+                }
+                
+                totalSum = Int(number1 / number2)
+            }
+            
+        case .hard:
+            if operator1 == "+" {
+                number1 = Int.random(in: 5..<40)
+                number2 = Int.random(in: 5..<30)
+                totalSum = Int(number1 + number2)
+            }
+            
+            if operator1 == "-" {
+                number1 = Int.random(in: 5..<50)
+                number2 = Int.random(in: 1..<number1)
+                
+                totalSum = Int(number1 - number2)
+            }
+            
+            if operator1 == "×" {
+                number1 = Int.random(in: 2..<30)
+                number2 = Int.random(in: 2..<10)
+                totalSum = Int(number1 * number2)
+            }
+            
+            if operator1 == "÷" {
+                number1 = (Int.random(in: 10..<30))
+                number2 = Int.random(in: 2..<10)
+                
+                while(number1 %  number2 != 0 ){
+                    number1 = (Int.random(in: 10..<30))
+                    number2 = Int.random(in: 2..<10)
+                }
+                
+                totalSum = Int(number1 / number2)
+            }
+        }
+    }
+    
 }
 
 

@@ -13,6 +13,7 @@ typealias PurchaseCompletionHandler = ((SKPaymentTransaction?) -> ())
 class StoreKit: NSObject, ObservableObject {
     
     @Published var allRecipes: [Recipe] = []
+    @Published var purchaseTapped = false
     
     private let identifiers = Set([
        "com.oknablitz.BrainKeeper.coffee"
@@ -84,9 +85,7 @@ extension StoreKit {
     
     func purchaseProduct(_ product: SKProduct) {
         startObservingpaymentQueue()
-        buy(product) { _ in
-            
-        }
+        buy(product) { _ in}
     }
     
     func restorePurchases() {
@@ -104,9 +103,14 @@ extension StoreKit: SKPaymentTransactionObserver {
             case .purchased, .restored:
                 completedPurchares.append(transaction.payment.productIdentifier)
                 shouldFinishTransaction = true
+                purchaseTapped = false
             case .failed:
+                print("failed")
+                purchaseTapped = false
                 shouldFinishTransaction = true
             case .deferred, .purchasing:
+                print("purchasing")
+                purchaseTapped = false
                 break
             @unknown default:
                 break

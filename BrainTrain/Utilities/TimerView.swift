@@ -61,12 +61,7 @@ struct timerView: View {
                 }
             }
     }
-    func timeString(time: Double) -> String {
-        let minutes   = Int(time) / 60
-        let seconds = Int(time) - Int(minutes) * 60
-        
-        return String(format:"%02i:%02i", minutes, seconds)
-    }
+   
 }
 
 

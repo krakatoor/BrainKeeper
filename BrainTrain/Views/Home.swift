@@ -15,8 +15,7 @@ struct Home: View {
     @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
     private var testResults: FetchedResults<TestResult>
     //
-   
-   
+    
     init() {
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         UINavigationBar.appearance().shadowImage = UIImage()
@@ -26,17 +25,17 @@ struct Home: View {
         NavigationView {
             ZStack (alignment: .bottom) {
                 ZStack {
-                 
+                    
                     if viewModel.showDayCard {
                         ProgressCard()
                             .zIndex(1)
                             .transition(.move(edge: .leading))
                             .environmentObject(viewModel)
                     }
-                   
-                        FirstTestView()
-                            .padding(.top)
-                            .environmentObject(viewModel)
+                    
+                    FirstTestView()
+                        .padding(.top)
+                        .environmentObject(viewModel)
                     
                 }
                 .onDisappear{ viewModel.showSettings = false }
@@ -44,23 +43,9 @@ struct Home: View {
                 .background()
                 .navigationBarItems(trailing: settingButton().environmentObject(viewModel))
                 .onAppear{
-                    print(viewModel.currentDay)
+                    
                     UIApplication.shared.applicationIconBadgeNumber = 0
-                    //reset all data
-                    
-    //                viewModel.day = 1
-    //                viewModel.mathTestDay = 0
-    //                viewModel.isTestFinish = false
-    //                for i in testResults{
-    //                    viewContext.delete(i)
-    //                    do {try viewContext.save()} catch {return}}
-     
-                    
-                    //                    viewModel.currentDay = tomorrow
-                    
-                    //                     viewModel.currentDay = today
-   
-                 
+         
                     // check if tests finish
                     for result in testResults{
                         
@@ -80,46 +65,50 @@ struct Home: View {
                             }
                         }
                         
-                     
+                        
                         if result.testName == "Ежедневный тест" {
                             if result.week == String(viewModel.week){
-                                    viewModel.results[Int(result.day)] = result.result
-                                viewModel.mathTestResult = result.testResult!
+                                viewModel.results[Int(result.day)] = result.result
+                                viewModel.mathTestResultTime = result.result
                             }
-
-                                if result.day == Double(viewModel.mathTestDay) {
+                            
+                            if result.day == Double(viewModel.mathTestDay) {
                                 viewModel.isMathTestFinish = true
-                                    if viewModel.isMathTestFinish {
-         
-                                        if viewModel.currentDay != today {
-                                            viewModel.day += 1
-                                            viewModel.currentDay = today
-                    
-                                            if  viewModel.mathTestDay == 4{
-                                                viewModel.mathTestDay = 0
-                                                withAnimation{
-                                                    viewModel.weekChange = true
-                                                }
-                                            } else {
-                                                viewModel.mathTestDay += 1
-                                                print("day + 1")
+                                if viewModel.isMathTestFinish {
+                                    
+                                    if viewModel.currentDay != today {
+                                        viewModel.day += 1
+                                        viewModel.currentDay = today
+                                        
+                                        if  viewModel.mathTestDay == 4{
+                                            viewModel.mathTestDay = 0
+                                            withAnimation{
+                                                viewModel.weekChange = true
+                                                viewModel.isWordsTestFinish = false
+                                                viewModel.wordsTestResult = ""
+                                                viewModel.isStroopTestFinish = false
+                                                viewModel.stroopTestResult = ""
+                                                
                                             }
+                                        } else {
+                                            viewModel.mathTestDay += 1
+                                            print("day + 1")
                                         }
                                     }
                                 }
+                            }
                             
                         }
-                     
+                        
                     }
                     
-        
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                            withAnimation{
-                                viewModel.showDayCard = false
-                                viewModel.startAnimation = false
-                            }
+                        withAnimation{
+                            viewModel.showDayCard = false
+                            viewModel.startAnimation = false
                         }
+                    }
                     
                     
                 }
@@ -127,6 +116,7 @@ struct Home: View {
                 
                 
                 Settings()
+                    .zIndex(1)
                     .offset(y: viewModel.showSettings ? 0 : 450)
                     .offset(y:  viewModel.viewState)
                     .gesture(
@@ -147,8 +137,8 @@ struct Home: View {
                     )
             }
             .edgesIgnoringSafeArea(.bottom)
-         
-    }
+            
+        }
         .accentColor(.primary)
     }
     
@@ -160,7 +150,6 @@ struct Home_Previews: PreviewProvider {
             .environmentObject(ViewModel())
     }
 }
-
 
 
 struct settingButton: View {
@@ -179,7 +168,6 @@ struct settingButton: View {
             withAnimation (.linear){
                 viewModel.showSettings.toggle()
             }
-            
         }
         .opacity(viewModel.startAnimation ? 0 : 1)
     }

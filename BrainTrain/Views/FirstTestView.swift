@@ -18,7 +18,7 @@ struct FirstTestView: View {
     private var testResults: FetchedResults<TestResult>
     
     var body: some View {
-     
+        
         
         ZStack{
             if viewModel.day == showFinishCoverDay && showFinishCover {
@@ -43,7 +43,7 @@ struct FirstTestView: View {
                     Spacer()
                     
                     Group{
-                    HStack {
+                        HStack {
                             Button(action: {
                                 showAlert = true
                             }, label: {
@@ -69,25 +69,25 @@ struct FirstTestView: View {
                                       secondaryButton: .cancel(Text("Нет".localized))
                                 )
                             }
-                  
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                
+                            }, label: {
+                                Text("Продолжить".localized)
+                                    .mainButton()
+                            })
+                            .padding(.leading, -15)
+                            .padding(.bottom, small ? 10 : 0)
+                            
+                            Spacer()
+                            
+                        }
+                        .padding(.horizontal, 30)
+                        
                         Spacer()
                         
-                        Button(action: {
-                         
-                        }, label: {
-                            Text("Продолжить".localized)
-                                .mainButton()
-                        })
-                        .padding(.leading, -15)
-                        .padding(.bottom, small ? 10 : 0)
-                        
-                        Spacer()
-                        
-                    }
-                    .padding(.horizontal, 30)
-                    
-                    Spacer()
-              
                     }
                 }
                 .padding()
@@ -99,7 +99,7 @@ struct FirstTestView: View {
                 .zIndex(1)
                 .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
             }
-           
+            
             
             VStack  {
                 let firstDay = viewModel.day == 1 && (!viewModel.isWordsTestFinish && !viewModel.isStroopTestFinish)
@@ -210,11 +210,11 @@ struct FirstTestView: View {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                 withAnimation(.spring()){
                                     if viewModel.day != showFinishCoverDay {
-                                    blur = 0
-                                    
-                                    if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish && !viewModel.startAnimation {
-                                        proxy.scrollTo(1)
-                                    }
+                                        blur = 0
+                                        
+                                        if viewModel.isWordsTestFinish && viewModel.isStroopTestFinish && !viewModel.startAnimation {
+                                            proxy.scrollTo(1)
+                                        }
                                     }
                                 }
                             }
@@ -257,7 +257,7 @@ struct FirstTestView: View {
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
         }
-       
+        
     }
 }
 
@@ -305,7 +305,8 @@ struct TestCard: View {
         .foregroundColor(.primary)
         .padding()
         .padding(.vertical, small ? 0 : 15)
-        .background(Color("back").cornerRadius(15).shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0))
+        .background(Color("back").cornerRadius(15))
+        .overlay(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: 0.5))
     }
 }
 

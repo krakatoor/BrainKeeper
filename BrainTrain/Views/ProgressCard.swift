@@ -17,9 +17,9 @@ struct ProgressCard: View {
                     Spacer()
                     
                     if viewModel.day < 60 {
-                    RingView(width: 70, heihgt: 70, percent: CGFloat((viewModel.day * 100 / 60)))
-                        .padding()
-                }
+                        RingView(width: 70, heihgt: 70, percent: CGFloat((viewModel.day * 100 / 60)))
+                            .padding()
+                    }
                 }
             }
             
@@ -33,16 +33,16 @@ struct ProgressCard: View {
             }
             
             Text("День".localized + " " + " \(viewModel.day)")
-            .font(.system(size: 40, weight: .black, design: .serif))
-            .foregroundColor(.primary)
-           
+                .font(.system(size: 40, weight: .black, design: .serif))
+                .foregroundColor(.primary)
+            
             Spacer()
             Image("puzzle")
                 .resizable()
                 .scaledToFit()
         }
         .background(BlurView(style: .regular).cornerRadius(20).shadow(radius: 10))
-        .frame(width: screenSize.width - 30, height: screenSize.height * 0.7)
+        .frame(width: screenSize.width - 40, height: screenSize.height * 0.7)
         .overlay(RoundedRectangle(cornerRadius: 20).stroke(lineWidth: 0.3))
         
     }

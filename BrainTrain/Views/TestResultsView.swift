@@ -22,12 +22,12 @@ struct TestResultsView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack{
                             ForEach(1...viewModel.week, id: \.self) { week in
-                           
+                                
                                 VStack (spacing: 15) {
                                     HStack{
-                                    Text("Неделя")
-                                        .bold()
-                                    
+                                        Text("Неделя")
+                                            .bold()
+                                        
                                         Text("\(week).")
                                             .bold()
                                         
@@ -36,10 +36,10 @@ struct TestResultsView: View {
                                     }
                                     .mainFont(size: 22)
                                     .padding(.bottom, small ? 0 : 10)
-
+                                    
                                     ChartsResult(week: week)
                                         .environmentObject(viewModel)
-
+                                    
                                 }
                                 .frame(width: screenSize.width, height: 450)
                                 .id(week)
@@ -48,16 +48,13 @@ struct TestResultsView: View {
                         }
                         .onAppear{
                             if viewModel.startAnimation{
-                            withAnimation{
-                            proxy.scrollTo(viewModel.week)
-                            }
+                                withAnimation{
+                                    proxy.scrollTo(viewModel.week)
+                                }
                             }
                         }
-                       
-                       
                     }
                 }
-                
                 
             } else {
                 VStack {
@@ -73,14 +70,14 @@ struct TestResultsView: View {
             
         }
         .onAppear{
-           
+            
             UIScrollView.appearance().bounces = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-              
+                
             }
             
         }
-       
+        
     }
 }
 

@@ -89,22 +89,28 @@ struct MathTestFinish: View {
                         
                         if viewModel.saveChoice {
                         Image(systemName: "checkmark")
+                            .foregroundColor(.black)
+                            .zIndex(1)
                         }
                     }
-                    .onTapGesture {
-                        withAnimation(){
-                            viewModel.saveChoice.toggle()
-                        }
-                    }
+                   
                     
                     Spacer()
 
                 }
                 .padding(.top, 5)
-
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    print("1")
+                    DispatchQueue.main.async {
+                        viewModel.saveChoice.toggle()
+                    }
+                       
+                }
             }
             .padding()
             .background(BlurView(style: .regular).cornerRadius(15).shadow(radius: 5))
+            .overlay(RoundedRectangle(cornerRadius: 20).stroke(lineWidth: 0.3))
             .frame(width: screenSize.width - 40, height: screenSize.height / 2)
             .padding(.bottom)
         }
