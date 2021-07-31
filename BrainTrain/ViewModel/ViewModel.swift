@@ -64,7 +64,7 @@ class ViewModel: ObservableObject{
     @Published var startMathTest = false
     @Published var mathTestResultTime = 0.0
     @Published var mathTestResult = ""
-    @Published var totalExample = 5
+    @Published var totalExample = 70
     @Published var examplesCount = 0
     @Published var correctAnswers = 0
     @Published var isMathTestFinish = false

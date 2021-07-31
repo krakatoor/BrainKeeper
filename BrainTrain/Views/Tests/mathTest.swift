@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
-import Introspect
+import Combine
 
 struct mathTest: View {
+    @State var subscriptions = Set<AnyCancellable>()
     @EnvironmentObject var viewModel: ViewModel
     @Environment (\.presentationMode) private var presentation
     @State private var number1 = 0
@@ -107,15 +108,19 @@ struct mathTest: View {
                                         
                                         Text(totalSumText)
                                             .mainFont(size: small ? 35 : 40)
-                                            .frame(width: viewModel.startMathTest ?  60 : 40, height: viewModel.startMathTest ? 45 : 35)
-                                            .overlay(Rectangle().stroke().frame(width: viewModel.startMathTest ?  60 : 40, height: viewModel.startMathTest ? 45 : 35))
+                                            .frame(width: viewModel.difficult == .hard ? 80 : 60, height: 45)
+                                            .overlay(Rectangle().stroke().frame(width: viewModel.difficult == .hard ? 80 : 60, height: 45))
                                         
                                     }
                                     
+                                    HStack{
                                     Image(systemName: totalSumText != String(totalSum) ?  "checkmark.circle.fill" : "xmark.circle.fill")
                                         .foregroundColor(prevAnswerColor)
-                                        .offset(x: 20)
                                         .opacity(showAnswer ? 1 : 0)
+                                        
+                                    Text(prevAnswer)
+                                        .opacity(prevAnswerColor == .red && showAnswer ? 1 : 0) //only shows when answer is incorrect
+                                    }
                                     
                                     Spacer()
                                 }
@@ -216,7 +221,6 @@ struct mathTest: View {
                                     }
                                 }
                             }, label:{
-                                
                                 if viewModel.results[viewModel.mathTestDay] != 0.0 {
                                     Text("Назад".localized)
                                         .mainFont(size: 20)
@@ -232,7 +236,6 @@ struct mathTest: View {
                                         .frame(width: 250)
                                         .padding(10)
                                         .background(Color.blue.cornerRadius(15))
-                                    
                                 }
                             })
                             .padding(.leading, viewModel.results[viewModel.mathTestDay] != 0.0  ? -25 : 0)
@@ -299,7 +302,7 @@ struct mathTest: View {
                 }
             }
         }
-        .navigationBarItems(trailing: settingButton().environmentObject(viewModel))
+        .navigationBarItems(trailing: settingButton().environmentObject(viewModel).opacity(viewModel.startMathTest ? 0 : 1))
     }
     //MARK: Save result
     private func saveResult() {
@@ -351,8 +354,6 @@ struct mathTest: View {
                 viewModel.isMathTestFinish  = true
             }
             
-            
-            print("isMathTestFinish", viewModel.isMathTestFinish)
             
         }
     }
@@ -460,7 +461,7 @@ struct mathTest: View {
         .background()
         .accentColor(.primary)
         .onChange(of: totalSumText, perform: { value in
-            if totalSumText.count > 2{
+            if totalSumText.count > (viewModel.difficult == .hard ? 3 : 2 ){
                 totalSumText.removeLast()
             }
         })
@@ -518,7 +519,7 @@ struct mathTest: View {
             }
             
             if operator1 == "×" {
-                number1 = Int.random(in: 2..<20)
+                number1 = Int.random(in: 2..<10)
                 number2 = Int.random(in: 2..<10)
                 totalSum = Int(number1 * number2)
             }
@@ -537,33 +538,33 @@ struct mathTest: View {
             
         case .hard:
             if operator1 == "+" {
-                number1 = Int.random(in: 5..<40)
-                number2 = Int.random(in: 5..<30)
+                number1 = Int.random(in: 20...100)
+                number2 = Int.random(in: 10...100)
                 totalSum = Int(number1 + number2)
             }
             
             if operator1 == "-" {
-                number1 = Int.random(in: 5..<50)
-                number2 = Int.random(in: 1..<number1)
+                number1 = Int.random(in: 30...100)
+                number2 = Int.random(in: 15...number1)
                 
                 totalSum = Int(number1 - number2)
             }
-            
+                
             if operator1 == "×" {
-                number1 = Int.random(in: 2..<30)
-                number2 = Int.random(in: 2..<10)
+                number1 = Int.random(in: 2...30)
+                number2 = Int.random(in: 5...15)
                 totalSum = Int(number1 * number2)
             }
             
             if operator1 == "÷" {
-                number1 = (Int.random(in: 10..<30))
-                number2 = Int.random(in: 2..<10)
-                
-                while(number1 %  number2 != 0 ){
-                    number1 = (Int.random(in: 10..<30))
-                    number2 = Int.random(in: 2..<10)
-                }
-                
+                let number = (1...100).map( {_ in Int.random(in: 30...100)} ).publisher
+                number2 = Int.random(in: 2...10)
+
+                number
+                    .first(where: { $0.isMultiple(of: number2) })
+                    .sink(receiveValue: {number1 = $0})
+                    .store(in: &subscriptions)
+
                 totalSum = Int(number1 / number2)
             }
         }

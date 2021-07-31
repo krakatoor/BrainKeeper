@@ -23,6 +23,7 @@ struct StroopTestPreparing: View {
             Text("Перед началом тестирования пройдите подготовку к нему.".localized)
                 .mainFont(size: 20)
                 .padding(.top, small ? 5 : 10)
+                .fixedSize(horizontal: false, vertical: true)
                 
                 Spacer()
 
