@@ -18,10 +18,9 @@ struct StroopTestPreparing: View {
                 .bold()
             
             HStack  {
-                Spacer()
 
             Text("Перед началом тестирования пройдите подготовку к нему.".localized)
-                .mainFont(size: 20)
+                .mainFont(size: 18)
                 .padding(.top, small ? 5 : 10)
                 .fixedSize(horizontal: false, vertical: true)
                 
@@ -64,9 +63,13 @@ struct StroopTestPreparing: View {
             }
             .padding(.vertical, small ? 10 : 20)
             
+            
+            HStack{
             Text("Вы дали правильные ответы: синий, серый, красный, зелёный, жёлтый?\n\nТеперь приступайте к упражнению.".localized)
                 .mainFont(size: 18)
                 .fixedSize(horizontal: false, vertical: true)
+                Spacer()
+            }
             
             Spacer()
             

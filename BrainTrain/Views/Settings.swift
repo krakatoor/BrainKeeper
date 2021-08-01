@@ -103,6 +103,9 @@ struct Settings: View {
                         viewModel.mathTestResult = ""
                         viewModel.wordsTestResult = ""
                         viewModel.stroopTestResult = ""
+                        viewModel.words = []
+                        viewModel.correctAnswers = 0
+                        viewModel.examplesCount = 0
                         viewModel.results =  [0.0, 0.0, 0.0, 0.0, 0.0]
                         for i in testResults{
                             viewContext.delete(i)
