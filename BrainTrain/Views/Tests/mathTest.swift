@@ -6,10 +6,8 @@
 //
 
 import SwiftUI
-import Combine
 
 struct mathTest: View {
-    @State var subscriptions = Set<AnyCancellable>()
     @EnvironmentObject var viewModel: ViewModel
     @Environment (\.presentationMode) private var presentation
     @State private var number1 = 0
@@ -17,7 +15,6 @@ struct mathTest: View {
     @State private var operator1 = ""
     @State private var totalSum = 0
     @State private var totalSumText = "?"
-    @State private var timeRemaining = 0
     @State private var prevAnswer = ""
     @State private var prevAnswerColor = Color.black
     @State private var showAnswer = false
@@ -506,33 +503,33 @@ struct mathTest: View {
             
         case .normal:
             if operator1 == "+" {
-                number1 = Int.random(in: 2..<15)
-                number2 = Int.random(in: 2..<15)
+                number1 = Int.random(in: 2...20)
+                number2 = Int.random(in: 2...20)
                 totalSum = Int(number1 + number2)
             }
             
             if operator1 == "-" {
-                number1 = Int.random(in: 2..<30)
-                number2 = Int.random(in: 1..<number1)
+                number1 = Int.random(in: 10...25)
+                number2 = Int.random(in: 2..<number1)
                 
                 totalSum = Int(number1 - number2)
             }
             
             if operator1 == "×" {
-                number1 = Int.random(in: 2..<10)
-                number2 = Int.random(in: 2..<10)
+                number1 = Int.random(in: 2...10)
+                number2 = Int.random(in: 2...10)
                 totalSum = Int(number1 * number2)
             }
             
             if operator1 == "÷" {
-                number1 = (Int.random(in: 10..<30))
-                number2 = Int.random(in: 2..<10)
-                
-                while(number1 %  number2 != 0 ){
-                    number1 = (Int.random(in: 10..<30))
-                    number2 = Int.random(in: 2..<10)
-                }
-                
+                let number = (1...100).map( {_ in Int.random(in: 10...50)} ).publisher
+                number2 = Int.random(in: 2...10)
+
+                number
+                    .first(where: { $0.isMultiple(of: number2) })
+                    .sink(receiveValue: {number1 = $0})
+                    .store(in: &viewModel.subscriptions)
+
                 totalSum = Int(number1 / number2)
             }
             
@@ -563,7 +560,7 @@ struct mathTest: View {
                 number
                     .first(where: { $0.isMultiple(of: number2) })
                     .sink(receiveValue: {number1 = $0})
-                    .store(in: &subscriptions)
+                    .store(in: &viewModel.subscriptions)
 
                 totalSum = Int(number1 / number2)
             }

@@ -20,7 +20,7 @@
 "Тест на запоминание слов" = "Words remember test";
 
 //finish cover
-"Поздравляем!!!" = "Congratulations !!!";
+"Поздравляем!!!" = "Congratulations!!!";
 "Вы прошли курс тренировки мозга! Вы по-прежнему можете проходить тесты, либо сбросить результаты и начать сначала. Выбор за вами..." = "You have completed the brain training course! You can still take the tests, or reset the results and start over. The choice is yours ...";
 "Начать тесты заново?" = "Reset all progress?";
 "Все результаты будут сброшены!" = "All results will be discarded!";
@@ -55,7 +55,7 @@
 
 "Максимально быстро решите математические задачи" = "Solve math examples as quickly as possible";
 
-"Мы зафиксировали отправную точку.\nПредполагается, что в будние дни вы решаете тесты с простыми математическими примерами на сложение, вычитание, умножение  и деление, а в выходные даёте себе отдохнуть. Исследования показали, что такие тесты - один из лучших тренажеров мозга. Решение примеров на время снижает процесс старения мозга. У взрослых после месяца тренировки память улучшается на 12%, а у детей на 20%.\n\nЗапомните - вы соревнуетесь с собой. Сверяйте результаты разных недель и улучшайте их." = "We have fixed a starting point.\nIt is assumed that on weekdays you solve tests with simple math examples for addition, subtraction, multiplication and division, and on weekends you give yourself some rest. Studies have shown that these tests are one of the best brain trainers. Solving examples temporarily reduces the aging process of the brain. In adults, after a month of training, memory improves by 12%, $ 1, and in children, by 20%\n\nRemember - you are competing with yourself. Compare the results of different weeks and improve them.";
+"Мы зафиксировали отправную точку.\nПредполагается, что в будние дни вы решаете тесты с простыми математическими примерами на сложение, вычитание, умножение  и деление, а в выходные даёте себе отдохнуть. Исследования показали, что такие тесты - один из лучших тренажеров мозга. Решение примеров на время снижает процесс старения мозга. У взрослых после месяца тренировки память улучшается на 12%, а у детей на 20%.\n\nЗапомните - вы соревнуетесь с собой. Сверяйте результаты разных недель и улучшайте их." = "We have fixed a starting point.\nIt is assumed that on weekdays you solve tests with simple math examples for addition, subtraction, multiplication and division, and on weekends you give yourself some rest. Studies have shown that these tests are one of the best brain trainers. Solving examples temporarily reduces the aging process of the brain. In adults, after a month of training, memory improves by 12%, and in children, by 20%\n\nRemember - you are competing with yourself. Compare the results of different weeks and improve them.";
 
 "Назад" = "Back";
 
@@ -139,3 +139,7 @@
 "Сложность ежедневных тестов:" = "Difficulty of daily tests";
 "Уведомления включены" = "Notifications enabled";
 "Уведомления отключены" = "Notifications disabled";
+
+"Вы можете изменить уровень сложности в меню" = "You can change the difficulty level in the settings menu";
+"Пришло время размять мозги" = "It's time to stretch your brains";
+"Вы не тренировались уже 24 часа" = "You haven't trained in 24 hours.";

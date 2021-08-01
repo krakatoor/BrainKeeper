@@ -20,15 +20,17 @@ struct MathTestCover: View {
             
             Spacer()
        
-            Text("Вы можете изменить уровень сложности в настройках".localized)
+            Text("Вы можете изменить уровень сложности в меню".localized)
                 .font(.callout)
             .foregroundColor(.primary)
-            
+                .fixedSize(horizontal: false, vertical: true)
+           
             Spacer()
             
             Image("thinkingBrain")
                 .resizable()
                 .scaledToFit()
+              
             
             Button(action: {
                 withAnimation{
@@ -39,13 +41,13 @@ struct MathTestCover: View {
                 Text("К тренировке".localized)
                     .mainButton()
             })
-
+            .padding(.bottom)
         }
         .padding()
         .background()
         .overlay(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: 0.5))
-        .frame(width: screenSize.width - 40, height: screenSize.height - 140)
-        .padding(.bottom)
+        .frame(width: screenSize.width - 40, height: screenSize.height - (small ? 80 : 120))
+       
     }
 }
 

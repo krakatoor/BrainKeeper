@@ -83,6 +83,7 @@ struct StroopTest: View {
                                 }, label: {
                                     Image(systemName: "arrow.clockwise")
                                         .font(.title)
+                                        .offset(y: -5)
                                 })
                                 .alert(isPresented: $showAlert) {
                                     Alert(title: Text("Начать тест заново?".localized), message: Text("При прохождении теста результаты будут заменены".localized),

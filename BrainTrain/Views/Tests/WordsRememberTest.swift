@@ -70,7 +70,7 @@ struct WordsRememberTest: View {
                         startCount.toggle()
                         if !startCount {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                viewModel.timeRemaining = 12
+                                viewModel.timeRemaining = 120
                             }
                         }
                         
@@ -223,7 +223,6 @@ struct WordsRememberTest: View {
                     
                     HStack {
                         
-                        
                         if !viewModel.wordsTestResult.isEmpty {
                             
                             Button(action: {
@@ -237,7 +236,7 @@ struct WordsRememberTest: View {
                                       primaryButton: .destructive(Text("Да")) {
                                         getWords()
                                         viewModel.words.removeAll()
-                                        viewModel.timeRemaining = 12
+                                        viewModel.timeRemaining = 120
                                         withAnimation{
                                             startTest = false
                                             viewModel.wordsTestResult = ""
@@ -303,7 +302,7 @@ struct WordsRememberTest: View {
                         
                         if viewModel.wordsTestResult.isEmpty && viewModel.timeRemaining < 60 {
                             Button(action: {withAnimation{ viewModel.timeRemaining = 0 }}, label: {
-                            Image(systemName: "exclamationmark.arrow.circlepath".localized)
+                            Image(systemName: "exclamationmark.arrow.circlepath")
                                 .font(.title)
                                 .foregroundColor(.red)
                         })
@@ -324,7 +323,7 @@ struct WordsRememberTest: View {
         }
         .padding(.bottom, -15)
         .onAppear{
-            viewModel.timeRemaining = 12
+            viewModel.timeRemaining = 120
         }
         
         .navigationBarTitleDisplayMode(.inline)

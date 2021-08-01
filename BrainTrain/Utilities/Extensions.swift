@@ -14,6 +14,7 @@ let notificationCenter = UNUserNotificationCenter.current()
 let showAppStoreCoverDay = [6, 24]
 let showFinishCoverDay = 60
 
+
 func timeString(time: Double) -> String {
     let minutes   = Int(time) / 60
     let seconds = Int(time) - Int(minutes) * 60

@@ -14,6 +14,8 @@ enum Difficult: String, Equatable, CaseIterable  {
 
 class ViewModel: ObservableObject{
 
+    @Published var subscriptions = Set<AnyCancellable>()
+    
     @AppStorage ("difficult") var difficult = Difficult.normal
     @AppStorage ("day") var day = 1
     @AppStorage ("isTestFinish") var isTestFinish = false
@@ -96,8 +98,8 @@ class ViewModel: ObservableObject{
     func sendNotification() {
         getPermession()
         let content = UNMutableNotificationContent()
-        content.title = "Пришло время размять мозги"
-        content.subtitle = "Вы не тренировались уже 24 часа"
+        content.title = "Пришло время размять мозги".localized
+        content.subtitle = "Вы не тренировались уже 24 часа".localized
         content.sound = UNNotificationSound.default
         content.badge = 1
 //        60 * 60 * 24
