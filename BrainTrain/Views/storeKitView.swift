@@ -42,7 +42,7 @@ struct storeKitView: View {
                                             .scaleEffect(1.5)
                                             .opacity(store.purchaseTapped ? 1 : 0)
                                         
-                                    Text("☕️")
+                                    Text("✅")
                                         .font(.title)
                                         .padding()
                                         .opacity(store.purchaseTapped ? 0.1 : 1)

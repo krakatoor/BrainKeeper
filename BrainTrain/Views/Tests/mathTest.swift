@@ -325,7 +325,7 @@ struct mathTest: View {
             testResult.week = String(viewModel.week)
             testResult.day = Double(viewModel.mathTestDay)
             testResult.testName = "Ежедневный тест"
-            testResult.testResult = viewModel.mathTestResult
+            testResult.testResult = viewModel.mathTestResult + "/\(viewModel.totalExample)"
             testResult.isMathTest = true
             testResult.result = viewModel.mathTestResultTime
             
@@ -465,11 +465,15 @@ struct mathTest: View {
     }
     
     private func math() {
+        
         operator1 = ["+", "-", "×", "÷"].randomElement()!
         
         switch viewModel.difficult {
         
         case .easy:
+            
+            viewModel.totalExample = 30
+            
             if operator1 == "+" {
                 number1 = Int.random(in: 2..<5)
                 number2 = Int.random(in: 2..<5)
@@ -502,6 +506,9 @@ struct mathTest: View {
             }
             
         case .normal:
+            
+            viewModel.totalExample = 50
+            
             if operator1 == "+" {
                 number1 = Int.random(in: 2...20)
                 number2 = Int.random(in: 2...20)
@@ -534,6 +541,9 @@ struct mathTest: View {
             }
             
         case .hard:
+            
+            viewModel.totalExample = 70
+            
             if operator1 == "+" {
                 number1 = Int.random(in: 20...100)
                 number2 = Int.random(in: 10...100)
@@ -566,7 +576,6 @@ struct mathTest: View {
             }
         }
     }
-    
 }
 
 

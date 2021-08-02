@@ -31,7 +31,7 @@ struct FirstTestView: View {
                         .font(.title2)
                         .bold()
                     
-                    Text("Вы прошли курс тренировки мозга! Вы по-прежнему можете проходить тесты, либо сбросить результаты и начать сначала. Выбор за вами...".localized)
+                    Text("Вы прошли курс тренировки мозга! Сравните результаты первой и последней недель. Разница вас приятно удивит. \n\n Вы по-прежнему можете проходить тесты, либо сбросить результаты и начать сначала. Не забывайте, что вы можете повысить сложность тестов в меню настроек. Выбор за вами...".localized)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.top, 3)
                     
@@ -61,6 +61,9 @@ struct FirstTestView: View {
                                         viewModel.mathTestResult = ""
                                         viewModel.wordsTestResult = ""
                                         viewModel.stroopTestResult = ""
+                                        viewModel.words = []
+                                        viewModel.correctAnswers = 0
+                                        viewModel.examplesCount = 0
                                         viewModel.results =  [0.0, 0.0, 0.0, 0.0, 0.0]
                                         for i in testResults{
                                             viewContext.delete(i)
@@ -73,7 +76,10 @@ struct FirstTestView: View {
                             Spacer()
                             
                             Button(action: {
-                                
+                                withAnimation{
+                                showFinishCover = false
+                                blur = 0
+                                }
                             }, label: {
                                 Text("Продолжить".localized)
                                     .mainButton()
@@ -175,14 +181,14 @@ struct FirstTestView: View {
                                     label: {
                                         ZStack (alignment: Alignment(horizontal: .trailing, vertical: .center)){
                                             
-                                            if viewModel.results[viewModel.mathTestDay] != 0.0 {
-                                                Text("Завершен".localized)
+                                            Text(viewModel.results[viewModel.mathTestDay] != 0.0 ? "Завершен".localized : "Не пройден".localized)
+                                                .foregroundColor(viewModel.results[viewModel.mathTestDay] != 0.0 ? .green : .red)
                                                     .zIndex(1)
                                                     .padding(5)
-                                                    .overlay(Rectangle().stroke())
-                                                    .rotationEffect(.degrees(25))
+                                                    .overlay(Rectangle().stroke().foregroundColor(viewModel.results[viewModel.mathTestDay] != 0.0 ? .green : .red))
+                                                .rotationEffect(.degrees(viewModel.results[viewModel.mathTestDay] != 0.0 ? 25 : 0))
                                                     .padding(.trailing)
-                                            }
+                                            
                                             
                                             TestCard(title: "Ежедневный тест № ".localized, subTitle: "")
                                         }

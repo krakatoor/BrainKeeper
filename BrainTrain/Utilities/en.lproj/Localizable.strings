@@ -5,84 +5,75 @@
   Created by Камиль on 25.10.2020.
   
 */
-//timer
+
 "Осталось:" = "Time left:";
 "Время теста:" = "Test time:";
-
+"Прогресс" = "Progress";
 "Да" = "Yes";
 "Нет" = "No";
 "День" = "Day";
 "Новая неделя!" = "New week!";
 "Неделя" = "Week";
 "Продолжить"= "Next";
-"Ждем результатов тестов..." = "Waiting tests result...";
-"Прежде чем начать тренировку, определим с помощью тестов, как сейчас работает ваш мозг." = "Before start our training."; 
-"Тест на запоминание слов" = "Words remember test";
+"Ждем результатов тестов..." = "Waiting for tests results...";
+"Прежде чем начать тренировку, определим с помощью тестов, как сейчас работает ваш мозг." = "Before we start, we will determine with the help of tests how your brain is currently working.";
+"Тест на запоминание слов" = "Words memorization test";
 
-//finish cover
 "Поздравляем!!!" = "Congratulations!!!";
-"Вы прошли курс тренировки мозга! Вы по-прежнему можете проходить тесты, либо сбросить результаты и начать сначала. Выбор за вами..." = "You have completed the brain training course! You can still take the tests, or reset the results and start over. The choice is yours ...";
-"Начать тесты заново?" = "Reset all progress?";
-"Все результаты будут сброшены!" = "All results will be discarded!";
+"Вы прошли курс тренировки мозга! Сравните результаты первой и последней недель. Разница вас приятно удивит. \n\n Вы по-прежнему можете проходить тесты, либо сбросить результаты и начать сначала. Не забывайте, что вы можете повысить сложность тестов в меню настроек. Выбор за вами..." = "You have completed the brain training course! Compare the results of the first and last weeks. The difference will pleasantly surprise you.\n\n You can still take the tests, or reset the results and start over. Don't forget that you can increase the difficulty of the tests in the settings menu. The choice is yours to make...";
+"Начать тесты заново?" = "Reset your progress?";
+"Все результаты будут сброшены!" = "Progress will be lost!";
 
-
-"(Пример: если написано" = "(Example: if written";
+"(Пример: если написано" = "(Example: if the word is";
+"Красный," = "Red,";
+"говорите Синий.)" = "say Blue.)";
 
 "1мин." = "1min.";
 "2мин." = "2min.";
-"Запомнить выбор" = "Save choice";
+"Запомнить выбор" = "Remember my choice";
 "В течении 2х минут постарайтесь запомнить как можно больше слов." = "Within 2 minutes, try to memorize as many words as possible.";
 "Введите слово" = "Type here";
 "Включить уведомления?" = "Turn on notifications?";
 "Время" = "Time";
 
-
 "Вы дали правильные ответы: синий, серый, красный, зелёный, жёлтый?\n\nТеперь приступайте к упражнению." = "Did you give the correct answers: blue, gray, red, green, yellow?\n\nNow start the exercise.";
-
-"говорите Синий.)" = "say Blue.)";
 
 "Дни" = "Days";
 "Правильных ответов:" = "Correct answers:";
 "Завершен" = "Completed";
 
-"К тренировке" = "To the test";
+"К тренировке" = "Start the test";
 
-"Каждый раз старайтесь улучшать предыдущий результат. Когда вам удаться решать все примеры за 2 минуты, можно будет сказать, что у вас получилось. Если же вы справитесь за минуту, считайте, что получили золотую медаль." = "Try to improve the previous result each time. When you manage to solve all the examples in 2 minutes, you can say that you have succeeded. If you can do it in a minute, consider yourself a gold medal.";
-
-"Красный," = "Red,";
+"Каждый раз старайтесь улучшать предыдущий результат. Когда вам удастся решать все примеры за 2 минуты, можно будет сказать, что у вас получилось. Если же вы справитесь за минуту, считайте, что получили золотую медаль." = "Each time you take a test, try to improve the previous result. When you manage to solve all the tasks in 2 minutes' time, you can say that you did it. If you can complete them in a minute's time, consider yourself a champion.";
 
 "Начать тест" = "Start test";
 
-"Максимально быстро решите математические задачи" = "Solve math examples as quickly as possible";
+"Максимально быстро решите математические задачи" = "Solve math problems as quickly as possible";
 
-"Мы зафиксировали отправную точку.\nПредполагается, что в будние дни вы решаете тесты с простыми математическими примерами на сложение, вычитание, умножение  и деление, а в выходные даёте себе отдохнуть. Исследования показали, что такие тесты - один из лучших тренажеров мозга. Решение примеров на время снижает процесс старения мозга. У взрослых после месяца тренировки память улучшается на 12%, а у детей на 20%.\n\nЗапомните - вы соревнуетесь с собой. Сверяйте результаты разных недель и улучшайте их." = "We have fixed a starting point.\nIt is assumed that on weekdays you solve tests with simple math examples for addition, subtraction, multiplication and division, and on weekends you give yourself some rest. Studies have shown that these tests are one of the best brain trainers. Solving examples temporarily reduces the aging process of the brain. In adults, after a month of training, memory improves by 12%, and in children, by 20%\n\nRemember - you are competing with yourself. Compare the results of different weeks and improve them.";
+"Мы зафиксировали отправную точку.\nПредполагается, что в будние дни вы решаете тесты с простыми математическими примерами на сложение, вычитание, умножение  и деление, а в выходные даёте себе отдохнуть. Исследования показали, что такие тесты - один из лучших тренажеров мозга. Решение примеров на время снижает процесс старения мозга. У взрослых после месяца тренировки память улучшается на 12%, а у детей на 20%.\n\nЗапомните - вы соревнуетесь с собой. Сверяйте результаты разных недель и улучшайте их." = "We have fixed the starting point.\nWe assume you will solve tests consisting of simple math tasks on addition, subtraction, multiplication and division, and on weekends you will have some rest. Studies have shown that these tests are among the best for brain training. Solving timed tasks reduces the aging process of the brain. In adults, after a month of training, memory improves by 12%, and in children, by 20%\n\nRemember - you are competing with yourself. Compare the results of different weeks and improve them.";
 
 "Назад" = "Back";
 
+"Называйте вслух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись, назовите цвет еще раз." = "Say the color of the words as quickly as possible. Be careful, you should not read the words, but name their color. If you made a mistake, name the color again.";
 
-"Называйте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись, назовите цвет еще раз." = "Speak out the color of the words as quickly as possible. Be careful, you should not read the words, but name their color. If you made a mistake, name the color again.";
+"Начать тест заново?" = "Do you want to restart?";
 
+" Результаты тестов" = "Test results";
 
-"Начать тест заново?" = "Do you want to start the test again?";
-
-" Результаты тестов" = "Results";
-
-"Нравится приложение?" = "Like the app?";
+"Нравится приложение?" = "Do you like the app?";
 
 "Отлично!" = "Excellent!";
 
-"Перед началом тестирования пройдите подготовку к нему." = "Before starting testing, go through the preparation for it.";
+"Перед началом тестирования пройдите подготовку к нему." = "Before you start, go through the preparation for it.";
 
-"Постарайтесь вписать как можно больше запомненных слов." = "Try to write as many memorized words as possible.";
+"Постарайтесь вписать как можно больше запомненных слов." = "Try to type in as many memorized words as possible.";
 
-"Прежде чем начать тренировку, определим с помощью тестов, как сейчас работает ваш мозг." = "Before we start training, we will determine with the help of tests how your brain is currently working.";
+"Прежде чем начать тренировку, определим с помощью тестов, как сейчас работает ваш мозг." = "Before you start the training session, we will  test how your brain is currently working.";
+
+"При прохождении теста результаты будут заменены" = "When passing the test, the previous results will be replaced by the new ones";
 
 
-"При прохождении теста результаты будут заменены" = "When passing the test, the results will be replaced";
-
-
-"Примеров осталось:" = "Examples left:";
-
+"Примеров осталось:" = "Problems left:";
 
 "Прогресс" = "Progress";
 
@@ -92,30 +83,29 @@
 
 "Следующй тест будет доступен завтра" = "The next test will be available tomorrow";
 
-"Слов запомнено:" = "Words are memorized:";
+"Слов запомнено:" = "Words memorized:";
 
-"Создать напоминание, чтобы не пропустить следующую тренировку?" = "Create a reminder so you don't miss your next test?";
+"Создать напоминание, чтобы не пропустить следующую тренировку?" = "Make a reminder so you don't miss your next test?";
 
 
-"Спасибо за поддержку" = "Thanks for the support";
+"Спасибо за поддержку" = "Thanks for your support";
 
 "Тест завершён" = "Test completed";
 
 "Тест на запоминание слов" = "Word memorization test";
 "Проверим краткосрочную память" = "Testing short-term memory";
 
-
 "Тест пройден!" = "Test completed!";
 
 "Тест Струпа" = "Stroop test";
-"Оценка совместной работы полушарий" = "Assessment of the joint work of the cerebral hemispheres";
+"Оценка совместной работы полушарий" = "Assessment of hemispheric synchronization";
 
-"Тест Струпа оценивает совместную работу передних частей лобных долей левого и правого полушарий. Скорость его выполнения зависит от индивидуальных особенностей, поэтому никакие временные рамки не устанавливаются. Возьмите за основу свой результат, полученный на предыдущей неделе." = "The Stroop test evaluates the joint work of the anterior parts of the frontal lobes of the left and right hemispheres. The speed of its implementation depends on the individual characteristics, therefore no time frame is set. Take as a basis your result from the previous week.";
+"Тест Струпа оценивает совместную работу передних частей лобных долей левого и правого полушарий. Скорость его выполнения зависит от индивидуальных особенностей, поэтому никакие временные рамки не устанавливаются. Возьмите за основу свой результат, полученный на предыдущей неделе." = "The Stroop test evaluates the joint work of the anterior parts of the frontal lobes of the left and right hemispheres. Completion time depends on the individual's brain activity characteristics, so no time frame is set. Compare your new results with the ones from the previous week.";
 
-"У вас отключены уведомления. Перейти в настройки, чтобы включить их?" = "You have disabled notifications. Go to settings to enable them?";
+"У вас отключены уведомления. Перейти в настройки, чтобы включить их?" = "Your notifications are disabled. Go to settings to turn them on?";
 
 "Ежедневный тест № " = "Daily test № ";
-"Тест не пройден" = "Test not finished";
+"Тест не пройден" = "Test not completed";
 "Тест Струпа: " = "Stroop test: ";
 "Время теста: " = "Test time:";
 "Слов запомнено:" = "Words memorized:";
@@ -126,20 +116,22 @@
 "Добавить" = "Add";
 "Попробуйте другое слово" = "Try another word";
 "Слово уже добавлено" = "Word has already been added";
-"Тест Струпа оценивает совместную работу передних частей лобных долей левого и правого полушарий. Скорость его выполнения зависит от индивидуальных особенностей, поэтому никакие временные рамки не устанавливаются. Возьмите за основу свой результат, полученный на предыдущей неделе." = "The Stroop Test evaluates the joint performance of the frontal lobes of the left and right hemispheres. The speed of its execution depends on the individual, so no time frame is set. Base on your result from the previous week."; 
+"Тест Струпа оценивает совместную работу передних частей лобных долей левого и правого полушарий. Скорость его выполнения зависит от индивидуальных особенностей, поэтому никакие временные рамки не устанавливаются. Возьмите за основу свой результат, полученный на предыдущей неделе." = "The Stroop Test evaluates the joint performance of the frontal lobes of the left and right hemispheres. Completion time depends on the individual's brain activity characteristics, so no time frame is set. Compare your new results with the ones from the previous week.";
 "Результаты теста:" = "Test results:";
-"Называйте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись, назовите цвет еще раз." = "Speak out the color of the words, doing it as quickly as possible. Be careful, you should not read the words, but name their color. If you made a mistake, say the color again.";
+"Называйте в слух цвет слов, делая это как можно быстрее. Будьте внимательней вы должны не читать слова, а называть их цвет. Если ошиблись, назовите цвет еще раз." = "Say the color of the words, doing it as quickly as possible. Be careful, you should not read the words, but name their color. If you've made a mistake, say the color again.";
 "Синий" = "Blue";
 "Красный" = "Red";
 "Зелёный" = "Green";
 "Жёлтый" = "Yellow";
 "Серый" = "Gray";
-"Каждый раз старайтесь улучшать предыдущий результат. Когда вам удаться решать все примеры за 2 минуты, можно будет сказать, что у вас получилось. Если же вы справитесь за минуту, считайте, что получили золотую медаль." = "Each time, try to improve the previous result. When you manage to solve all the examples in 2 minutes, you can say that you did it. If you can do it in a minute, consider that you have received a gold medal.";
-"Вы можете поменять уровень сложности в настройках" = "You can change the difficulty level in the settings";
+"Каждый раз старайтесь улучшать предыдущий результат. Когда вам удаться решать все примеры за 2 минуты, можно будет сказать, что у вас получилось. Если же вы справитесь за минуту, считайте, что получили золотую медаль." = "Each time, try to improve the previous result. When you manage to solve all the examples in 2 minutes' time, you can say that you did it. If you can do it in a minute's time, consider that you have received the gold medal.";
+"Вы можете поменять уровень сложности в настройках" = "You can change the difficulty level in the settings menu";
 "Сложность ежедневных тестов:" = "Difficulty of daily tests";
 "Уведомления включены" = "Notifications enabled";
 "Уведомления отключены" = "Notifications disabled";
 
 "Вы можете изменить уровень сложности в меню" = "You can change the difficulty level in the settings menu";
-"Пришло время размять мозги" = "It's time to stretch your brains";
+"Пришло время размять мозги" = "It's time to stretch your brain";
 "Вы не тренировались уже 24 часа" = "You haven't trained in 24 hours.";
+"Не пройден" = "Not completed";
+"Завершить тест?" = "Finish test?";

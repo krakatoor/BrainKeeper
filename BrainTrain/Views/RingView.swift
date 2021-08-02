@@ -32,7 +32,7 @@ struct RingView: View {
                 
                
             VStack {
-                Text("Прогресс")
+                Text("Прогресс".localized)
                     .font(.system(size: 5 * multiplier))
                     .font(.system(size: 12 * multiplier))
                     .fontWeight(.bold)

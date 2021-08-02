@@ -45,11 +45,6 @@ struct ChartsResult: View {
                 VStack {
                     
                     ZStack (alignment: .bottomLeading){
-                        Text("Время".localized)
-                            .font(.caption2)
-                            .offset(x: 40,y:  -70)
-                            .rotationEffect(.degrees(270))
-                        
                         ChartView(week: week)
                             .environmentObject(viewModel)
                     
@@ -74,6 +69,11 @@ struct ChartsResult: View {
                                     
                                 }
                             }
+                            
+                            Text("Время".localized)
+                                .font(.caption2)
+                                .offset(x: 50,y:  -40)
+                                .rotationEffect(.degrees(270))
                         }
                     }
                     

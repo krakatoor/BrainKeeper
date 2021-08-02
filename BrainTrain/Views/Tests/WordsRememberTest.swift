@@ -134,6 +134,12 @@ struct WordsRememberTest: View {
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                             wordsAlreadyExist.toggle()
                                         }
+                                    } else if word.count > 15 {
+                                        error.toggle()
+                                        word = ""
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            error.toggle()
+                                        }
                                     }
                                 })
                                 .onTapGesture {
@@ -221,6 +227,16 @@ struct WordsRememberTest: View {
                         }
                     }
                     
+                    ZStack (alignment: .topTrailing){
+                        
+                        if viewModel.wordsTestResult.isEmpty && viewModel.timeRemaining < 60 &&  viewModel.timeRemaining > 57 {
+                            Text("Завершить тест?".localized)
+                            .transition(.move(edge: .bottom))
+                            .offset(y: -70)
+                            .padding(.trailing)
+                        }
+                        
+                      
                     HStack {
                         
                         if !viewModel.wordsTestResult.isEmpty {
@@ -301,6 +317,7 @@ struct WordsRememberTest: View {
                         Spacer()
                         
                         if viewModel.wordsTestResult.isEmpty && viewModel.timeRemaining < 60 {
+                            
                             Button(action: {withAnimation{ viewModel.timeRemaining = 0 }}, label: {
                             Image(systemName: "exclamationmark.arrow.circlepath")
                                 .font(.title)
@@ -313,7 +330,7 @@ struct WordsRememberTest: View {
                     }
                     .padding(.horizontal, 30)
                     .padding(.top, 5)
-                    
+                    }
                 }
                 .padding(.vertical, 20)
                 .transition(.move(edge: .trailing))
@@ -342,7 +359,7 @@ struct WordsRememberTest: View {
                 let newWords =  word.components(separatedBy: "\n")
                 while words.count != 20 {
                     if let randomWord = newWords.randomElement() {
-                        if !words.contains(randomWord.firstUppercased){
+                        if !words.contains(randomWord.firstUppercased) && randomWord != ""{
                             words.append(randomWord.firstUppercased)
                         }
                     }

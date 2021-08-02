@@ -11,12 +11,12 @@
       "localizations" : [
         {
           "description" : "This is an optional purchase",
-          "displayName" : "Treat me coffee",
+          "displayName" : "Support the project",
           "locale" : "en_US"
         },
         {
           "description" : "Необязательная покупка",
-          "displayName" : "Угостить меня кофе",
+          "displayName" : "Поддержать проект",
           "locale" : "ru"
         }
       ],

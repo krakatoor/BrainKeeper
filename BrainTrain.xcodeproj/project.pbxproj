@@ -19,6 +19,7 @@
 		6B6D920C26AE15CF000CA038 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6B6D920E26AE15CF000CA038 /* Localizable.strings */; };
 		6B6D921026B07BC7000CA038 /* StoreKitConfig.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 6B80D59026ABFE4000B1EEB3 /* StoreKitConfig.storekit */; };
 		6B6D921426B1DF10000CA038 /* wordsEng.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6B6D921326B1DF10000CA038 /* wordsEng.txt */; };
+		6B6D922F26B83062000CA038 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6D922E26B83062000CA038 /* Constants.swift */; };
 		6B80D59226AC3D9300B1EEB3 /* StoreKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B80D59126AC3D9300B1EEB3 /* StoreKit.swift */; };
 		6B80D59426AC43B700B1EEB3 /* storeKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B80D59326AC43B700B1EEB3 /* storeKitView.swift */; };
 		6B80D59626ACBA1400B1EEB3 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B80D59526ACBA1400B1EEB3 /* Recipe.swift */; };
@@ -63,6 +64,7 @@
 		6B6D920D26AE15CF000CA038 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6B6D920F26AE15D6000CA038 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6B6D921326B1DF10000CA038 /* wordsEng.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wordsEng.txt; sourceTree = "<group>"; };
+		6B6D922E26B83062000CA038 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		6B80D58F26AAB53800B1EEB3 /* BrainTrain.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrainTrain.entitlements; sourceTree = "<group>"; };
 		6B80D59026ABFE4000B1EEB3 /* StoreKitConfig.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = StoreKitConfig.storekit; sourceTree = "<group>"; };
 		6B80D59126AC3D9300B1EEB3 /* StoreKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKit.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 			children = (
 				6B6D920E26AE15CF000CA038 /* Localizable.strings */,
 				6B80D58F26AAB53800B1EEB3 /* BrainTrain.entitlements */,
+				6B6D922E26B83062000CA038 /* Constants.swift */,
 				6B0F19802639FAC400480B91 /* Extensions.swift */,
 				8E9F1F59253EE0AF0029E5F3 /* Persistence.swift */,
 				6BBAF07F2673903E009B69AE /* TimerView.swift */,
@@ -374,6 +377,7 @@
 				6B494C3B2572E02F0001864A /* StroopTest.swift in Sources */,
 				6B88F433268E460100F23083 /* MathTestFinish.swift in Sources */,
 				8E9F1F53253EE0AD0029E5F3 /* ContentView.swift in Sources */,
+				6B6D922F26B83062000CA038 /* Constants.swift in Sources */,
 				6B80D59626ACBA1400B1EEB3 /* Recipe.swift in Sources */,
 				8E9F1F51253EE0AD0029E5F3 /* BrainTrainApp.swift in Sources */,
 				6BDF62632695A0EE00210F06 /* ProgressCard.swift in Sources */,
