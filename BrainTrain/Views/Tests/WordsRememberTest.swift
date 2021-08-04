@@ -52,7 +52,12 @@ struct WordsRememberTest: View {
                                     if !startCount{
                                         withAnimation{
                                             startTest = true
+                                         
                                         }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                            viewModel.timeRemaining = 120
+                                        }
+                                   
                                     }
                                 })
                             

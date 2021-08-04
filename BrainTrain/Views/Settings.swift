@@ -18,13 +18,13 @@ struct Settings: View {
     @State private var showNotificationAlert = false
     @State private var showInAppPurchase = true
     var body: some View {
+        
         VStack {
           
             Capsule()
                 .fill(Color.gray)
                 .frame(width: 60, height: 5)
-                .offset(y: -15)
-            
+                .padding(.top, 7)
       
             Text("Сложность ежедневных тестов:".localized)
                 .padding(.top)
@@ -37,8 +37,6 @@ struct Settings: View {
             .pickerStyle(SegmentedPickerStyle())
             .padding(.horizontal)
             
-            
-           
             Toggle("Уведомления включены".localized, isOn: $viewModel.showNotification)
                 .padding()
                 .padding(.top, 3)
@@ -122,17 +120,18 @@ struct Settings: View {
             .padding(.vertical)
             }
             
+            Spacer()
             
             Text("instagram: @lvl.app")
                 .font(.caption2)
                 .centerView()
-                .padding(.top)
+                .padding(.vertical)
             
             Spacer()
             
           
         }
-        .frame(width: screenSize.width, height: showInAppPurchase ? 400 : 250)
+        .frame(width: screenSize.width, height: showInAppPurchase ? 400 : 300)
         .background(Color("back").ignoresSafeArea().cornerRadius(15).shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0))
      
         

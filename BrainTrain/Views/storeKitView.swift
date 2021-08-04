@@ -70,7 +70,7 @@ struct storeKitView: View {
                                 .padding(.trailing)
                                
                             } else {
-                                Text("Спасибо за поддержку".localized)
+                                Text("Спасибо за поддержку!".localized)
                                     .font(.subheadline)
                                     .padding()
                                     .onAppear{
