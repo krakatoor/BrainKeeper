@@ -17,7 +17,6 @@ struct Settings: View {
     private var testResults: FetchedResults<TestResult>
     @State private var showNotificationAlert = false
     @State private var showInAppPurchase = true
-    @State private var notificationToggleText = "Уведомления включены"
     var body: some View {
         VStack {
           
@@ -39,11 +38,10 @@ struct Settings: View {
             .padding(.horizontal)
             
             
-            if viewModel.day != 1 || viewModel.isMathTestFinish {
-            Toggle(notificationToggleText.localized, isOn: $viewModel.showNotification)
-                .font(.headline)
+           
+            Toggle("Уведомления включены".localized, isOn: $viewModel.showNotification)
                 .padding()
-                .onAppear{ notificationToggleText = viewModel.showNotification ? "Уведомления включены".localized : "Уведомления отключены".localized}
+                .padding(.top, 3)
                 .onChange(of: viewModel.showNotification) { value in
                         if value {
                                     notificationCenter.getNotificationSettings { (settings) in
@@ -53,7 +51,6 @@ struct Settings: View {
                                                     viewModel.saveChoice = false
                                                     viewModel.hideFinishCover = false
                                                     viewModel.showNotification = true
-                                                    notificationToggleText = "Уведомления включены"
                                                 }
                                             }
                                         } else {
@@ -65,7 +62,6 @@ struct Settings: View {
                                 viewModel.saveChoice = false
                                 viewModel.hideFinishCover = true
                                 viewModel.showNotification = false
-                                notificationToggleText = "Уведомления отключены".localized
                             }
                             //remove notification if test fineshed early
                             notificationCenter.removeAllPendingNotificationRequests()
@@ -84,9 +80,7 @@ struct Settings: View {
                           secondaryButton: .cancel(Text("Нет".localized))
                     )
                 }
-            } else {
-                Spacer()
-            }
+            
             
             Button(action: { showAlert = true }, label: {
                 Text("Сбросить прогресс")

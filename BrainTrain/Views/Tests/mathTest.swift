@@ -270,7 +270,6 @@ struct mathTest: View {
             math()
             viewModel.timeRemaining = 0
             viewModel.startMathTest = false
-            print(viewModel.mathTestDay)
             if viewModel.isMathTestFinish {
                 for result in testResults{
                     
@@ -456,6 +455,7 @@ struct mathTest: View {
             }
         }
         .background()
+        .mainFont(size: 35)
         .accentColor(.primary)
         .onChange(of: totalSumText, perform: { value in
             if totalSumText.count > (viewModel.difficult == .hard ? 3 : 2 ){

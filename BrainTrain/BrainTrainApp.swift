@@ -23,7 +23,6 @@ struct BrainTrainApp: App {
                     persistenceController.save()
                     
                     if scenePhase == .background {
-                        print("background")
                         
                         UIApplication.shared.applicationIconBadgeNumber = 0
                         

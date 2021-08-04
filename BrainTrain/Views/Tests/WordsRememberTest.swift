@@ -9,7 +9,6 @@ import SwiftUI
 import Introspect
 
 struct WordsRememberTest: View {
-    @Environment (\.locale) var locale
     @EnvironmentObject var viewModel: ViewModel
     @Environment (\.presentationMode) private var presentation
     @State private var startCount = false
@@ -79,6 +78,7 @@ struct WordsRememberTest: View {
                         Text( startCount ? "Дальше".localized :  "Старт".localized)
                             .mainButton()
                     })
+                    
                 }
                 .padding(.vertical, 20)
                 
@@ -350,11 +350,15 @@ struct WordsRememberTest: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear{
             getWords()
+         
         }
     }
     
     func getWords() {
-        if let fileWithWords = Bundle.main.url(forResource: locale.identifier ==  "en" ? "wordsEng" : "words", withExtension: "txt") {
+        
+        let currentLang = Locale.current.languageCode
+        
+        if let fileWithWords = Bundle.main.url(forResource: currentLang == "ru" ? "words" : "wordsEng", withExtension: "txt") {
             if let word = try? String(contentsOf: fileWithWords) {
                 let newWords =  word.components(separatedBy: "\n")
                 while words.count != 20 {

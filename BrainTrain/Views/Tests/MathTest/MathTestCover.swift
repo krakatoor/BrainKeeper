@@ -17,18 +17,22 @@ struct MathTestCover: View {
             Text("Мы зафиксировали отправную точку.\nПредполагается, что в будние дни вы решаете тесты с простыми математическими примерами на сложение, вычитание, умножение  и деление, а в выходные даёте себе отдохнуть. Исследования показали, что такие тесты - один из лучших тренажеров мозга. Решение примеров на время снижает процесс старения мозга. У взрослых после месяца тренировки память улучшается на 12%, а у детей на 20%.\n\nЗапомните - вы соревнуетесь с собой. Сверяйте результаты разных недель и улучшайте их.".localized)
                 .fixedSize(horizontal: false, vertical: true)
             
-           
+            HStack{
             Text("Вы можете изменить уровень сложности в меню".localized)
                 .font(.callout)
-            .foregroundColor(.primary)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top)
+                
+                Spacer()
+            }
            
             Spacer()
+            
             
             Image("thinkingBrain")
                 .resizable()
                 .scaledToFit()
+                .opacity(small ? 0 : 1)
               
             
             Button(action: {

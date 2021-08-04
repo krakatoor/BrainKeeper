@@ -101,7 +101,6 @@ struct MathTestFinish: View {
                 .padding(.top, 5)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    print("1")
                     DispatchQueue.main.async {
                         viewModel.saveChoice.toggle()
                     }

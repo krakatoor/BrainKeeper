@@ -122,7 +122,7 @@ struct StroopTest: View {
                        
                         .padding(.horizontal, 30)
                     }
-                    .padding(.top, -50)
+                    .padding(.top, -40)
                     .background()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onAppear{
@@ -183,11 +183,13 @@ struct StroopTest: View {
         }
     }
     
-    @ViewBuilder func stroopTestViews() -> some View {
+    @ViewBuilder
+    func stroopTestViews() -> some View {
         
         switch stage {
         case .prepare:
             StroopTestPreparing()
+                    .padding(.top)
                 .frame(height: screenSize.height * 0.7)
                 .environmentObject(viewModel)
         case .test:

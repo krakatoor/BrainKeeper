@@ -45,7 +45,6 @@ struct Home: View {
                 .onAppear{
                     
                     UIApplication.shared.applicationIconBadgeNumber = 0
-         
                     // check if tests finish
                     for result in testResults{
                         
