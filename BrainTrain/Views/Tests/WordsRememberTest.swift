@@ -195,7 +195,7 @@ struct WordsRememberTest: View {
                                     viewModel.wordsTestResult = "\(viewModel.words.count)"
                                    
                                         for result in testResults{
-                                            if result.date == testResult.date {
+                                            if result.week == testResult.week {
                                                 if result.testName == testResult.testName{
                                                     viewContext.delete(result)
                                                 }

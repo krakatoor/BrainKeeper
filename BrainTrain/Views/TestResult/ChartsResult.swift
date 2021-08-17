@@ -17,6 +17,8 @@ struct ChartsResult: View {
     var week: Int
  
     var body: some View {
+        let wordsTestResults = testResults.filter{$0.testName == "Тест на запоминание слов" && $0.week == String(week) }
+        let stroopTestResults = testResults.filter{$0.testName == "Тест Струпа" && $0.week == String(week) }
         
         VStack {
             Rectangle()
@@ -24,18 +26,20 @@ struct ChartsResult: View {
                 .frame(width: viewModel.startAnimation ? 0 : screenSize.width - 30,  height: 25)
                 .leadingView()
                 .overlay(
-                    Text(viewModel.wordsTestResult.isEmpty ? "Тест не пройден".localized : "Слов запомнено:".localized + viewModel.wordsTestResult)
+               
+                    Text(viewModel.wordsTestResult.isEmpty ? "Тест не пройден".localized : "Слов запомнено: ".localized + (!wordsTestResults.isEmpty ? wordsTestResults[0].testResult! : viewModel.wordsTestResult))
                     .foregroundColor(.black)
                     .leadingView()
                     .padding(.leading, 10)
                 )
+               
          
             Rectangle()
                 .fill(Color(#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)))
                 .frame(width: viewModel.startAnimation ? 0 : screenSize.width - 30,  height: 25)
                 .leadingView()
                 .overlay(
-                    Text(viewModel.stroopTestResult.isEmpty ? "Тест не пройден".localized : "Тест Струпа: ".localized + viewModel.stroopTestResult)
+                    Text(viewModel.stroopTestResult.isEmpty ? "Тест не пройден".localized : "Тест Струпа: ".localized + (!stroopTestResults.isEmpty ? stroopTestResults[0].testResult! : viewModel.wordsTestResult))
                         .foregroundColor(.black)
                     .leadingView()
                     .padding(.leading, 10)
@@ -77,15 +81,13 @@ struct ChartsResult: View {
                         }
                     }
                     
-             
                 }
                 .padding()
             Spacer()
         }
 
     }
-
-    
+ 
 }
 
 struct ChartsResult_Previews: PreviewProvider {

@@ -346,11 +346,10 @@ struct mathTest: View {
             
             print("Save math test")
             
+         
             DispatchQueue.main.async {
                 viewModel.isMathTestFinish  = true
             }
-            
-            
         }
     }
     

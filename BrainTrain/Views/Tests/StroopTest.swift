@@ -51,7 +51,7 @@ struct StroopTest: View {
                                         testResult.isMathTest = false
                                      
                                             for result in testResults{
-                                                if result.date == testResult.date {
+                                                if result.week == testResult.week {
                                                     if result.testName == testResult.testName{
                                                         viewContext.delete(result)
                                                         print("Delete")
