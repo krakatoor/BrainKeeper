@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  BrainTrain
+//  BrainKeeper
 //
 //  Created by Камиль on 20.10.2020.
 //
