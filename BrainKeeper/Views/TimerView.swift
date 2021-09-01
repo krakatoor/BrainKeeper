@@ -15,6 +15,7 @@ struct timerView: View {
     var minus = false
     var isMathTest = false
     let timer = Timer.publish(every: 0.10, on: .main, in: .common).autoconnect()
+    
  
     var body: some View {
         Group{

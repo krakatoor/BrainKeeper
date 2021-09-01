@@ -91,7 +91,7 @@
 		6BDF62622695A0EE00210F06 /* ProgressCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressCard.swift; sourceTree = "<group>"; };
 		6BDF62AD269C516300210F06 /* words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.txt; sourceTree = "<group>"; };
 		6BF6EDE726A6CCC400D60EBE /* finish.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = finish.json; sourceTree = "<group>"; };
-		8E9F1F4D253EE0AD0029E5F3 /* BrainTrain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BrainTrain.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E9F1F4D253EE0AD0029E5F3 /* BrainKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BrainKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E9F1F50253EE0AD0029E5F3 /* BrainTrainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainTrainApp.swift; sourceTree = "<group>"; };
 		8E9F1F52253EE0AD0029E5F3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8E9F1F54253EE0AF0029E5F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -130,6 +130,7 @@
 				6BD254742677FBA300D061E3 /* Home.swift */,
 				6BDF62622695A0EE00210F06 /* ProgressCard.swift */,
 				6BBAF08126739098009B69AE /* FirstTestView.swift */,
+				6BBAF07F2673903E009B69AE /* TimerView.swift */,
 				6BBAF088267410F5009B69AE /* Tests */,
 				6BD25486267CAED900D061E3 /* RingView.swift */,
 				6BD25484267B951400D061E3 /* TestResultsView.swift */,
@@ -189,7 +190,6 @@
 				6B6D922E26B83062000CA038 /* Constants.swift */,
 				6B0F19802639FAC400480B91 /* Extensions.swift */,
 				8E9F1F59253EE0AF0029E5F3 /* Persistence.swift */,
-				6BBAF07F2673903E009B69AE /* TimerView.swift */,
 				6BD254582675F56100D061E3 /* Lottie.swift */,
 				6BD2545A2675F60700D061E3 /* LottieJSON */,
 			);
@@ -231,7 +231,7 @@
 		8E9F1F44253EE0AD0029E5F3 = {
 			isa = PBXGroup;
 			children = (
-				8E9F1F4F253EE0AD0029E5F3 /* BrainTrain */,
+				8E9F1F4F253EE0AD0029E5F3 /* BrainKeeper */,
 				8E9F1F4E253EE0AD0029E5F3 /* Products */,
 				6B80D59726AD842800B1EEB3 /* Frameworks */,
 			);
@@ -240,12 +240,12 @@
 		8E9F1F4E253EE0AD0029E5F3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8E9F1F4D253EE0AD0029E5F3 /* BrainTrain.app */,
+				8E9F1F4D253EE0AD0029E5F3 /* BrainKeeper.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8E9F1F4F253EE0AD0029E5F3 /* BrainTrain */ = {
+		8E9F1F4F253EE0AD0029E5F3 /* BrainKeeper */ = {
 			isa = PBXGroup;
 			children = (
 				8E9F1F52253EE0AD0029E5F3 /* ContentView.swift */,
@@ -258,7 +258,7 @@
 				6BD254572675F53D00D061E3 /* Utilities */,
 				8E9F1F56253EE0AF0029E5F3 /* Preview Content */,
 			);
-			path = BrainTrain;
+			path = BrainKeeper;
 			sourceTree = "<group>";
 		};
 		8E9F1F56253EE0AF0029E5F3 /* Preview Content */ = {
@@ -272,9 +272,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8E9F1F4C253EE0AD0029E5F3 /* BrainTrain */ = {
+		8E9F1F4C253EE0AD0029E5F3 /* BrainKeeper */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8E9F1F61253EE0AF0029E5F3 /* Build configuration list for PBXNativeTarget "BrainTrain" */;
+			buildConfigurationList = 8E9F1F61253EE0AF0029E5F3 /* Build configuration list for PBXNativeTarget "BrainKeeper" */;
 			buildPhases = (
 				8E9F1F49253EE0AD0029E5F3 /* Sources */,
 				8E9F1F4A253EE0AD0029E5F3 /* Frameworks */,
@@ -284,13 +284,13 @@
 			);
 			dependencies = (
 			);
-			name = BrainTrain;
+			name = BrainKeeper;
 			packageProductDependencies = (
 				6BD254532675F47400D061E3 /* Lottie */,
 				6B21B3F5268313BE00354990 /* Introspect */,
 			);
 			productName = BrainTrain;
-			productReference = 8E9F1F4D253EE0AD0029E5F3 /* BrainTrain.app */;
+			productReference = 8E9F1F4D253EE0AD0029E5F3 /* BrainKeeper.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -307,7 +307,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8E9F1F48253EE0AD0029E5F3 /* Build configuration list for PBXProject "BrainTrain" */;
+			buildConfigurationList = 8E9F1F48253EE0AD0029E5F3 /* Build configuration list for PBXProject "BrainKeeper" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -325,7 +325,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8E9F1F4C253EE0AD0029E5F3 /* BrainTrain */,
+				8E9F1F4C253EE0AD0029E5F3 /* BrainKeeper */,
 			);
 		};
 /* End PBXProject section */
@@ -523,20 +523,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = BrainTrain/BrainTrain.entitlements;
+				CLANG_OPTIMIZATION_PROFILE_FILE = "$(SRCROOT)/OptimizationProfiles/$(PROJECT_NAME).profdata";
+				CODE_SIGN_ENTITLEMENTS = BrainKeeper/BrainKeeper.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"BrainTrain/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"BrainKeeper/Preview Content\"";
 				DEVELOPMENT_TEAM = XWJ7U5B2BL;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = BrainTrain/Info.plist;
+				INFOPLIST_FILE = BrainKeeper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.91;
+				MARKETING_VERSION = 0.92;
 				PRODUCT_BUNDLE_IDENTIFIER = com.oknablitz.BrainKeeper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
@@ -549,20 +552,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = BrainTrain/BrainTrain.entitlements;
+				CLANG_OPTIMIZATION_PROFILE_FILE = "$(SRCROOT)/OptimizationProfiles/$(PROJECT_NAME).profdata";
+				CODE_SIGN_ENTITLEMENTS = BrainKeeper/BrainKeeper.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"BrainTrain/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"BrainKeeper/Preview Content\"";
 				DEVELOPMENT_TEAM = XWJ7U5B2BL;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = BrainTrain/Info.plist;
+				INFOPLIST_FILE = BrainKeeper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.91;
+				MARKETING_VERSION = 0.92;
 				PRODUCT_BUNDLE_IDENTIFIER = com.oknablitz.BrainKeeper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
@@ -573,7 +579,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8E9F1F48253EE0AD0029E5F3 /* Build configuration list for PBXProject "BrainTrain" */ = {
+		8E9F1F48253EE0AD0029E5F3 /* Build configuration list for PBXProject "BrainKeeper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8E9F1F5F253EE0AF0029E5F3 /* Debug */,
@@ -582,7 +588,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8E9F1F61253EE0AF0029E5F3 /* Build configuration list for PBXNativeTarget "BrainTrain" */ = {
+		8E9F1F61253EE0AF0029E5F3 /* Build configuration list for PBXNativeTarget "BrainKeeper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8E9F1F62253EE0AF0029E5F3 /* Debug */,
