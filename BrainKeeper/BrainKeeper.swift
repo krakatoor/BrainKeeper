@@ -1,6 +1,6 @@
 //
-//  BrainTrainApp.swift
-//  BrainTrain
+//  BrainKeeperApp.swift
+//  BrainKeeper
 //
 //  Created by Камиль on 20.10.2020.
 //

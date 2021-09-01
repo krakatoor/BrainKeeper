@@ -45,7 +45,7 @@
 		6BDF62632695A0EE00210F06 /* ProgressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDF62622695A0EE00210F06 /* ProgressCard.swift */; };
 		6BDF62AE269C516300210F06 /* words.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6BDF62AD269C516300210F06 /* words.txt */; };
 		6BF6EDE826A6CCC400D60EBE /* finish.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BF6EDE726A6CCC400D60EBE /* finish.json */; };
-		8E9F1F51253EE0AD0029E5F3 /* BrainTrainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F1F50253EE0AD0029E5F3 /* BrainTrainApp.swift */; };
+		8E9F1F51253EE0AD0029E5F3 /* BrainKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F1F50253EE0AD0029E5F3 /* BrainKeeper.swift */; };
 		8E9F1F53253EE0AD0029E5F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F1F52253EE0AD0029E5F3 /* ContentView.swift */; };
 		8E9F1F55253EE0AF0029E5F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E9F1F54253EE0AF0029E5F3 /* Assets.xcassets */; };
 		8E9F1F58253EE0AF0029E5F3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E9F1F57253EE0AF0029E5F3 /* Preview Assets.xcassets */; };
@@ -92,7 +92,7 @@
 		6BDF62AD269C516300210F06 /* words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.txt; sourceTree = "<group>"; };
 		6BF6EDE726A6CCC400D60EBE /* finish.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = finish.json; sourceTree = "<group>"; };
 		8E9F1F4D253EE0AD0029E5F3 /* BrainKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BrainKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8E9F1F50253EE0AD0029E5F3 /* BrainTrainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainTrainApp.swift; sourceTree = "<group>"; };
+		8E9F1F50253EE0AD0029E5F3 /* BrainKeeper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainKeeper.swift; sourceTree = "<group>"; };
 		8E9F1F52253EE0AD0029E5F3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8E9F1F54253EE0AF0029E5F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8E9F1F57253EE0AF0029E5F3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -254,7 +254,7 @@
 				6BBAF0852673A393009B69AE /* ViewModel */,
 				8E9F1F54253EE0AF0029E5F3 /* Assets.xcassets */,
 				8E9F1F5E253EE0AF0029E5F3 /* Info.plist */,
-				8E9F1F50253EE0AD0029E5F3 /* BrainTrainApp.swift */,
+				8E9F1F50253EE0AD0029E5F3 /* BrainKeeper.swift */,
 				6BD254572675F53D00D061E3 /* Utilities */,
 				8E9F1F56253EE0AF0029E5F3 /* Preview Content */,
 			);
@@ -379,7 +379,7 @@
 				8E9F1F53253EE0AD0029E5F3 /* ContentView.swift in Sources */,
 				6B6D922F26B83062000CA038 /* Constants.swift in Sources */,
 				6B80D59626ACBA1400B1EEB3 /* Recipe.swift in Sources */,
-				8E9F1F51253EE0AD0029E5F3 /* BrainTrainApp.swift in Sources */,
+				8E9F1F51253EE0AD0029E5F3 /* BrainKeeper.swift in Sources */,
 				6BDF62632695A0EE00210F06 /* ProgressCard.swift in Sources */,
 				6B88F431268E3BEA00F23083 /* MathTestCover.swift in Sources */,
 				6B2CD065268F837300217B22 /* ChartsResult.swift in Sources */,
