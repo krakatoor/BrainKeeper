@@ -9,23 +9,15 @@ import SwiftUI
 import Introspect
 
 struct WordsRememberTest: View {
+    @StateObject private var vm = WordsTestViewModel()
     @EnvironmentObject var viewModel: ViewModel
     @Environment (\.presentationMode) private var presentation
-    @State private var startCount = false
-    @State private var startTest = false
-    @State private var word = ""
-    @State private var error = false
-    @State private var showAlert = false
-    @State private var wordsAlreadyExist = false
-    @State private var words: [String] = []
-    @Environment(\.managedObjectContext) private var viewContext
-    @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
-    private var testResults: FetchedResults<TestResult>
+    @EnvironmentObject private var coreData: CoreDataService
     
     var body: some View {
         VStack {
             
-            if !startTest && viewModel.wordsTestResult.isEmpty {
+            if !vm.startTest && viewModel.wordsTestResult.isEmpty {
                 VStack {
                     Text("Тест на запоминание слов".localized)
                         .font(.title2)
@@ -44,14 +36,14 @@ struct WordsRememberTest: View {
                     
              
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 3) {
-                        ForEach(words, id: \.self) {
+                        ForEach(vm.words, id: \.self) {
                             Text($0.capitalized)
                                 .mainFont(size: 22)
-                                .redacted(reason: !startCount ? .placeholder : [] )
-                                .onChange(of: startCount, perform: { value in
-                                    if !startCount{
+                                .redacted(reason: !vm.startCount ? .placeholder : [] )
+                                .onChange(of: vm.startCount, perform: { value in
+                                    if !vm.startCount{
                                         withAnimation{
-                                            startTest = true
+                                            vm.startTest = true
                                          
                                         }
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -65,14 +57,14 @@ struct WordsRememberTest: View {
                     }
                     
                     Spacer()
-                    timerView(result: .constant(""), startTimer: $startCount, fontSize: small ? 20 : 25, minus: true)
+                    timerView(result: .constant(""), startTimer: $vm.startCount, fontSize: small ? 20 : 25, minus: true)
                         .padding(.top)
                         .environmentObject(viewModel)
                     
                     
                     Button(action: {
-                        startCount.toggle()
-                        if !startCount {
+                        vm.startCount.toggle()
+                        if !vm.startCount {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                                 viewModel.timeRemaining = 120
                             }
@@ -80,7 +72,7 @@ struct WordsRememberTest: View {
                         
                     },
                     label: {
-                        Text( startCount ? "Дальше".localized :  "Старт".localized)
+                        Text( vm.startCount ? "Дальше".localized :  "Старт".localized)
                             .mainButton()
                     })
                     
@@ -90,7 +82,7 @@ struct WordsRememberTest: View {
             } else {
                 
                 VStack{
-                    if !startCount && viewModel.wordsTestResult.isEmpty{
+                    if !vm.startCount && viewModel.wordsTestResult.isEmpty{
                         Text("Постарайтесь вписать как можно больше запомненных слов.".localized)
                             .fixedSize(horizontal: false, vertical: true)
                             .padding()
@@ -99,7 +91,7 @@ struct WordsRememberTest: View {
                     }
                     VStack {
                         
-                        if startCount {
+                        if vm.startCount {
                             HStack{
                             Text("Слов запомнено:".localized)
                                 Text("\(viewModel.words.count)")
@@ -109,16 +101,16 @@ struct WordsRememberTest: View {
                         }
                         
                         ZStack {
-                            Text(error ? "Попробуйте другое слово".localized : " ")
+                            Text(vm.error ? "Попробуйте другое слово".localized : " ")
                                 .foregroundColor(.red)
                             
-                            Text(wordsAlreadyExist ? "Слово уже добавлено".localized : " ")
+                            Text(vm.wordsAlreadyExist ? "Слово уже добавлено".localized : " ")
                                 .foregroundColor(.red)
                         }
                         
                         if viewModel.wordsTestResult.isEmpty {
                             
-                            TextField("Введите слово".localized, text: $word)
+                            TextField("Введите слово".localized, text: $vm.word)
                                 .introspectTextField{ textfield in
                                     textfield.becomeFirstResponder()
                                 }
@@ -127,38 +119,38 @@ struct WordsRememberTest: View {
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .autocapitalization(.none)
                                 .padding()
-                                .disabled(!startCount)
+                                .disabled(!vm.startCount)
                                 .contentShape(Rectangle())
-                                .onChange(of: word, perform: { value in
-                                    if words.contains(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)) {
-                                        viewModel.words.append(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines))
-                                        word = ""
-                                    } else if viewModel.words.contains(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)){
-                                        wordsAlreadyExist.toggle()
-                                        word = ""
+                                .onChange(of: vm.word, perform: { value in
+                                    if vm.words.contains(vm.word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(vm.word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)) {
+                                        viewModel.words.append(vm.word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines))
+                                        vm.word = ""
+                                    } else if viewModel.words.contains(vm.word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)){
+                                        vm.wordsAlreadyExist.toggle()
+                                        vm.word = ""
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                            wordsAlreadyExist.toggle()
+                                            vm.wordsAlreadyExist.toggle()
                                         }
-                                    } else if word.count > 15 {
-                                        error.toggle()
-                                        word = ""
+                                    } else if vm.word.count > 15 {
+                                        vm.error.toggle()
+                                        vm.word = ""
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                            error.toggle()
+                                            vm.error.toggle()
                                         }
                                     }
                                 })
                                 .onTapGesture {
-                                    startCount = true
+                                    vm.startCount = true
                                     
                                 }
                                 .overlay(
                                     HStack {
                                         Spacer()
-                                        Button(action: {word = ""}, label: {
+                                        Button(action: { vm.word = ""}, label: {
                                             Image(systemName: "xmark.circle.fill")
                                                 .foregroundColor(.primary)
                                                 .padding(.trailing, 25)
-                                                .opacity(word.isEmpty ? 0 : 1)
+                                                .opacity(vm.word.isEmpty ? 0 : 1)
                                         })
                                     })
                         }
@@ -180,12 +172,12 @@ struct WordsRememberTest: View {
                     Spacer()
                     
                     if viewModel.wordsTestResult.isEmpty {
-                        timerView(result: $viewModel.wordsTestResult, startTimer: $startCount, fontSize: 25, minus: true)
+                        timerView(result: $viewModel.wordsTestResult, startTimer: $vm.startCount, fontSize: 25, minus: true)
                             .environmentObject(viewModel)
-                            .onChange(of: startCount, perform: { value in
+                            .onChange(of: vm.startCount, perform: { value in
                                 if !value {
                                     viewModel.isWordsTestFinish = true
-                                    let testResult = TestResult(context: viewContext)
+                                    let testResult = TestResult(context: coreData.container.viewContext)
                                     testResult.date = today
                                     testResult.week = String(viewModel.week)
                                     testResult.day = Double(viewModel.day)
@@ -194,23 +186,23 @@ struct WordsRememberTest: View {
                                     testResult.isMathTest = false
                                     viewModel.wordsTestResult = "\(viewModel.words.count)"
                                    
-                                        for result in testResults{
+                                    for result in coreData.testResults{
                                             if result.week == testResult.week {
                                                 if result.testName == testResult.testName{
-                                                    viewContext.delete(result)
+                                                    coreData.delete(result)
                                                 }
                                             }
                                             
                                         }
                                     
-                                    do {try viewContext.save() } catch { return }
+                                    coreData.save()
                                     print("words test saved")
                                 }
                             })
                             .onChange(of: viewModel.words) { value in
                                 if value.count == 20 {
                                     withAnimation{
-                                    startCount = false
+                                        vm.startCount = false
                                     }
                                 }
                             }
@@ -247,19 +239,19 @@ struct WordsRememberTest: View {
                         if !viewModel.wordsTestResult.isEmpty {
                             
                             Button(action: {
-                                showAlert = true
+                                vm.showAlert = true
                             }, label: {
                                 Image(systemName: "arrow.clockwise")
                                     .font(.title)
                             })
-                            .alert(isPresented: $showAlert) {
+                            .alert(isPresented: $vm.showAlert) {
                                 Alert(title: Text("Начать тест заново?".localized), message: Text("При прохождении теста результаты будут заменены".localized),
                                       primaryButton: .destructive(Text("Да")) {
                                         getWords()
                                         viewModel.words.removeAll()
                                         viewModel.timeRemaining = 120
                                         withAnimation{
-                                            startTest = false
+                                            vm.startTest = false
                                             viewModel.wordsTestResult = ""
                                         
                                         }
@@ -288,31 +280,31 @@ struct WordsRememberTest: View {
                             
                             Button(action: {
                                 
-                                if startCount {
-                                    if words.contains(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)) {
-                                        viewModel.words.append(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines))
-                                        word = ""
-                                    } else if viewModel.words.contains(word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)){
-                                        wordsAlreadyExist.toggle()
-                                        word = ""
+                                if vm.startCount {
+                                    if vm.words.contains(vm.word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)) && !viewModel.words.contains(vm.word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)) {
+                                        viewModel.words.append(vm.word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines))
+                                        vm.word = ""
+                                    } else if viewModel.words.contains(vm.word.firstUppercased.trimmingCharacters(in: .whitespacesAndNewlines)){
+                                        vm.wordsAlreadyExist.toggle()
+                                        vm.word = ""
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                            wordsAlreadyExist.toggle()
+                                            vm.wordsAlreadyExist.toggle()
                                         }
                                     } else {
-                                        error.toggle()
+                                        vm.error.toggle()
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                            error.toggle()
+                                            vm.error.toggle()
                                         }
                                     }
                                 } else {
                                     
-                                    startCount = true
+                                    vm.startCount = true
                                 }
                                 
                             },
                             label: {
                                 
-                                Text(startCount ? "Добавить".localized : "Старт".localized)
+                                Text(vm.startCount ? "Добавить".localized : "Старт".localized)
                                     .mainButton()
                                 
                             })
@@ -366,10 +358,10 @@ struct WordsRememberTest: View {
         if let fileWithWords = Bundle.main.url(forResource: currentLang == "ru" ? "words" : "wordsEng", withExtension: "txt") {
             if let word = try? String(contentsOf: fileWithWords) {
                 let newWords =  word.components(separatedBy: "\n")
-                while words.count != 20 {
+                while vm.words.count != 20 {
                     if let randomWord = newWords.randomElement() {
-                        if !words.contains(randomWord.firstUppercased) && randomWord != ""{
-                            words.append(randomWord.firstUppercased)
+                        if !vm.words.contains(randomWord.firstUppercased) && randomWord != ""{
+                            vm.words.append(randomWord.firstUppercased)
                         }
                     }
                 }

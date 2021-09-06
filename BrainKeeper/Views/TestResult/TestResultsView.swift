@@ -8,15 +8,12 @@
 import SwiftUI
 
 struct TestResultsView: View {
-    @Environment(\.managedObjectContext) private var  viewContext
-    @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
-    private var testResults: FetchedResults<TestResult>
     @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         
         VStack{
-            if !testResults.isEmpty {
+            if !viewModel.testResults.isEmpty {
                 
                 ScrollViewReader { proxy in
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -38,7 +35,6 @@ struct TestResultsView: View {
                                     .padding(.bottom, small ? 0 : 10)
                                     
                                     ChartsResult(week: week)
-                                        .environmentObject(viewModel)
                                     
                                 }
                                 .frame(width: screenSize.width, height: 450)

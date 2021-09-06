@@ -7,14 +7,11 @@
 
 import SwiftUI
 
-struct Settings: View {
+struct SettingsView: View {
     
     @State private var showAlert = false
-    @EnvironmentObject var store: StoreKit
+    @StateObject private var store = StoreKit()
     @EnvironmentObject var viewModel: ViewModel
-    @Environment(\.managedObjectContext) private var  viewContext
-    @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
-    private var testResults: FetchedResults<TestResult>
     @State private var showNotificationAlert = false
     @State private var showInAppPurchase = true
     var body: some View {
@@ -99,9 +96,9 @@ struct Settings: View {
                         viewModel.correctAnswers = 0
                         viewModel.examplesCount = 0
                         viewModel.results =  [0.0, 0.0, 0.0, 0.0, 0.0]
-                        for i in testResults{
-                            viewContext.delete(i)
-                            do {try viewContext.save()} catch {return}}
+                        for i in viewModel.testResults{
+                            viewModel.coreData.delete(i)
+                            viewModel.coreData.save() }
                         viewModel.showSettings = false
                       },
                       secondaryButton: .cancel(Text("Нет".localized))
@@ -114,8 +111,7 @@ struct Settings: View {
           Divider()
             .padding(.bottom)
             
-            storeKitView(showInAppPurchase: $showInAppPurchase)
-            .environmentObject(store)
+                storeKitView(store: store, showInAppPurchase: $showInAppPurchase)
             .frame(height: 60)
             .padding(.vertical)
             }
@@ -133,14 +129,32 @@ struct Settings: View {
         }
         .frame(width: screenSize.width, height: showInAppPurchase ? 400 : 300)
         .background(Color("back").ignoresSafeArea().cornerRadius(15).shadow(color: Color.primary.opacity(0.5), radius: 3, x: 0, y: 0))
-     
+        .zIndex(1)
+        .offset(y: viewModel.showSettings ? 0 : 450)
+        .offset(y:  viewModel.viewState)
+        .gesture(
+            DragGesture().onChanged{ value in
+                if value.translation.height > 35 {
+                    viewModel.viewState = value.translation.height
+                }
+            }
+            .onEnded{ value in
+                if value.translation.height > 120 {
+                    withAnimation(.linear) {
+                        viewModel.showSettings = false
+                    }
+                } else {
+                    viewModel.viewState = .zero
+                }
+            }
+        )
         
     }
 }
 
 struct Settings_Previews: PreviewProvider {
     static var previews: some View {
-        Settings()
+        SettingsView()
             .environmentObject(StoreKit())
             .environmentObject(ViewModel())
     }

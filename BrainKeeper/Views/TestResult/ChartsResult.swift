@@ -8,17 +8,15 @@
 import SwiftUI
 
 struct ChartsResult: View {
-    @Environment(\.managedObjectContext) private var  viewContext
-    @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
-    private var testResults: FetchedResults<TestResult>
+    @EnvironmentObject private var coreData: CoreDataService
     @EnvironmentObject var viewModel: ViewModel
     let days = ["1","2","3","4","5"]
     
     var week: Int
  
     var body: some View {
-        let wordsTestResults = testResults.filter{$0.testName == "Тест на запоминание слов" && $0.week == String(week) }
-        let stroopTestResults = testResults.filter{$0.testName == "Тест Струпа" && $0.week == String(week) }
+        let wordsTestResults = coreData.testResults.filter{$0.testName == "Тест на запоминание слов" && $0.week == String(week) }
+        let stroopTestResults = coreData.testResults.filter{$0.testName == "Тест Струпа" && $0.week == String(week) }
         
         VStack {
             Rectangle()
@@ -50,7 +48,6 @@ struct ChartsResult: View {
                     
                     ZStack (alignment: .bottomLeading){
                         ChartView(week: week)
-                            .environmentObject(viewModel)
                     
                     }
                     

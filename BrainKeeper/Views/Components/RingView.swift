@@ -13,7 +13,6 @@ struct RingView: View {
     var heihgt: CGFloat = 50
     var percent: CGFloat
     @State private var startAnimation = false
-//    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
         let multiplier = width / 44
@@ -25,7 +24,7 @@ struct RingView: View {
                 .frame(width: width, height: heihgt)
 
             Circle()
-                .trim(from: !startAnimation ? 1 :  progress, to: 60) //заполнение круга
+                .trim(from: !startAnimation ? 1 :  progress, to: 60) 
                 .stroke(lineWidth: 10)
                 .rotationEffect(Angle(degrees: 90))
                 .rotation3DEffect(Angle(degrees: 180), axis: (x: 1, y: 0, z: 0))
@@ -41,13 +40,7 @@ struct RingView: View {
                     .font(.system(size: 7 * multiplier))
                     .font(.system(size: 14 * multiplier))
             }
-//                .onReceive(timer){ _ in
-//                    if percent == 0 {
-//                        timer.upstream.connect().cancel()
-//                    } else {
-//            percent -= 1
-//        }
-//                }
+
         }
         .frame(width: width, height: heihgt)
         .onAppear{

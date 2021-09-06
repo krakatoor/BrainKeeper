@@ -1,25 +1,11 @@
 //
-//  Extensions.swift
+//  View.swift
 //  BrainKeeper
 //
-//  Created by Камиль Сулейманов on 28.04.2021.
+//  Created by Камиль Сулейманов on 05.09.2021.
 //
 
 import SwiftUI
-
-
-
-
-//Blur effect
-struct BlurView : UIViewRepresentable {
-    var style : UIBlurEffect.Style
-    func makeUIView(context: Context) -> UIVisualEffectView {
-        let view = UIVisualEffectView(effect: UIBlurEffect(style: style))
-        return view
-    }
-    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
-    }
-}
 
 //Fonts
 extension View {
@@ -40,6 +26,7 @@ extension View {
     }
 }
 
+
 extension View {
     func background () -> some View {
     self
@@ -47,14 +34,6 @@ extension View {
     }
 }
 
-
-struct CustomCorner: Shape {
-    var corners: UIRectCorner
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: small ? 0 : 22, height: small ? 0 : 22))
-        return Path(path.cgPath)
-    }
-}
 
 struct Leading: ViewModifier {
     func body(content: Content) -> some View {
@@ -89,25 +68,4 @@ extension View {
         self
             .modifier(Center())
     }
-}
-
-
-
-//Remove navLink tap animation
-struct FlatLinkStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-    }
-}
-
-extension String {
-    var localized: String {
-        return NSLocalizedString(self, comment: "")
-    }
-}
-
-
-extension StringProtocol {
-    var firstUppercased: String { return prefix(1).uppercased() + dropFirst() }
-    var firstCapitalized: String { return prefix(1).capitalized + dropFirst() }
 }

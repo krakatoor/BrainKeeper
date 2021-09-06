@@ -13,13 +13,11 @@ struct ChartView: View {
     @State private var correctAnswers = ""
     @State private var showDetail = false
     @State private var viewHeight: CGFloat = 200
-    @Environment(\.managedObjectContext) private var  viewContext
-    @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
-    private var testResults: FetchedResults<TestResult>
+    @EnvironmentObject private var coreData: CoreDataService
     var week: Int
     
     var body: some View {
-        let results = testResults.filter({$0.isMathTest && $0.week == String(week)})
+        let results = coreData.testResults.filter({$0.isMathTest && $0.week == String(week)})
         ZStack (alignment: .top){
             
             if showDetail{

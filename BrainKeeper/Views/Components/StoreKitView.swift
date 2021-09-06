@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct storeKitView: View {
-    @EnvironmentObject var store: StoreKit
+    @ObservedObject var store: StoreKit
     @Binding var showInAppPurchase: Bool
     var body: some View {
     
@@ -97,7 +97,6 @@ struct storeKitView: View {
 
 struct storeKitView_Previews: PreviewProvider {
     static var previews: some View {
-        storeKitView(showInAppPurchase: .constant(true))
-            .environmentObject(StoreKit())
+        storeKitView(store: StoreKit(), showInAppPurchase: .constant(true))
     }
 }

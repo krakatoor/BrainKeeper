@@ -21,9 +21,7 @@ struct mathTest: View {
     @State private var testFinishCover = false
     @State private var showCover = true
     @State private var showAlert = false
-    @Environment(\.managedObjectContext) private var  viewContext
-    @FetchRequest(entity: TestResult.entity(), sortDescriptors: [])
-    private var testResults: FetchedResults<TestResult>
+
     let buttonWidth = screenSize.width / 3 - 5
     
     var body: some View {
@@ -38,7 +36,6 @@ struct mathTest: View {
                 if testFinishCover && viewModel.showNotification && !viewModel.hideFinishCover {
                     MathTestFinish(hideCover: $testFinishCover)
                         .zIndex(1)
-                        .environmentObject(viewModel)
                         .transition(.move(edge: .bottom))
                 }
                 
@@ -85,7 +82,6 @@ struct mathTest: View {
                                     .font(.title3)
                             } else {
                                 timerView(result: $viewModel.mathTestResult, startTimer: $viewModel.startMathTest, fontSize: 25, isMathTest: true)
-                                    .environmentObject(viewModel)
                             }
                             
                             Spacer()
@@ -250,7 +246,7 @@ struct mathTest: View {
                 .mainFont(size: 30)
             }
             
-            Settings()
+            SettingsView()
                 .offset(y: viewModel.showSettings ? small ? 0 : 50 : 450)
                 .offset(y:  viewModel.viewState)
                 .gesture(
@@ -271,7 +267,7 @@ struct mathTest: View {
             viewModel.timeRemaining = 0
             viewModel.startMathTest = false
             if viewModel.isMathTestFinish {
-                for result in testResults{
+                for result in viewModel.testResults{
                     
                     if result.isMathTest {
                         if result.week == String(viewModel.week){
@@ -305,15 +301,15 @@ struct mathTest: View {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
             
-            let testResult = TestResult(context: viewContext)
+            let testResult = TestResult(context: viewModel.coreData.container.viewContext)
             
             if viewModel.isMathTestFinish {
                 
-                for result in testResults{
+                for result in viewModel.testResults{
                     if result.isMathTest{
                         if result.week == String(viewModel.week) {
                             if result.day == Double(viewModel.mathTestDay) {
-                                viewContext.delete(result)
+                                viewModel.coreData.delete(result)
                             }
                         }
                     }
@@ -336,7 +332,7 @@ struct mathTest: View {
                 viewModel.results[viewModel.mathTestDay] = testResult.result
             }
             
-            do {try viewContext.save() } catch { return }
+            viewModel.coreData.save()
             
             if viewModel.saveChoice && viewModel.showNotification {
                 viewModel.sendNotification()

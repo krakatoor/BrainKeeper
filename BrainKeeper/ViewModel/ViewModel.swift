@@ -1,5 +1,5 @@
 //
-//  ViewModel.swift
+//  swift
 //  BrainTrain
 //
 //  Created by Камиль Сулейманов on 11.06.2021.
@@ -13,7 +13,10 @@ enum Difficult: String, Equatable, CaseIterable  {
 }
 
 class ViewModel: ObservableObject{
-
+    
+    let coreData = CoreDataService.shared
+    
+    @Published var testResults: [TestResult] = []
     @Published var subscriptions = Set<AnyCancellable>()
     
     @AppStorage ("difficult") var difficult = Difficult.normal
@@ -26,12 +29,10 @@ class ViewModel: ObservableObject{
     @AppStorage("showNotification") var showNotification = true
     @AppStorage("hideFinishCover") var hideFinishCover = false
     @AppStorage("saveChoice") var saveChoice = false
-    let brainTestsDay = Array(1...60).filter {$0.isMultiple(of:5)}
-//    or stride(from: 1, to: 60, by: 6)
-    
+    let brainTestsDay = stride(from: 1, to: 60, by: 6)
+
     var week: Int {
         var current = 1
-        
         for i in 1...day {
             for testDay in brainTestsDay {
                 if testDay == i - 1 {
@@ -46,7 +47,6 @@ class ViewModel: ObservableObject{
     @Published var viewState: CGFloat = .zero
     @Published var showSettings = false
     @Published var weekChange = false
-    @Published var showDayCard = true
     @Published var startAnimation = true
     @Published var wordsTestTapped = false
     @Published var stroopTestTapped = false
@@ -74,7 +74,75 @@ class ViewModel: ObservableObject{
     
     //Результаты
     @Published var results = [0.0, 0.0, 0.0, 0.0, 0.0]
+    
+    
+    
+    init() {
+        subscribeOnCoreData()
+    }
    
+    func subscribeOnCoreData() {
+        coreData.$testResults
+            .sink { [weak self] results in
+                self?.testResults = results
+            }
+            .store(in: &subscriptions)
+    }
+    
+    func checkDate() {
+        for result in testResults{
+            if result.week == String(week) {
+                if result.testName == "Тест на запоминание слов" {
+                    if wordsTestResult.isEmpty {
+                       wordsTestResult = String(format: "%.0f", result.result)
+                       isWordsTestFinish = true
+
+                    }
+                }
+                if result.testName == "Тест Струпа" {
+                    if stroopTestResult.isEmpty {
+                        stroopTestResult = result.testResult!
+                        isStroopTestFinish = true
+                    }
+                }
+            }
+            if result.testName == "Ежедневный тест" {
+                if result.week == String(week){
+                    results[Int(result.day)] = result.result
+                    mathTestResultTime = result.result
+
+                    if result.day == Double(mathTestDay) {
+
+                        isMathTestFinish = true
+
+                        if isMathTestFinish {
+                            if currentDay != today {
+                                day += 1
+                                currentDay = today
+                                isMathTestFinish = false
+
+                                if  mathTestDay == 4{
+                                    mathTestDay = 0
+                                    withAnimation{
+                                        weekChange = true
+                                        isWordsTestFinish = false
+                                        wordsTestResult = ""
+                                        isStroopTestFinish = false
+                                        stroopTestResult = ""
+
+                                    }
+                                } else {
+                                    mathTestDay += 1
+                                    print("day + 1")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     func getPermession() {
         notificationCenter.getNotificationSettings { (settings) in
 
