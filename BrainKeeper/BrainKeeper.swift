@@ -23,6 +23,16 @@ struct BrainTrainApp: App {
                         checkCurrentDate()
                     }
                 }
+                .onAppear{
+                    UIApplication.shared.applicationIconBadgeNumber = 0
+                    viewModel.checkDate()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                        withAnimation{
+                            homeVM.showLoadingScreen = false
+                            viewModel.startAnimation = false
+                        }
+                    }
+                }
         }
         
     }

@@ -13,11 +13,10 @@ struct ChartView: View {
     @State private var correctAnswers = ""
     @State private var showDetail = false
     @State private var viewHeight: CGFloat = 200
-    @EnvironmentObject private var coreData: CoreDataService
     var week: Int
     
     var body: some View {
-        let results = coreData.testResults.filter({$0.isMathTest && $0.week == String(week)})
+        let results = viewModel.testResults.filter({$0.isMathTest && $0.week == String(week)})
         ZStack (alignment: .top){
             
             if showDetail{

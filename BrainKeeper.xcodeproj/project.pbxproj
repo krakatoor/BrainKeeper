@@ -173,7 +173,6 @@
 			children = (
 				6BBAF0862673A3A4009B69AE /* ViewModel.swift */,
 				6B80D59126AC3D9300B1EEB3 /* StoreKit.swift */,
-				6BFF976A26E526BB00C82FC3 /* CoreDataService.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -191,6 +190,7 @@
 		6BD254572675F53D00D061E3 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				6BFF976A26E526BB00C82FC3 /* CoreDataService.swift */,
 				6B6D920E26AE15CF000CA038 /* Localizable.strings */,
 				6B6D922E26B83062000CA038 /* Constants.swift */,
 				6BD254582675F56100D061E3 /* Lottie.swift */,

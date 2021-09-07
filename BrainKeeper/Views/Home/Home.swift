@@ -20,11 +20,13 @@ struct Home: View {
         NavigationView {
             ZStack (alignment: .bottom) {
                 ZStack {
+                    
                     if homeVM.showLoadingScreen {
                         ProgressCard()
                             .zIndex(1)
                             .transition(.move(edge: .leading))
                     }
+                    
                     MainScreenView()
                         .padding(.top)
                 }
@@ -32,16 +34,6 @@ struct Home: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background()
                 .navigationBarItems(trailing: settingButton())
-                .onAppear{
-                    UIApplication.shared.applicationIconBadgeNumber = 0
-                    viewModel.checkDate()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                        withAnimation{
-                            homeVM.showLoadingScreen = false
-                            viewModel.startAnimation = false
-                        }
-                    }
-                }
                 .padding(.top, -50)
                 
                 SettingsView()

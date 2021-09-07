@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct ChartsResult: View {
-    @EnvironmentObject private var coreData: CoreDataService
     @EnvironmentObject var viewModel: ViewModel
     let days = ["1","2","3","4","5"]
     
     var week: Int
  
     var body: some View {
-        let wordsTestResults = coreData.testResults.filter{$0.testName == "Тест на запоминание слов" && $0.week == String(week) }
-        let stroopTestResults = coreData.testResults.filter{$0.testName == "Тест Струпа" && $0.week == String(week) }
+        let wordsTestResults = viewModel.testResults.filter{$0.testName == "Тест на запоминание слов" && $0.week == String(week) }
+        let stroopTestResults = viewModel.testResults.filter{$0.testName == "Тест Струпа" && $0.week == String(week) }
         
         VStack {
             Rectangle()

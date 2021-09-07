@@ -143,6 +143,25 @@ class ViewModel: ObservableObject{
         }
     }
     
+    func resetProgress() {
+        day = 1
+        mathTestDay = 0
+        isTestFinish = false
+        isWordsTestFinish = false
+        isStroopTestFinish = false
+        mathTestResult = ""
+        wordsTestResult = ""
+        stroopTestResult = ""
+        words = []
+        correctAnswers = 0
+        examplesCount = 0
+        results =  [0.0, 0.0, 0.0, 0.0, 0.0]
+        for i in testResults{
+            coreData.container.viewContext.delete(i)
+           }
+        coreData.save()
+    }
+    
     func getPermession() {
         notificationCenter.getNotificationSettings { (settings) in
 
